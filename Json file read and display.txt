@@ -11,18 +11,18 @@ public class ReadingJSON {
       try {
          //Parsing the contents of the JSON file
          JSONObject jsonObject = (JSONObject) jsonParser.parse(new FileReader("E:/sample.json"));
-         String warehouse = (String) jsonObject.get("warehouse_id");
+         String warehouse_id = (String) jsonObject.get("warehouse_id");
          String method = (String) jsonObject.get("shipment_method");
-         String id = (String) jsonObject.get("shipment_id");
+         String ship_id = (String) jsonObject.get("shipment_id");
          String weight = (String) jsonObject.get("weight");
-         String receipt_date = (String) jsonObject.get("receipt_date");
+         String date = (String) jsonObject.get("receipt_date");
          //Forming URL
          System.out.println("Contents of the JSON are: ");
          System.out.println("Warehouse :"+warehouse);
          System.out.println("Method: "+method);
          System.out.println("Shipment ID: "+id);
          System.out.println("Weight: "+weight);
-         System.out.println("Receipt Date: "+receipt_date);
+         System.out.println("Receipt Date: "+date);
          System.out.println(" ");
       } catch (FileNotFoundException e) {
             e.printStackTrace();
