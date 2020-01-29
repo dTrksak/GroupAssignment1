@@ -9,18 +9,41 @@ public class WarehouseHandler
 	 * @param warehouseID
 	 * @return a linked list of shipments from a warehouse, null if the warehouse doesn't exist
 	 */
-	public LinkedList<Warehouse> getWarehouseShipments(String warehouseID)
+	public LinkedList<Shipment> getWarehouseShipments(String warehouseID)
 	{
 		Warehouse w = getWarehouse(warehouseID); //Get the warehouse in warehouseList using warehouseID
 		
 		//Check that the warehouse exists
 		if(w != null)
 		{
-			return w.getShipmentLinkedList(); //Replace getShipmentLinkedList() if needed
+			return w.getShipmentList(); //Replace getShipmentList() if needed
 		} else {
 			//If the warehouse doesn't exist, tell the user
-			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist, create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import json'.\n"); //\n is return?
+			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist. Create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import shipments'.\n"); //\n is return?
 			return null;
+		}	
+	}
+	
+	/**
+	 * Gets a list of shipments from all warehouses
+	 * @return a linked list of shipments from all warehouses, null if no warehouses exist
+	 */
+	public LinkedList<Shipment> getAllWarehouseShipments()
+	{	
+		//Check that warehouseList is not empty
+		if(warehouseList.isEmpty())
+		{
+			//If the warehouse doesn't exist, tell the user
+			System.out.println("Sorry, no warehouses exist. Create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import shipments'.\n"); //\n is return?
+			return null;
+		} else {
+			LinkedList<Shipment> outputList = new LinkedList<>();
+			for(int i = 0; i < warehouseList.size(); i++)
+			{
+				Warehouse w = warehouseList.get(i);
+				outputList.addAll(w.getShipmentList()); //Replace getShipmentList() if needed
+			}
+			return outputList;
 		}	
 	}
 	
@@ -46,7 +69,7 @@ public class WarehouseHandler
 	 * Creates a warehouse given a warehouse ID
 	 * @param warehouseID
 	 */
-	public void createWarehouse(String warehouseID)
+	public void addWarehouse(String warehouseID)
 	{
 		Warehouse w = getWarehouse(warehouseID);
 		
@@ -74,7 +97,7 @@ public class WarehouseHandler
 		{
 			return w.getReceipt(); //Replace getReceipt() if needed
 		} else {
-			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist, create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or by importing shipments by typing 'import json'.\n");
+			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist. Create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or by importing shipments by typing 'import shipments'.\n");
 			return null;
 		}
 	}
@@ -93,7 +116,7 @@ public class WarehouseHandler
 		{
 			w.setReceipt(input); //Replace setReceipt() if needed
 		} else {
-			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist, create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import json'.\n");
+			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist. Create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import shipments'.\n");
 		}
 	}
 	
@@ -114,7 +137,7 @@ public class WarehouseHandler
 		{
 			w.addShipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate); //Replace addShipment() and the variables if needed
 		} else {
-			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist, create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import json'.\n");
+			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist. Create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import shipments'.\n");
 		}
 	}	
 }
