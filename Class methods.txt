@@ -1,0 +1,100 @@
+Classes:
+Driver
+	Main
+JsonHandler
+	jsonToShipment(json) //takes a json file and converts it to a LinkedList of shipments
+	warehouseToJson(LinkedList) //takes a LinkedList of a single warehouse's shipments and converts them to a json file
+Shipment
+	shipment data
+	Shipment(shipmentID,weight,etc...) //On creation of shipment
+	getters
+	setters
+Warehouse
+	string warehouseID
+	boolean shipmentReceipt
+	LinkedList shipmentList
+	Warehouse(warehouseID) //On creation of warehouse
+	addShipment(shipment data)
+	getShipmentLinkedList()
+	getReceipt()
+	setReceipt()
+WarehouseHandler
+	LinkedList warehouseList
+	getWarehouseShipments(warehouseID) //returns a LinkedList of shipments given a specific warehouse ID
+	getWarehouse(warehouseID) //returns a warehouse object given a warehouse ID, returns null if doesn't exist
+	createWarehouse(warehouseID) //creates a warehouse given a warehouse ID
+	getWarehouseReceipt(warehouseID) //returns a boolean given a warehouse ID
+	setWarehouseReceipt(warehouseID, input) //sets a boolean for a warehouse given a warehouse ID, if the warehouse doesn't exist it creates one.
+InputHandler
+	getInput() //gets input from the console and calls the relevant methods
+	changeWarehouseReceipt() //changes a boolean
+	addJsonFile() //adds a json file given a filepath
+	outputShipmentList() //takes a file
+FileOperations
+	getFile()
+	setFile()
+
+- Order of Operations -
+1. 'warehouse (warehouseID) enable freight receipt'/'warehouse (warehouseID) end freight receipt'
+User requests to set a warehouse Receipt
+InputHandler sends the request to WarehouseHandler
+If the warehouse doesn't exist, tell the user to create one or input a json file
+If the warehouse does exist, WarehouseController sets its receipt
+- End -
+
+2. 'import shipments'
+User requests to add a json file
+InputHandler sends the request to FileOperations, which allows the user to select a json file
+FileOperations sends the json file to JsonHandler
+JsonHandler sends a LinkedList of shipments to the Driver
+The Driver creates the shipments using the LinkedList
+The shipments add themselves to their warehouses, if a warehouse doesn't exist it is created
+if a warehouse is created, it sends itself to WarehouseController to add to the LinkedList of warehouses
+- End -
+
+3. 'export warehouse (warehouseID) shipments'
+User requests a specific warehouse's shipments
+InputHandler sends the request to WarehouseController
+WarehouseController gets the specific warehouse's LinkedList and sends it to JsonHandler
+JsonHandler converts the LinkedList into a Json file and sends the file to FileOperations
+FileOperations creates the file on the computer
+- End -
+
+4. 'export all shipments'
+User requests all warehouse shipments
+InputHandler sends the request to WarehouseController
+WarehouseController gets all the warehouse's LinkedLists and sends a single list to JsonHandler
+JsonHandler converts the LinkedList into a Json file and sends the file to FileOperations
+FileOperations creates the file on the computer
+- End -
+
+5. 'create warehouse (warehouseID)'
+User requests to create a warehouse
+InputHandler sends the request to WarehouseHandler
+WarehouseController creates a warehouse
+- End -
+
+6. 'add incoming shipment (warehouseID),(shipmentID),(shipmentMethod),(weight),(receiptDate)'
+User requests to add a single shipment
+InputHandler sends the request to WarehouseHandler
+WarehouseHandler sends the request to the specific warehouse
+- End -
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
