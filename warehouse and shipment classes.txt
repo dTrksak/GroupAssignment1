@@ -1,0 +1,31 @@
+shipment class:
+	private String method;
+	private String shipment_id;
+	private Float weight;
+	private String warehouse;
+	private Long date;
+
+	public shipment(method, shipment_id, weight, warehouse, date){ //warehouse need to be agregated
+		this.method = method;
+		this.shipment_id = shipment_id;
+		this.weight = weight;
+		this.warehouse = warehouse;
+		this.date = date;
+	}
+	
+
+warehouse class: 
+	private Int warehouse_id;
+	private Bool avalibility = TRUE;
+
+	public void enable_freight_receipt(){avalibitity = TRUE;}
+	public void end_freight_receipts(){avalibility = FALSE;}
+	public bool status(){return avalibility;}
+	public add(.......){
+		if(avalibility == TRUE){
+			//do something
+		}
+		else{
+			//warning that its closed
+		}
+	}
