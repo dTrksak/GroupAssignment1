@@ -24,5 +24,12 @@ public void addShipment(Shipment shipment){
 	}else{
 		System.out.println("Sorry that warehouse is not accepting shipments");
 	}
-	}
+}
+public String getWarehouseID(){
+	return warehouseID;
+}
+public List<Shipment> getShipmentList()
+{
+	return shipList;
+}
 }
