@@ -22,7 +22,7 @@ public void addShipment(Shipment shipment){
 	if(availability == true){
 	shipList.add(shipment);
 	}else{
-		System.out.println("Sorry that warehouse is accepting shipments");
+		System.out.println("Sorry that warehouse is not accepting shipments");
 	}
 }
 }
