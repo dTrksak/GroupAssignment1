@@ -31,8 +31,16 @@ public class Shipment
 	{
 		return this.weight;
 	}
-	public long receiptDate()
+	public long getReceiptDate()
 	{
 		return this.receiptDate;
 	}
+	@Override
+	public String toString() {
+	        return ("warehouse ID:"+this.getWarehouseID()+
+	                    " Shipment ID: "+ this.getShipmentID() +
+	                    " Shipment Method: "+ this.getShipmentMethod() +
+	                    " Weight : " + this.getWeight() +
+	                    " ReceiptDate : " + this.getReceiptDate());
+	   }
 }
