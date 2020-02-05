@@ -87,7 +87,7 @@ InputHandler sends the request to WarehouseHandler
 WarehouseController creates a warehouse
 - End -
 
-6. 'add incoming shipment (warehouseID),(shipmentID),(shipmentMethod),(weight),(receiptDate)'
+6. 'add incoming shipment (warehouseID) (shipmentID) (shipmentMethod) (weight) (receiptDate)'
 User requests to add a single shipment
 InputHandler sends the request to WarehouseHandler
 WarehouseHandler sends the request to the specific warehouse
