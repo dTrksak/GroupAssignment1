@@ -6,5 +6,6 @@ public class Driver
 		WarehouseHandler wHandler = new WarehouseHandler();
 		JsonHandler jHandler = new JsonHandler();
 		InputHandler iHandler = new InputHandler(wHandler, jHandler);
+		iHandler.getInput();
 	}
 }
