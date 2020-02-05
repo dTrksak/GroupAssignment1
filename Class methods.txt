@@ -35,11 +35,11 @@ FileOperations
 	setFile()
 
 - Order of Operations -
-1. 'warehouse (warehouseID) enable freight receipt'/'warehouse (warehouseID) end freight receipt'
+1. 'enable freight receipt for warehouse (warehouseID)'/'end freight receipt for warehouse (warehouseID)'
 User requests to set a warehouse Receipt
 InputHandler sends the request to WarehouseHandler
 If the warehouse doesn't exist, tell the user to create one or input a json file
-If the warehouse does exist, WarehouseController sets its receipt
+If the warehouse does exist, WarehouseHandler sets its receipt
 - End -
 
 2. 'import shipments'
@@ -49,10 +49,10 @@ FileOperations sends the json file to JsonHandler
 JsonHandler sends a ArrayList of shipments to the Driver
 The Driver creates the shipments using the ArrayList
 The shipments add themselves to their warehouses, if a warehouse doesn't exist it is created
-if a warehouse is created, it sends itself to WarehouseController to add to the ArrayList of warehouses
+if a warehouse is created, it sends itself to WarehouseHandler to add to the ArrayList of warehouses
 - End -
 
-3. 'export warehouse (warehouseID) shipments'
+3. 'export shipments for warehouse (warehouseID)'
 User requests a specific warehouse's shipments
 InputHandler sends the request to WarehouseController
 WarehouseController gets the specific warehouse's ArrayList and sends it to JsonHandler
@@ -62,8 +62,8 @@ FileOperations creates the file on the computer
 
 4. 'export all shipments'
 User requests all warehouse shipments
-InputHandler sends the request to WarehouseController
-WarehouseController gets all the warehouse's ArrayLists and sends a single list to JsonHandler
+InputHandler sends the request to WarehouseHandler
+WarehouseHandler gets all the warehouse's ArrayLists and sends a single list to JsonHandler
 JsonHandler converts the ArrayList into a Json file and sends the file to FileOperations
 FileOperations creates the file on the computer
 - End -
