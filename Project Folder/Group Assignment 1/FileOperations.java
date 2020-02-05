@@ -1,5 +1,7 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
@@ -47,27 +49,23 @@ public class FileOperations
     }
 	
 	//takes a file and an integer, reads the file input into an int array, but ignores the first (linesToSkip) lines
-	public int[] readLine(File inputFile) throws FileNotFoundException
+	public String fileToString(File inputFile) throws FileNotFoundException
 	{
-		ArrayList<Integer> store = new ArrayList<Integer>(); //create the array list
-        Scanner reader = new Scanner(inputFile);
-        
-        while (reader.hasNext())
-        {
-    		//scanner reads file
-        	if(!reader.hasNextInt() && reader.hasNext())
-        	{
-        		System.out.println("ERROR: outputFile's formatting is off. Either a number is too large, or there is a string. Edit the file and restart the program."); //smaller file error handling block
-    		    System.out.println("Program unsuccessful."); //tell the user the program failed, and they must edit the file
-    		    System.exit(0); //quit the program
-        	}
-            store.add(reader.nextInt()); //scanner stores each integer separately in the array list
-        }
-        reader.close(); //close the scanner
-        
-        int[] storeArr = convertIntegers(store); //convert the array list to a primitive integer array
-        
-        return storeArr; //return the integer array
+	    StringBuilder contentBuilder = new StringBuilder();
+	    try (BufferedReader br = new BufferedReader(new FileReader(inputFile.getPath()))) 
+	    {
+	 
+	        String sCurrentLine;
+	        while ((sCurrentLine = br.readLine()) != null) 
+	        {
+	            contentBuilder.append(sCurrentLine).append("\n");
+	        }
+	    } 
+	    catch (IOException e) 
+	    {
+	        e.printStackTrace();
+	    }
+	    return contentBuilder.toString();
 	}
 	
 	//converts an array-list to an integer array
