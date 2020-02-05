@@ -41,7 +41,7 @@ public class InputHandler {
 			System.out.println("enter the Warehouse ID you would like to check");
 			String w = scan.toString();
 			if(handle.getWarehouse(w).getAvailability() == false)
-				System.out.println("Warehouse is already enabled");
+				System.out.println("Warehouse is already Disabled");
 			else 
 				handle.getWarehouse(w).disableFrieghtReceipt();
 		}
