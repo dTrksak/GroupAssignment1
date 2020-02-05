@@ -8,4 +8,6 @@ The FileOperations class is already completed, if there are any problems with it
 
 Edit this file for discussions on the code or questions for others:
 
+melnicarol238@gmail.com
+
 /------/
