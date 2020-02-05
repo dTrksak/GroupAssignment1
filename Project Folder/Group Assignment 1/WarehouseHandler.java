@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class WarehouseHandler
@@ -18,32 +17,32 @@ public class WarehouseHandler
 		//Check that the warehouse exists
 		if(w != null)
 		{
-			return w.getShipmentList();
+			return w.getShipmentList(); //Replace getShipmentList() if needed
 		} else {
 			//If the warehouse doesn't exist, tell the user
-			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist. Create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import shipments'.\n"); //\n is return?
+			System.out.print("Sorry, warehouse "+warehouseID+" doesn't exist. Type help for a list of commands.\n");
 			return null;
 		}	
 	}
 	
 	/**
 	 * Gets a list of shipments from all warehouses
-	 * @return a linked list of shipments from all warehouses, null if no warehouses exist
+	 * @return an ArrayList of shipments from all warehouses, null if no warehouses exist
 	 */
-	public List<Shipment> getAllWarehouseShipments()
+	public ArrayList<Shipment> getAllWarehouseShipments()
 	{	
 		//Check that warehouseList is not empty
 		if(warehouseList.isEmpty())
 		{
 			//If the warehouse doesn't exist, tell the user
-			System.out.println("Sorry, no warehouses exist. Create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import shipments'.\n"); //\n is return?
+			System.out.print("Sorry, no warehouses exist. Type help for a list of commands.\n"); //\n is return?
 			return null;
 		} else {
-			List<Shipment> outputList = new ArrayList<>();
+			ArrayList<Shipment> outputList = new ArrayList<>();
 			for(int i = 0; i < warehouseList.size(); i++)
 			{
 				Warehouse w = warehouseList.get(i);
-				outputList.addAll(w.getShipmentList());
+				outputList.addAll(w.getShipmentList()); //Replace getShipmentList() if needed
 			}
 			return outputList;
 		}	
@@ -59,7 +58,7 @@ public class WarehouseHandler
 		//Iterate through warehouseList checking warehouses until the warehouseID is found
 		for(int i = 0; i < warehouseList.size(); i++)
 		{
-			if(warehouseList.get(i).getWarehouseID().equals(warehouseID))
+			if(warehouseList.get(i).getWarehouseID().equals(warehouseID)) //Replace getWarehouseID if needed
 			{
 				return warehouseList.get(i); //Return the warehouse
 			}
@@ -78,10 +77,10 @@ public class WarehouseHandler
 		//Check that the warehouse doesn't exist before creating a new one
 		if(w == null)
 		{
-			Warehouse n = new Warehouse(warehouseID);
+			Warehouse n = new Warehouse(warehouseID); //Replace warehouseID if needed
 			warehouseList.add(n);
 		} else {
-			System.out.println("Warehouse "+warehouseID+" already exists.");
+			System.out.print("Warehouse "+warehouseID+" already exists.\n");
 		}
 	}
 	
@@ -99,7 +98,7 @@ public class WarehouseHandler
 		{
 			return w.getAvailability();
 		} else {
-			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist. Create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or by importing shipments by typing 'import shipments'.\n");
+			System.out.print("Sorry, warehouse "+warehouseID+" doesn't exist. Type help for a list of commands.\n");
 			return null;
 		}
 	}
@@ -119,7 +118,7 @@ public class WarehouseHandler
 			//Check that the user input will change the receipt
 			if(input == w.getAvailability())
 			{
-				System.out.println("Warehouse "+warehouseID+"'s receipt is already set to "+input+".");
+				System.out.print("Warehouse "+warehouseID+"'s receipt is already set to "+input+".\n");
 			} else {
 				if(input == false)
 				{
@@ -129,7 +128,7 @@ public class WarehouseHandler
 				}
 			}
 		} else {
-			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist. Create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import shipments'.\n");
+			System.out.print("Sorry, warehouse "+warehouseID+" doesn't exist. Type help for a list of commands.\n");
 		}
 	}
 	
@@ -151,7 +150,7 @@ public class WarehouseHandler
 			Shipment s = new Shipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate); //Switch around the data if needed
 			w.addShipment(s);
 		} else {
-			System.out.println("Sorry, warehouse "+warehouseID+" doesn't exist. Create a warehouse by typing 'create warehouse ' then the ID of the warehouse, or import a json file by typing 'import shipments'.\n");
+			System.out.print("Sorry, warehouse "+warehouseID+" doesn't exist. Type help for a list of commands.\n");
 		}
 	}	
 }
