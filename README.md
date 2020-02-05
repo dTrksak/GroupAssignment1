@@ -10,4 +10,10 @@ Edit this file for discussions on the code or questions for others:
 
 melnicarol238@gmail.com 612-600-3046
 
+danieltrksak@gmail.com 612-226-9821
+
+Nebiyu.Ashagre@gmail.com
+
+poderman64@yahoo.com
+
 /------/
