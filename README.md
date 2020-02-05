@@ -12,8 +12,7 @@ melnicarol238@gmail.com 612-600-3046
 
 danieltrksak@gmail.com 612-226-9821
 
-Nebiyu.Ashagre@gmail.com
-
+Nebiyu.Ashagre@gmail.com 651-274-7262
 poderman64@yahoo.com 651-235-2575
 
 /------/
