@@ -1,13 +1,7 @@
-package com.json.warehouse;
-import com.google.gson.*;
 import java.util.*;
 import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
@@ -17,7 +11,7 @@ public class JsonHandler{
 	
 	private WarehouseHandler h;
 	
-	public void JsonHandler(WarehouseHandler handler) {
+	public JsonHandler(WarehouseHandler handler) {
 		this.h = handler;
 	}
 
@@ -34,31 +28,22 @@ public class JsonHandler{
 			h.addWarehouse(id);
 		}
 		
-		
 		shipList.forEach(System.out::println);
 		return shipList;
-
     }
-
 	
-
-	
-	public void warehouseToJson(ArrayList<Shipment> list) {
+	public void shipmentToJson(ArrayList<Shipment> list) throws IOException {
+		FileOperations fo = new FileOperations();
+		String directory = fo.fileDirectory();
+				//System.getProperty("user.dir");
+		
 		Gson gson = new Gson();
-		String directory = System.getProperty("user.dir");
-		
-		
 		String json = gson.toJson(list);
-		  try {
-			   FileWriter writer = new FileWriter(directory);
-			   writer.write(json);
-			   writer.close();
-			  
-			  } catch (IOException e) {
-			   e.printStackTrace();
-			  }
+		
+		File outputFile = fo.createFile(directory, "outputFile");
+		
+		BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+		writer.write(json); 
+	    writer.close();
 	}
 }
-	
-
-
