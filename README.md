@@ -18,4 +18,6 @@ poderman64@yahoo.com 651-235-2575
 
 I'll be starting testing tonight.
 
+Just so you know, I did a round of testing and updated the classes. The only thing that doesn't work (as far as I know) is importing a json file. The problem was related to what the json was imported as, since it isn't imported as a list of objects, its imported as a single object.
+
 /------/
