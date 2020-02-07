@@ -1,8 +1,6 @@
 import java.util.*;
-import com.google.gson.Gson;
-
+import com.google.gson.*;
 import java.io.*;
-
 import java.lang.reflect.Type;
 import com.google.gson.reflect.TypeToken;
 
@@ -16,17 +14,16 @@ public class JsonHandler{
 	}
 
 	public List<Shipment> jsonToShipment(String shipJson){
-       
-        Gson gson = new Gson();
 		
-		Type shipListType = new TypeToken<ArrayList<Shipment>>(){}.getType();
+		Gson gson = new Gson();
 		
-		List<Shipment> shipList = new ArrayList<>();
-		
-		JsonObject shipObject = gson.fromJson(shipJson, shipListType);
-        JsonArray jsonArray = shipObject.getAsJsonArray("warehouse_contents");
+        List<Shipment> shipList = new ArrayList<>();
         
-		for(JsonElement i : jsonArray) {
+        JsonElement jElem = gson.fromJson(shipJson, JsonElement.class);
+        JsonObject shipObject = jElem.getAsJsonObject();
+        JsonArray shipArray = shipObject.getAsJsonArray("warehouse_contents");
+        
+		for(JsonElement i : shipArray) {
 			JsonObject shipmentObj = i.getAsJsonObject();
 			String warehouseID = shipmentObj.get("warehouse_id").getAsString();
 			String shipmentMethod = shipmentObj.get("shipment_method").getAsString();
@@ -34,7 +31,7 @@ public class JsonHandler{
 			float weight = shipmentObj.get("weight").getAsFloat();
 			long receiptDate = shipmentObj.get("receipt_date").getAsLong();
 			
-			if(h.getWarehouse(warehouseID).equals(null))
+			if(h.getWarehouse(warehouseID) == null)
 			{
 				h.addWarehouse(warehouseID);
 			}
@@ -45,16 +42,19 @@ public class JsonHandler{
     }
 	
 	public void shipmentToJson(ArrayList<Shipment> list) throws IOException {
+		
 		FileOperations fo = new FileOperations();
 		File directory = fo.fileDirectory();
 		
-		Gson gson = new Gson();
-		String json = gson.toJson(list);
+		WarehouseContents contents = new WarehouseContents(list);
+		Gson gson = new GsonBuilder().setPrettyPrinting().create(); //Output with pretty indentation
+		String json = gson.toJson(contents);
 		
 		File outFile = fo.createFile(directory.getPath(), "outputFile");
 		
 		BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
-		writer.write(json); 
+		writer.write(json);
 	    writer.close();
+	    
 	}
 }
