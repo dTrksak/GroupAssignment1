@@ -162,8 +162,12 @@ public class WarehouseHandler
 		if(w != null)
 		{
 			Shipment s = new Shipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate); //Switch around the data if needed
-			w.addShipment(s);
-			return s;
+			Shipment s2 = w.addShipment(s);
+			if(s2 != null)
+			{
+				return s;
+			}
+			return null; //
 		} else {
 			System.out.print("Sorry, warehouse "+warehouseID+" doesn't exist. Type help for a list of commands.\n");
 			return null;
