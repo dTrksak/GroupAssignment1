@@ -15,20 +15,32 @@ public class JsonHandler{
 		this.h = handler;
 	}
 
-	public List<Shipment> jsonToShipment(String shipJson){ //List<Shipment>
+	public List<Shipment> jsonToShipment(String shipJson){
        
         Gson gson = new Gson();
 		
 		Type shipListType = new TypeToken<ArrayList<Shipment>>(){}.getType();
-
-		List<Shipment> shipList = gson.fromJson(shipJson, shipListType);  
 		
-		for(int i = 0; i < shipList.size(); i++) {
-			String id = shipList.get(i).getWarehouseID();
-			h.addWarehouse(id);
+		List<Shipment> shipList = new ArrayList<>();
+		
+		JsonObject shipObject = gson.fromJson(shipJson, shipListType);
+        JsonArray jsonArray = shipObject.getAsJsonArray("warehouse_contents");
+        
+		for(JsonElement i : jsonArray) {
+			JsonObject shipmentObj = i.getAsJsonObject();
+			String warehouseID = shipmentObj.get("warehouse_id").getAsString();
+			String shipmentMethod = shipmentObj.get("shipment_method").getAsString();
+			String shipmentID = shipmentObj.get("shipment_id").getAsString();
+			float weight = shipmentObj.get("weight").getAsFloat();
+			long receiptDate = shipmentObj.get("receipt_date").getAsLong();
+			
+			if(h.getWarehouse(warehouseID).equals(null))
+			{
+				h.addWarehouse(warehouseID);
+			}
+			Shipment s = h.addShipment(warehouseID,shipmentMethod,shipmentID,weight,receiptDate);
+			shipList.add(s);
 		}
-		
-		shipList.forEach(System.out::println);
 		return shipList;
     }
 	
