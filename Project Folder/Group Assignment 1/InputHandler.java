@@ -71,7 +71,9 @@ public class InputHandler {
 				String str = null;
 				try {
 					str = newship.fileToString(f);
-					jhandle.jsonToShipment(str);
+					if(str != null) {
+						jhandle.jsonToShipment(str);
+					}
 				} catch (FileNotFoundException e) {
 					System.out.print("The file cannot be found.\n");
 				}
