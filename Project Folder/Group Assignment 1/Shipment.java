@@ -37,10 +37,10 @@ public class Shipment
 	}
 	@Override
 	public String toString() {
-	        return ("warehouse ID:"+this.getWarehouseID()+
-	                    " Shipment ID: "+ this.getShipmentID() +
-	                    " Shipment Method: "+ this.getShipmentMethod() +
-	                    " Weight : " + this.getWeight() +
-	                    " ReceiptDate : " + this.getReceiptDate());
+	        return ("\nwarehouse ID: "+this.getWarehouseID()+
+	                    ", Shipment ID: "+ this.getShipmentID() +
+	                    ", Shipment Method: "+ this.getShipmentMethod() +
+	                    ", Weight : " + this.getWeight() +
+	                    ", ReceiptDate : " + this.getReceiptDate());
 	   }
 }
