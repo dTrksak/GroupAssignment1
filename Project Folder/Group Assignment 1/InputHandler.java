@@ -14,10 +14,10 @@ public class InputHandler {
 	    boolean exit = false;
 	    
 	    System.out.print("Commands:\n"
-	    		+ "create warehouse (0) - creates a warehouse\n"
-	    		+ "add incoming shipment (1) - add a single shipment to a warehouse\n"
+	    		+ "add warehouse (0) - creates a warehouse\n"
+	    		+ "add shipment (1) - add a single shipment to a warehouse\n"
 	    		+ "import shipments (2) - input a json file of shipments, automatically adds warehouses.\n"
-	    		+ "export all shipments (3) - exports all warehouse contents to a json file\n"
+	    		+ "export shipments (3) - exports all warehouse shipments to a json file\n"
 	    		+ "enable freight receipt (4) - sets a warehouse receipt to true\n"
 	    		+ "end freight receipt (5) - sets a warehouse receipt to false\n"
 	    		+ "show data (6) - displays all warehouse IDs and their shipment IDs in the console.\n"
@@ -29,7 +29,7 @@ public class InputHandler {
 			//System.out.print("input the command you would like the program to run\n");
 			String input = scan.nextLine();
 			
-			if(input.contains("create warehouse") || input.contains("0")) {
+			if(input.contains("add warehouse") || input.contains("0")) {
 				System.out.print("Enter your Warehouse ID\n");
 				String warehouseID = scan.nextLine();
 				if(warehouseID.contains(",")) {
@@ -43,7 +43,7 @@ public class InputHandler {
 					System.out.println("Created Warehouse "+warehouseID+".");
 				}
 			}
-			else if(input.contains("add incoming shipment") || input.contains("1")) {
+			else if(input.contains("add shipment") || input.contains("1")) {
 				System.out.print("Enter the warehouse ID, shipment ID, shipment method, weight, receipt date Separated by Commas\n");
 				String w = scan.nextLine();
 				String split[] = w.split(",", 5);
@@ -78,7 +78,7 @@ public class InputHandler {
 					System.out.print("The file cannot be found.\n");
 				}
 		    }
-			else if(input.contains("export all shipments") || input.contains("3")) {
+			else if(input.contains("export shipments") || input.contains("3")) {
 				System.out.println("Please use JFileChooser to select a folder.");
 				ArrayList<Shipment> l = handle.getAllWarehouseShipments();
 				if(l != null) {
@@ -132,10 +132,10 @@ public class InputHandler {
 			}
 			else if(input.contains("help") || input.contains("8")) {
 				System.out.print("Commands:\n"
-			    		+ "create warehouse (0) - creates a warehouse\n"
-			    		+ "add incoming shipment (1) - add a single shipment to a warehouse\n"
+			    		+ "add warehouse (0) - creates a warehouse\n"
+			    		+ "add shipment (1) - add a single shipment to a warehouse\n"
 			    		+ "import shipments (2) - input a json file of shipments, automatically adds warehouses.\n"
-			    		+ "export all shipments (3) - exports all warehouse contents to a json file\n"
+			    		+ "export shipments (3) - exports all warehouse shipments to a json file\n"
 			    		+ "enable freight receipt (4) - sets a warehouse receipt to true\n"
 			    		+ "end freight receipt (5) - sets a warehouse receipt to false\n"
 			    		+ "show data (6) - displays all warehouse IDs and their shipment IDs in the console.\n"
