@@ -28,5 +28,7 @@ As far as i could tell this would be the best way to read in the json file into 
    BufferedReader br = new BufferedReader(
      new FileReader("E:file.json"));
 
+Guess what guys? Re-download the classes and try out the program. Tell me what you think. :>
+
 /------/
 
