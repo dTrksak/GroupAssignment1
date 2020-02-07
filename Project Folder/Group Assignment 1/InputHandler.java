@@ -62,7 +62,7 @@ public class InputHandler {
 				String w = scan.nextLine();
 				if(handle.getWarehouse(w) != null)
 				{
-					handle.getWarehouse(w).disableFreightReceipt();
+					handle.getWarehouse(w).disableFrieghtReceipt();
 				} else {
 					//If the warehouse doesn't exist, tell the user
 					System.out.print("Sorry, that warehouse doesn't exist. Type help for a list of commands.\n");
