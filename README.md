@@ -23,5 +23,10 @@ Just so you know, I did a round of testing and updated the classes. The only thi
 
 I've shared the class diagram with all of you if you wanted to make changes and we can post it.
 
+
+As far as i could tell this would be the best way to read in the json file into a string so that the Json Handler can use it. I dont know if it will read in the whole json file into the string at once, i didnt have time to check with the code. 
+   BufferedReader br = new BufferedReader(
+     new FileReader("E:file.json"));
+
 /------/
 
