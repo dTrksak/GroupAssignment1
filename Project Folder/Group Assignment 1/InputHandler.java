@@ -49,13 +49,24 @@ public class InputHandler {
 			{
 				System.out.print("enter the Warehouse ID\n");
 				String w = scan.nextLine();
-				handle.getWarehouse(w).enableFreightReceipt();
-				
+				if(handle.getWarehouse(w) != null)
+				{
+					handle.getWarehouse(w).enableFreightReceipt();
+				} else {
+					//If the warehouse doesn't exist, tell the user
+					System.out.print("Sorry, that warehouse doesn't exist. Type help for a list of commands.\n");
+				}
 			}
 			else if(input.contains("end freight receipt")) {
 				System.out.print("enter the Warehouse ID\n");
 				String w = scan.nextLine();
-				handle.getWarehouse(w).disableFreightReceipt();
+				if(handle.getWarehouse(w) != null)
+				{
+					handle.getWarehouse(w).disableFreightReceipt();
+				} else {
+					//If the warehouse doesn't exist, tell the user
+					System.out.print("Sorry, that warehouse doesn't exist. Type help for a list of commands.\n");
+				}	
 			}
 			else if(input.contains("export all shipments")) {
 				ArrayList<Shipment> l = handle.getAllWarehouseShipments();
