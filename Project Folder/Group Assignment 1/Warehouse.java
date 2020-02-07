@@ -13,7 +13,7 @@ public void enableFreightReceipt(){
 	availability = true;
 }
 public void disableFrieghtReceipt(){
-	availablity = false;
+	availability = false;
 }
 public boolean  getAvailability(){
 	return availability;
