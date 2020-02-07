@@ -49,8 +49,6 @@ public class FileOperations
 	    }
 	    else //if the file chooser is cancelled
 	    {
-	        System.out.println("Program canceled.");
-	        System.exit(0); //exit the program
 	        return null;
 	    }
 	}
@@ -61,14 +59,13 @@ public class FileOperations
     	File f = new File(directory + "\\"+fileName+".txt"); //needed to add double slashes to the directory for it to work correctly
 		if (!f.createNewFile())
 		{
-		    System.out.println("ERROR: outputFile already in folder, cannot create duplicate. Delete "+fileName+" and restart the program."); //smaller file error handling block
-		    System.out.println("Program unsuccessful."); //tell the user the program failed, and they must delete the other outputFile (I could have used a for loop to create outputFile2...n, but I don't want file spam)
-		    System.exit(0); //quit the program
+		    System.out.println("Export unsuccessful. outputFile already in folder "+directory+", cannot create duplicate. Delete "+fileName+"."); //smaller file error handling block
+		    return null;
 		}
     	return f;
     }
 	
-	//takes a file and an integer, reads the file input into an int array, but ignores the first (linesToSkip) lines
+	//takes a file and translates that to a string
 	public String fileToString(File inputFile) throws FileNotFoundException
 	{
 	    StringBuilder contentBuilder = new StringBuilder();
@@ -83,6 +80,7 @@ public class FileOperations
 	    } 
 	    catch (IOException e) 
 	    {
+	    	System.out.println("File not found.");
 	        e.printStackTrace();
 	    }
 	    return contentBuilder.toString();
