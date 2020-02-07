@@ -18,7 +18,7 @@ public class FileOperations
 	public File fileInput()
     {	
     	JFileChooser fileChooser = new JFileChooser(); //open the file chooser
-    	JDialog dialog = new JDialog();  
+    	JDialog dialog = new JDialog();
 
 	    fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir"))); //set the current directory to be the one where this program is in
 	    int result = fileChooser.showOpenDialog(dialog);
@@ -35,16 +35,17 @@ public class FileOperations
 	    }
     }
 	
-	public String fileDirectory()
+	public File fileDirectory()
 	{
 		JFileChooser fileChooser = new JFileChooser(); //open the file chooser
     	JDialog dialog = new JDialog();  
 
 	    fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir"))); //set the current directory to be the one where this program is in
+	    fileChooser.setFileSelectionMode(fileChooser.DIRECTORIES_ONLY);
 	    int result = fileChooser.showOpenDialog(dialog);
 	    if (result == JFileChooser.APPROVE_OPTION) //if a file is approved
 	    {
-	    	return System.getProperty("user.dir");
+	    	return fileChooser.getSelectedFile();
 	    }
 	    else //if the file chooser is cancelled
 	    {
@@ -87,3 +88,4 @@ public class FileOperations
 	    return contentBuilder.toString();
 	}
 }
+
