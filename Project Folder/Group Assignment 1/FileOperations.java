@@ -29,8 +29,7 @@ public class FileOperations
 	    }
 	    else //if the file chooser is cancelled
 	    {
-	        System.out.println("Program canceled.");
-	        System.exit(0); //exit the program
+	        System.out.println("Import shipments cancelled.");
 	        return null;
 	    }
     }
