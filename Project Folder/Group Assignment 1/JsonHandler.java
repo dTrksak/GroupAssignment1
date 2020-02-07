@@ -52,7 +52,7 @@ public class JsonHandler{
 				}
 				//Everything is good, create the shipment and the warehouse if needed
 				h.addWarehouse(warehouseID);
-				Shipment s = h.addShipment(warehouseID,shipmentMethod,shipmentID,weight,receiptDate);
+				Shipment s = h.addShipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate);
 				shipList.add(s);
 			}
 			System.out.println("Shipments successfully imported.");
