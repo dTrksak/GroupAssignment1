@@ -20,4 +20,8 @@ I'll be starting testing tonight.
 
 Just so you know, I did a round of testing and updated the classes. The only thing that doesn't work (as far as I know) is importing a json file. The problem was related to what the json was imported as, since it isn't imported as a list of objects, its imported as a single object.
 
+
+I've shared the class diagram with all of you if you wanted to make changes and we can post it.
+
 /------/
+
