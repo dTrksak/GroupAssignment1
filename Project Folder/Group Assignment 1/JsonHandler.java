@@ -34,15 +34,14 @@ public class JsonHandler{
 	
 	public void shipmentToJson(ArrayList<Shipment> list) throws IOException {
 		FileOperations fo = new FileOperations();
-		String directory = fo.fileDirectory();
-				//System.getProperty("user.dir");
+		File directory = fo.fileDirectory();
 		
 		Gson gson = new Gson();
 		String json = gson.toJson(list);
 		
-		File outputFile = fo.createFile(directory, "outputFile");
+		File outFile = fo.createFile(directory.getPath(), "outputFile");
 		
-		BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile));
+		BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
 		writer.write(json); 
 	    writer.close();
 	}
