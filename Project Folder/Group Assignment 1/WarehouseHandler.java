@@ -122,7 +122,7 @@ public class WarehouseHandler
 			} else {
 				if(input == false)
 				{
-					w.disableFreightReceipt();
+					w.disableFrieghtReceipt();
 				} else {
 					w.enableFreightReceipt();
 				}
