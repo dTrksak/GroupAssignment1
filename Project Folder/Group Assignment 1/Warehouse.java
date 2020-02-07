@@ -6,8 +6,8 @@ public class Warehouse {
 	private List<Shipment> shipList = new ArrayList<Shipment>();
 	private boolean availability = true;
 	
-	public Warehouse(String wareID){
-		warehouseID = wareID;
+	public Warehouse(String warehouseID){
+		this.warehouseID = warehouseID;
 	}
 	public void enableFreightReceipt(){
 		availability = true;
