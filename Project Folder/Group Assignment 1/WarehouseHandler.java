@@ -49,6 +49,19 @@ public class WarehouseHandler
 	}
 	
 	/**
+	 * Getter for the warehouse list
+	 * @return an arraylist of warehouses
+	 */
+	public List<Warehouse> getAllWarehouses()
+	{
+		if(warehouseList.size() == 0)
+		{
+			return null;
+		}
+		return warehouseList;
+	}
+	
+	/**
 	 * Finds a warehouse in warehouseList given the warehouseID
 	 * @param warehouseID
 	 * @return a Warehouse object if found, null if not found
@@ -70,7 +83,7 @@ public class WarehouseHandler
 	 * Creates a warehouse given a warehouse ID
 	 * @param warehouseID
 	 */
-	public void addWarehouse(String warehouseID)
+	public Warehouse addWarehouse(String warehouseID)
 	{
 		Warehouse w = getWarehouse(warehouseID);
 		
@@ -79,8 +92,9 @@ public class WarehouseHandler
 		{
 			Warehouse n = new Warehouse(warehouseID); //Replace warehouseID if needed
 			warehouseList.add(n);
+			return n;
 		} else {
-			System.out.print("Warehouse "+warehouseID+" already exists.\n");
+			return null;
 		}
 	}
 	
@@ -122,7 +136,7 @@ public class WarehouseHandler
 			} else {
 				if(input == false)
 				{
-					w.disableFrieghtReceipt();
+					w.disableFreightReceipt();
 				} else {
 					w.enableFreightReceipt();
 				}
@@ -140,7 +154,7 @@ public class WarehouseHandler
 	 * @param weight
 	 * @param receiptDate
 	 */
-	public void addShipment(String warehouseID, String shipmentID, String shipmentMethod, float weight, long receiptDate)
+	public Shipment addShipment(String warehouseID, String shipmentID, String shipmentMethod, float weight, long receiptDate)
 	{
 		Warehouse w = getWarehouse(warehouseID);
 		
@@ -149,8 +163,10 @@ public class WarehouseHandler
 		{
 			Shipment s = new Shipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate); //Switch around the data if needed
 			w.addShipment(s);
+			return s;
 		} else {
 			System.out.print("Sorry, warehouse "+warehouseID+" doesn't exist. Type help for a list of commands.\n");
+			return null;
 		}
 	}	
 }
