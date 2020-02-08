@@ -47,6 +47,10 @@ public class InputHandler {
 				System.out.print("Enter the warehouse ID, shipment ID, shipment method, weight, receipt date Separated by Commas\n");
 				String w = scan.nextLine();
 				String split[] = w.split(",", 5);
+				
+				split[4] = split[4].replaceAll(" ","");
+				System.out.println(split[4]);
+				
 				try{
 			        Float.parseFloat(split[3]);
 			    }catch(Exception e){
