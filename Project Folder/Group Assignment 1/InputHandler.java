@@ -15,14 +15,15 @@ public class InputHandler {
 	    
 	    System.out.print("Commands:\n"
 	    		+ "add warehouse (0) - creates a warehouse\n"
-	    		+ "add shipment (1) - add a single shipment to a warehouse\n"
+	    		+ "add incoming shipment (1) - add a single shipment to a warehouse\n"
 	    		+ "import shipments (2) - input a json file of shipments, automatically adds warehouses.\n"
-	    		+ "export shipments (3) - exports all warehouse shipments to a json file\n"
-	    		+ "enable freight receipt (4) - sets a warehouse receipt to true\n"
-	    		+ "end freight receipt (5) - sets a warehouse receipt to false\n"
-	    		+ "show data (6) - displays all warehouse IDs and their shipment IDs in the console.\n"
-	    		+ "clear (7) - clears the visible console\n"
-	    		+ "help (8) - display this list of commands\n"
+	    		+ "export warehouse (3) - exports one warehouse's shipments to a json file\n"
+	    		+ "export all shipments (4) - exports all warehouse shipments to a json file\n"
+	    		+ "enable freight receipt (5) - sets a warehouse receipt to true\n"
+	    		+ "end freight receipt (6) - sets a warehouse receipt to false\n"
+	    		+ "show data (7) - displays all warehouse IDs and their shipment IDs in the console.\n"
+	    		+ "clear (8) - clears the visible console\n"
+	    		+ "help (9) - display this list of commands\n"
 	    		+ "exit (9) - exits the program\n");
 	    
 	    while(!exit) {
@@ -43,13 +44,12 @@ public class InputHandler {
 					System.out.println("Created Warehouse "+warehouseID+".");
 				}
 			}
-			else if(input.contains("add shipment") || input.contains("1")) {
+			else if(input.contains("add incoming shipment") || input.contains("1")) {
 				System.out.print("Enter the warehouse ID, shipment ID, shipment method, weight, receipt date Separated by Commas\n");
 				String w = scan.nextLine();
 				String split[] = w.split(",", 5);
 				
 				split[4] = split[4].replaceAll(" ","");
-				System.out.println(split[4]);
 				
 				try{
 			        Float.parseFloat(split[3]);
@@ -82,14 +82,28 @@ public class InputHandler {
 					System.out.print("The file cannot be found.\n");
 				}
 		    }
-			else if(input.contains("export shipments") || input.contains("3")) {
+			else if(input.contains("export warehouse") || input.contains("3")) {
+				System.out.print("enter the Warehouse ID\n");
+				String w = scan.nextLine();
+				//Check that warehouse w exists
+				if(handle.getWarehouse(w) == null) {
+					System.out.println("Warehouse "+w+" doesn't exist.");
+					continue;
+				}
+				System.out.println("Please use JFileChooser to select a folder.");
+				ArrayList<Shipment> l = (ArrayList<Shipment>) handle.getWarehouse(w).getShipmentList();
+				if(l != null) {
+					jhandle.shipmentToJson(l);
+				}
+			}
+			else if(input.contains("export all shipments") || input.contains("4")) {
 				System.out.println("Please use JFileChooser to select a folder.");
 				ArrayList<Shipment> l = handle.getAllWarehouseShipments();
 				if(l != null) {
 					jhandle.shipmentToJson(l);
 				}
 			}
-			else if(input.contains("enable freight receipt") || input.contains("4")) {
+			else if(input.contains("enable freight receipt") || input.contains("5")) {
 				System.out.print("enter the Warehouse ID\n");
 				String w = scan.nextLine();
 				if(handle.getWarehouse(w) != null) {
@@ -104,7 +118,7 @@ public class InputHandler {
 					System.out.print("Sorry, warehouse "+handle.getWarehouse(w).getWarehouseID()+" doesn't exist. Type help for a list of commands.\n");
 				}
 			}
-			else if(input.contains("end freight receipt") || input.contains("5")) {
+			else if(input.contains("end freight receipt") || input.contains("6")) {
 				System.out.print("enter the Warehouse ID\n");
 				String w = scan.nextLine();
 				if(handle.getWarehouse(w) != null) {
@@ -119,7 +133,7 @@ public class InputHandler {
 					System.out.print("Sorry, warehouse "+handle.getWarehouse(w).getWarehouseID()+" doesn't exist. Type help for a list of commands.\n");
 				}	
 			}
-			else if(input.contains("show data") || input.contains("6")) {
+			else if(input.contains("show data") || input.contains("7")) {
 				List<Warehouse> list = handle.getAllWarehouses();
 				if(list != null)
 				{
@@ -131,23 +145,24 @@ public class InputHandler {
 					System.out.println("There are no warehouses to display.");
 				}
 			}
-			else if (input.contains("clear") || input.contains("7")) {
+			else if (input.contains("clear") || input.contains("8")) {
 				for(int i=0;i<50;i++) {System.out.print("\n");}
 			}
-			else if(input.contains("help") || input.contains("8")) {
+			else if(input.contains("help") || input.contains("9")) {
 				System.out.print("Commands:\n"
 			    		+ "add warehouse (0) - creates a warehouse\n"
-			    		+ "add shipment (1) - add a single shipment to a warehouse\n"
+			    		+ "add incoming shipment (1) - add a single shipment to a warehouse\n"
 			    		+ "import shipments (2) - input a json file of shipments, automatically adds warehouses.\n"
-			    		+ "export shipments (3) - exports all warehouse shipments to a json file\n"
-			    		+ "enable freight receipt (4) - sets a warehouse receipt to true\n"
-			    		+ "end freight receipt (5) - sets a warehouse receipt to false\n"
-			    		+ "show data (6) - displays all warehouse IDs and their shipment IDs in the console.\n"
-			    		+ "clear (7) - clears the visible console\n"
-			    		+ "help (8) - display this list of commands\n"
-			    		+ "exit (9) - exits the program\n");
+			    		+ "export warehouse (3) - exports one warehouse's shipments to a json file\n"
+			    		+ "export all shipments (4) - exports all warehouse shipments to a json file\n"
+			    		+ "enable freight receipt (5) - sets a warehouse receipt to true\n"
+			    		+ "end freight receipt (6) - sets a warehouse receipt to false\n"
+			    		+ "show data (7) - displays all warehouse IDs and their shipment IDs in the console.\n"
+			    		+ "clear (8) - clears the visible console\n"
+			    		+ "help (9) - display this list of commands\n"
+			    		+ "exit - exits the program\n");
 			}
-			else if(input.contains("exit") || input.contains("9")) {
+			else if(input.contains("exit")) {
 				exit = true; //Exit the while loop
 				System.out.print("Exiting the program...\n");
 			} else {
