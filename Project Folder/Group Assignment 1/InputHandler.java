@@ -3,16 +3,11 @@
 import java.io.*;
 import java.util.*;
 
-/** Class InputHandler handles various input choices for the user
- * 
- * @author Group
- *
- */
-
-//Constructor 
+//InputHandler handles various input choices for the user
 public class InputHandler {
 	WarehouseHandler handle;
 	JsonHandler jhandle;
+	//Constructor
 	public InputHandler(WarehouseHandler h , JsonHandler j){
 		handle = h;
 		jhandle = j;
@@ -22,8 +17,7 @@ public class InputHandler {
  * @param warehouseID
  */
 	public void createWarehouseProcess(String warehouseID){
-		
-		
+
 		Warehouse w = handle.addWarehouse(warehouseID);
 		if(w == null) {
 			System.out.println("Warehouse "+warehouseID+" already exists.");
@@ -47,6 +41,7 @@ public class InputHandler {
 	 * Process to import a Json file with an array of Json objects
 	 */
 	private void importShipmentProcess() {
+		
 		FileOperations newship = new FileOperations();
 		File f = newship.fileInput();
 		String str = null;
@@ -66,6 +61,7 @@ public class InputHandler {
 	 * @throws IOException
 	 */
 	public void exportWarehouse(String w) throws IOException{
+		
 		ArrayList<Shipment> l = (ArrayList<Shipment>) handle.getWarehouse(w).getShipmentList();
 		if(l != null) {
 			jhandle.shipmentToJson(l);
@@ -76,6 +72,7 @@ public class InputHandler {
 	 * @throws IOException
 	 */
 	public void exportAllWarehouse()throws IOException{
+		
 		ArrayList<Shipment> l = handle.getAllWarehouseShipments();
 		if(l != null) {
 			jhandle.shipmentToJson(l);
@@ -86,6 +83,7 @@ public class InputHandler {
 	 * @param w
 	 */
 	public void enableFreight(String w){
+		
 		if(handle.getWarehouse(w) != null) {
 			if(handle.getWarehouseReceipt(w) != true) {
 				handle.getWarehouse(w).enableFreightReceipt();
@@ -103,6 +101,7 @@ public class InputHandler {
 	 * @param w
 	 */
 	public void endFreight(String w){
+		
 			if(handle.getWarehouseReceipt(w) == true) {
 				handle.getWarehouse(w).disableFreightReceipt();
 				System.out.println("The freight receipt of warehouse "+handle.getWarehouse(w).getWarehouseID()+" is now disabled.");
@@ -115,6 +114,7 @@ public class InputHandler {
 	 * Shows the data entered in the current session
 	 */
 	public void showData(){
+		
 		List<Warehouse> list = handle.getAllWarehouses();
 		if(list != null)
 		{
@@ -130,6 +130,7 @@ public class InputHandler {
 	 * Shows the help menu
 	 */
 	public void showHelp(){
+		
 		System.out.print("Commands:\n"
 	    		+ "add warehouse (0) - creates a warehouse\n"
 	    		+ "add incoming shipment (1) - add a single shipment to a warehouse\n"
@@ -149,9 +150,10 @@ public class InputHandler {
 	 * @throws IOException
 	 */
 	public void getInput() throws IOException {
+		
 	    Scanner scan = new Scanner(System.in);  // Create a Scanner object
 	    boolean exit = false;
-	 // help menu   
+	    // help menu   
 	    showHelp();
 	    while(!exit) {
 			//System.out.print("input the command you would like the program to run\n");
@@ -221,12 +223,7 @@ public class InputHandler {
 					enableFreight(w);
 				}
 				else{
-					try{
-						handle.getWarehouse(w);
-					}catch(NullPointerException e){
-						System.out.println("Sorry, that warehouse doesn't exist");
-						continue;
-					}
+					System.out.println("Sorry, that warehouse doesn't exist");
 				}
 			}
 			//stopping shipments from being received
@@ -234,19 +231,11 @@ public class InputHandler {
 				System.out.print("enter the Warehouse ID\n");
 				String w = scan.nextLine();
 	
-		          if(handle.getWarehouse(w) != null){
-				endFreight(w);
+		        	if(handle.getWarehouse(w) != null){
+		        	endFreight(w);
 				}else{
-					try{
-		          handle.getWarehouse(w);
-					}
-					catch (NullPointerException e){
-						System.out.println("Sorry that warehouse doesn't exist");
-						continue;
-					}
+					System.out.println("Sorry that warehouse doesn't exist");
 				}
-				
-				
 			}
 			//Show data from current session
 			else if(input.contains("show data") || input.contains("7")) {
