@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
+//WarehouseHandler contains the warehouses and all the methods for the warehouses
 public class WarehouseHandler
 {
 	List<Warehouse> warehouseList = new ArrayList<>();
