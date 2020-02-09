@@ -40,7 +40,7 @@ public class InputHandler {
 	/**
 	 * Process to import a Json file with an array of Json objects
 	 */
-	private void importShipmentProcess() {
+	public void importShipmentProcess() {
 		
 		FileOperations newship = new FileOperations();
 		File f = newship.fileInput();
