@@ -32,5 +32,7 @@ Guess what guys? Re-download the classes and try out the program. Tell me what y
 
 So i created a sequence diagram... the only thing im not sure about it when adding a shipment the warehouse handler gets passed a shipment object, im not to sure how to show that the addShipment method creates a shipment.
 
+The WarehouseHandler gets it from JsonHandler or InputHandler.
+
 /------/
 
