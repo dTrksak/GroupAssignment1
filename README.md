@@ -36,5 +36,8 @@ The WarehouseHandler gets it from JsonHandler or InputHandler.
 
 https://www.lucidchart.com/invitations/accept/3d04bd00-4774-4c47-b699-bdafccfd775c
 
+sequence diagram:
+https://www.lucidchart.com/invitations/accept/624efcfe-a33d-4f89-91c2-63d050d8fb3b
+
 /------/
 
