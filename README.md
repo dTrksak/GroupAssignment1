@@ -34,5 +34,7 @@ So i created a sequence diagram... the only thing im not sure about it when addi
 
 The WarehouseHandler gets it from JsonHandler or InputHandler.
 
+https://www.lucidchart.com/invitations/accept/3d04bd00-4774-4c47-b699-bdafccfd775c
+
 /------/
 
