@@ -1,22 +1,16 @@
-
-
 import java.io.*;
 import java.util.*;
 
 //InputHandler handles various input choices for the user
 public class InputHandler {
-	WarehouseHandler handle;
-	JsonHandler jhandle;
-	//Constructor
-	public InputHandler(WarehouseHandler h , JsonHandler j){
-		handle = h;
-		jhandle = j;
-	}
+	WarehouseHandler handle = new WarehouseHandler();
+	JsonHandler jhandle = new JsonHandler(handle);
+
 /**
  * Process to create a warehouse
  * @param warehouseID
  */
-	public void createWarehouseProcess(String warehouseID){
+	private void createWarehouseProcess(String warehouseID){
 
 		Warehouse w = handle.addWarehouse(warehouseID);
 		if(w == null) {
@@ -29,7 +23,7 @@ public class InputHandler {
 	 * Process to create a shipment
 	 * @param split
 	 */
-	public void createShipmentProcess(String[] split){
+	private void createShipmentProcess(String[] split){
 		
 		Shipment s = handle.addShipment(split[0], split[1], split[2], Float.parseFloat(split[3]), Long.parseLong(split[4]));
 		if(s != null) {
@@ -40,7 +34,7 @@ public class InputHandler {
 	/**
 	 * Process to import a Json file with an array of Json objects
 	 */
-	public void importShipmentProcess() {
+	private void importShipmentProcess() {
 		
 		FileOperations newship = new FileOperations();
 		File f = newship.fileInput();
@@ -60,7 +54,7 @@ public class InputHandler {
 	 * @param w
 	 * @throws IOException
 	 */
-	public void exportWarehouse(String w) throws IOException{
+	private void exportWarehouse(String w) throws IOException{
 		
 		ArrayList<Shipment> l = (ArrayList<Shipment>) handle.getWarehouse(w).getShipmentList();
 		if(l != null) {
@@ -71,7 +65,7 @@ public class InputHandler {
 	 * Exports all warehouses and their data to Json file
 	 * @throws IOException
 	 */
-	public void exportAllWarehouse()throws IOException{
+	private void exportAllWarehouse()throws IOException{
 		
 		ArrayList<Shipment> l = handle.getAllWarehouseShipments();
 		if(l != null) {
@@ -82,7 +76,7 @@ public class InputHandler {
 	 * Enables a warehouse to accept shipments
 	 * @param w
 	 */
-	public void enableFreight(String w){
+	private void enableFreight(String w){
 		
 		if(handle.getWarehouse(w) != null) {
 			if(handle.getWarehouseReceipt(w) != true) {
@@ -100,7 +94,7 @@ public class InputHandler {
 	 * Stops a warehouse from accepting shipments
 	 * @param w
 	 */
-	public void endFreight(String w){
+	private void endFreight(String w){
 		
 			if(handle.getWarehouseReceipt(w) == true) {
 				handle.getWarehouse(w).disableFreightReceipt();
@@ -113,7 +107,7 @@ public class InputHandler {
 	/**
 	 * Shows the data entered in the current session
 	 */
-	public void showData(){
+	private void showData(){
 		
 		List<Warehouse> list = handle.getAllWarehouses();
 		if(list != null)
@@ -129,7 +123,7 @@ public class InputHandler {
 	/**
 	 * Shows the help menu
 	 */
-	public void showHelp(){
+	private void showHelp(){
 		
 		System.out.print("Commands:\n"
 	    		+ "add warehouse (0) - creates a warehouse\n"
@@ -175,6 +169,10 @@ public class InputHandler {
 				System.out.print("Enter the warehouse ID, shipment ID, shipment method, weight, receipt date Separated by Commas\n");
 				String w = scan.nextLine();
 				String split[] = w.split(",", 5);
+				if(split.length != 5) {
+					System.out.println("Invalid input");
+					continue;
+				}
 				split[4] = split[4].replaceAll(" ","");
 				
 				try{
