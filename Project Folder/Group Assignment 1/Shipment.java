@@ -6,6 +6,7 @@ public class Shipment
 	float weight;
 	long receiptDate;
 	
+	//creates a shipment object
 	public Shipment(String warehouseID, String shipmentID, String shipmentMethod, float weight, long receiptDate)
 	{
 		this.warehouseID = warehouseID;
