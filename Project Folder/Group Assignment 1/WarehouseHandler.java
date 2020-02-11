@@ -170,7 +170,14 @@ public class WarehouseHandler
 			}
 			return null; //
 		} else {
-			System.out.print("Sorry, warehouse "+warehouseID+" doesn't exist. Please create a warehouse first\n");
+			w = addWarehouse(warehouseID);
+			
+			Shipment s = new Shipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate); //Switch around the data if needed
+			Shipment s2 = w.addShipment(s);
+			if(s2 != null)
+			{
+				return s;
+			}
 			return null;
 		}
 	}	
