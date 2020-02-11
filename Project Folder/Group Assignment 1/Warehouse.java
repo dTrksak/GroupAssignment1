@@ -18,11 +18,11 @@ public class Warehouse {
 	public boolean  getAvailability(){
 		return availability;
 	}
-	public Shipment addShipment(Shipment shipment){
-		if(availability == true){
+	public Shipment addShipment(Shipment shipment){ 
+		if(availability == true){ // add shipment to warehouse
 			shipList.add(shipment);
 			return shipment;
-		}else{
+		}else{ // warehouse is closed
 			System.out.println("Sorry that warehouse is not accepting shipments");
 			return null;
 		}
