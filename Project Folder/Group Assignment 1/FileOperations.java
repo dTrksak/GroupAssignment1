@@ -55,7 +55,7 @@ public class FileOperations
 	//creates a new file from an inputed file
 	public File createFile(String directory, String fileName) throws IOException //creates a file in the file directory
     {
-    	File f = new File(directory + "\\"+fileName+".txt"); //needed to add double slashes to the directory for it to work correctly
+    	File f = new File(directory + "\\"+fileName+".json"); //needed to add double slashes to the directory for it to work correctly
 		if (!f.createNewFile())
 		{
 		    System.out.println("Export unsuccessful. outputFile already in folder "+directory+", cannot create duplicate. Delete "+fileName+"."); //smaller file error handling block
