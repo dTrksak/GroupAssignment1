@@ -11,7 +11,7 @@ public class JsonHandler{
 		this.h = handler;
 	}
 
-	public List<Shipment> jsonToShipment(String shipJson){
+	public List<Shipment> jsonToShipment(String shipJson){ //takes a json string and creates a list of shipments 
 		
 		Gson gson = new Gson();
 		
@@ -63,7 +63,7 @@ public class JsonHandler{
         return shipList;
     }
 	
-	public void shipmentToJson(ArrayList<Shipment> list) throws IOException {
+	public void shipmentToJson(ArrayList<Shipment> list) throws IOException { // takes a list of shipments and writes them to a Json file
 		
 		FileOperations fo = new FileOperations();
 		File directory = fo.fileDirectory();
@@ -79,7 +79,7 @@ public class JsonHandler{
 		
 		File outFile = fo.createFile(directory.getPath(), "outputFile");
 		
-		if(outFile != null) {
+		if(outFile != null) { // writes warehouse contents into file
 			BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
 			writer.write(json);
 		    writer.close();
