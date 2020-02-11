@@ -168,8 +168,8 @@ public class WarehouseHandler
 			{
 				return s;
 			}
-			return null; //
-		} else {
+			return null; 
+		} else { // if warehouse doesnt exist create warehouse then add shipment
 			w = addWarehouse(warehouseID);
 			
 			Shipment s = new Shipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate); //Switch around the data if needed
