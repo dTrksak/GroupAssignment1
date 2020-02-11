@@ -170,7 +170,7 @@ public class WarehouseHandler
 			}
 			return null; //
 		} else {
-			System.out.print("Sorry, warehouse "+warehouseID+" doesn't exist. Type help for a list of commands.\n");
+			System.out.print("Sorry, warehouse "+warehouseID+" doesn't exist. Please create a warehouse first\n");
 			return null;
 		}
 	}	
