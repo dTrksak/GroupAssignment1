@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
+import com.google.gson.*;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
