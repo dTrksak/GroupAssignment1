@@ -11,16 +11,13 @@ public class JsonHandler{
 		this.h = handler;
 	}
 
-	public List<Shipment> jsonToShipment(String shipJson){ //takes a json string and creates a list of shipments 
-		
-		Gson gson = new Gson();
+	public List<Shipment> jsonToShipment(JsonObject jo){
 		
         List<Shipment> shipList = new ArrayList<>();
         
         JsonArray shipArray = new JsonArray();
         try {
-        	JsonElement jElem = gson.fromJson(shipJson, JsonElement.class);
-        	JsonObject shipObject = jElem.getAsJsonObject();
+        	JsonObject shipObject = jo;
             shipArray = shipObject.getAsJsonArray("warehouse_contents");
         } catch(JsonSyntaxException e) {
         	System.out.println("Json syntax exception in file, cannot add shipments.");
