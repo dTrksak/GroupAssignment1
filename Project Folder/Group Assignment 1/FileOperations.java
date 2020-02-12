@@ -64,25 +64,20 @@ public class FileOperations
     	return f;
     }
 	
-	//takes a file and translates that to a string
-	public String fileToString(File inputFile) throws FileNotFoundException
+	//takes a file and translates that to a json object
+	public static JsonObject convertFileToJSON (File fileName)
 	{
-	    StringBuilder contentBuilder = new StringBuilder();
-	    try (BufferedReader br = new BufferedReader(new FileReader(inputFile.getPath()))) 
-	    {
-	 
-	        String sCurrentLine;
-	        while ((sCurrentLine = br.readLine()) != null) 
-	        {
-	            contentBuilder.append(sCurrentLine).append("\n");
-	        }
-	    } 
-	    catch (IOException e) 
-	    {
-	    	System.out.println("File not found.");
-	        e.printStackTrace();
-	    }
-	    return contentBuilder.toString();
-	}
+        JsonObject jsonObject = new JsonObject();
+        
+        try {
+            JsonParser parser = new JsonParser();
+            JsonElement jsonElement = parser.parse(new FileReader(fileName));
+            jsonObject = jsonElement.getAsJsonObject();
+        } catch (Exception e) {
+           return null;
+        }
+        
+        return jsonObject;
+    }
 }
 
