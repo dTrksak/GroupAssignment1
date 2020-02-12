@@ -38,16 +38,11 @@ public class InputHandler {
 		
 		FileOperations newship = new FileOperations();
 		File f = newship.fileInput();
-		String str = null;
-		try {
-			str = newship.fileToString(f);
-			if(str != null) {
-				jhandle.jsonToShipment(str);
-			}
-		} catch (FileNotFoundException e) {
-			System.out.print("The file cannot be found.\n");
+		JsonObject jo = null;
+		jo = newship.convertFileToJSON(f);
+		if(jo != null) {
+			jhandle.jsonToShipment(jo);
 		}
-		
 	}
 	/**
 	 * Exports warehouse shipment information for a single warehouse ID
