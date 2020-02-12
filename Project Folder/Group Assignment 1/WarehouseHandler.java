@@ -159,26 +159,19 @@ public class WarehouseHandler
 	{
 		Warehouse w = getWarehouse(warehouseID);
 		
-		//Check that the warehouse exists
-		if(w != null)
+		//If warehouse doesnt exist create it
+		if(w == null)
 		{
-			Shipment s = new Shipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate); //Switch around the data if needed
-			Shipment s2 = w.addShipment(s);
-			if(s2 != null)
-			{
-				return s;
-			}
-			return null; 
-		} else { // if warehouse doesnt exist create warehouse then add shipment
 			w = addWarehouse(warehouseID);
-			
-			Shipment s = new Shipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate); //Switch around the data if needed
-			Shipment s2 = w.addShipment(s);
-			if(s2 != null)
-			{
-				return s;
-			}
-			return null;
 		}
+			
+		Shipment s = new Shipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate); //Switch around the data if needed
+		Shipment s2 = w.addShipment(s);
+		if(s2 != null)
+		{
+			return s;
+		}
+		return null;
+		
 	}	
 }
