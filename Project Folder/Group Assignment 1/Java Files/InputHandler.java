@@ -15,9 +15,9 @@ public class InputHandler {
 	 * Process to create a warehouse
 	 * @param warehouseID
 	 */
-	private void createWarehouseProcess(String warehouseID)
+	private void createWarehouseProcess(String warehouseID, String warehouseName)
 	{
-		Warehouse w = handle.addWarehouse(warehouseID);
+		Warehouse w = handle.addWarehouse(warehouseID, warehouseName);
 		if(w == null)
 		{
 			System.out.println("Warehouse "+warehouseID+" already exists.");
@@ -34,7 +34,7 @@ public class InputHandler {
 	 */
 	private void createShipmentProcess(String[] split)
 	{
-		Shipment s = handle.addShipment(split[0], split[1], split[2], Float.parseFloat(split[3]), Long.parseLong(split[4]));
+		Shipment s = handle.addShipment(split[0], split[1], split[2], split[3], Float.parseFloat(split[4]), Long.parseLong(split[5]));
 		if(s != null)
 		{
 			System.out.println("Shipment successfully added to warehouse "+split[0]+".");
@@ -137,7 +137,7 @@ public class InputHandler {
 		{
 			for(int i = 0;i < list.size(); i++)
 			{
-				System.out.println("Warehouse "+list.get(i).getWarehouseID()+" - "+list.get(i).getShipmentList().toString());
+				System.out.println("Warehouse "+list.get(i).getWarehouseID()+ ", " + list.get(1).getWarehouseName()+ " - "+list.get(i).getShipmentList().toString());
 			}
 		}
 		else
@@ -185,31 +185,32 @@ public class InputHandler {
 			//add warehouse process
 			if(input.contains("add warehouse") || input.contains("0"))
 			{
-				System.out.print("Enter your Warehouse ID\n");
-				String warehouseID = scan.nextLine();
-				if(warehouseID.contains(",")) {
-					System.out.println("The warehouse ID cannot contain a comma.");
-					continue; //return to top of while loop
-				}
-				createWarehouseProcess(warehouseID);
+				System.out.print("Enter your Warehouse ID and Warehouse Name\n");
+				String warehouse = scan.nextLine();
+				String split[] = warehouse.split(",", 2);
+				String warehouseID = split[0];
+				String warehouseName = split[1];
+				
+
+				createWarehouseProcess(warehouseID, warehouseName);
 				
 			}
 			//add shipment process
 			else if(input.contains("add incoming shipment") || input.contains("1"))
 			{
-				System.out.print("Enter the warehouse ID, shipment ID, shipment method, weight, receipt date Separated by Commas\n");
+				System.out.print("Enter the warehouse ID, warehouseName, shipment ID, shipment method, weight, receipt date Separated by Commas\n");
 				String w = scan.nextLine();
-				String split[] = w.split(",", 5);
-				if(split.length != 5)
+				String split[] = w.split(",", 6);
+				if(split.length != 6)
 				{
 					System.out.println("Invalid input");
 					continue;
 				}
-				split[4] = split[4].replaceAll(" ","");
+				split[5] = split[5].replaceAll(" ","");
 				
 				try
 				{
-			        Float.parseFloat(split[3]);
+			        Float.parseFloat(split[4]);
 			    }
 				catch(Exception e)
 				{
@@ -218,7 +219,7 @@ public class InputHandler {
 			    }
 				try
 				{
-			        Long.parseLong(split[4]);
+			        Long.parseLong(split[5]);
 			    }catch(Exception e)
 				{
 			        System.out.println("Invalid input");
