@@ -82,9 +82,9 @@ public class JsonHandler
 	 * @param list the shipments
 	 * @throws IOException
 	 */
-	public void shipmentToJson(ArrayList<Shipment> list) throws IOException { // takes a list of shipments and writes them to a Json file
+	public void shipmentToJson(ArrayList<Shipment> list, String fileName) throws IOException { // takes a list of shipments and writes them to a Json file
 		
-		FileOperations fo = new FileOperations();
+		FileOperations fo = new FileOperations();		
 		File directory = fo.fileDirectory();
 		
 		if(directory == null)
@@ -97,7 +97,7 @@ public class JsonHandler
 		Gson gson = new GsonBuilder().setPrettyPrinting().create(); //Output with pretty indentation
 		String json = gson.toJson(contents);
 		
-		File outFile = fo.createFile(directory.getPath(), "outputFile");
+		File outFile = fo.createFile(directory.getPath(), fileName);
 		
 		if(outFile != null)
 		{ // writes warehouse contents into file
