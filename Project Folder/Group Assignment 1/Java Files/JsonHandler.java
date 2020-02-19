@@ -39,6 +39,7 @@ public class JsonHandler
 			{
 				JsonObject shipmentObj = i.getAsJsonObject();
 				String warehouseID = shipmentObj.get("warehouse_id").getAsString();
+				String warehouseName = shipmentObj.get("warehouse_name").getAsString();
 				String shipmentMethod = shipmentObj.get("shipment_method").getAsString();
 				String shipmentID = shipmentObj.get("shipment_id").getAsString();
 				//Check that weight and receipt date are correctly formatted
@@ -62,8 +63,8 @@ public class JsonHandler
 					continue;
 				}
 				//Everything is good, create the shipment and the warehouse if needed
-				h.addWarehouse(warehouseID);
-				Shipment s = h.addShipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate);
+				h.addWarehouse(warehouseID, warehouseName);
+				Shipment s = h.addShipment(warehouseID,warehouseName,shipmentID,shipmentMethod,weight,receiptDate);
 				shipList.add(s);
 			}
 			System.out.println("Shipments successfully imported.");

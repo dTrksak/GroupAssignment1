@@ -88,14 +88,14 @@ public class WarehouseHandler
 	 * Creates a warehouse given a warehouse ID
 	 * @param warehouseID
 	 */
-	public Warehouse addWarehouse(String warehouseID)
+	public Warehouse addWarehouse(String warehouseID, String warehouseName)
 	{
 		Warehouse w = getWarehouse(warehouseID);
 		
 		//Check that the warehouse doesn't exist before creating a new one
 		if(w == null)
 		{
-			Warehouse n = new Warehouse(warehouseID); //Replace warehouseID if needed
+			Warehouse n = new Warehouse(warehouseID, warehouseName); //Replace warehouseID if needed
 			warehouseList.add(n);
 			return n;
 		}
@@ -169,18 +169,18 @@ public class WarehouseHandler
 	 * @param weight
 	 * @param receiptDate
 	 */
-	public Shipment addShipment(String warehouseID, String shipmentID, String shipmentMethod, float weight, long receiptDate)
+	public Shipment addShipment(String warehouseID, String warehouseName, String shipmentID, String shipmentMethod, float weight, long receiptDate)
 	{
 		Warehouse w = getWarehouse(warehouseID);
 		
 		if(w == null) // if warehouse doesnt exist create it
 		{
-			w = addWarehouse(warehouseID);
+			w = addWarehouse(warehouseID,warehouseName);
 		}
 		
 		
 			
-		Shipment s = new Shipment(warehouseID,shipmentID,shipmentMethod,weight,receiptDate); //Switch around the data if needed
+		Shipment s = new Shipment(warehouseID,warehouseName,shipmentID,shipmentMethod,weight,receiptDate); //Switch around the data if needed
 		Shipment s2 = w.addShipment(s);
 		if(s2 != null)
 		{
