@@ -6,7 +6,11 @@ import com.google.gson.*;
 public class InputHandler {
 	WarehouseHandler handle = new WarehouseHandler();
 	JsonHandler jhandle = new JsonHandler(handle);
+	RecoverData reData = new RecoverData();
 
+	
+	
+	
 	/**
 	 * Process to create a warehouse
 	 * @param warehouseID
@@ -63,7 +67,7 @@ public class InputHandler {
 		ArrayList<Shipment> l = (ArrayList<Shipment>) handle.getWarehouse(w).getShipmentList();
 		if(l != null)
 		{
-			jhandle.shipmentToJson(l);
+			jhandle.shipmentToJson(l, "outputFile");
 		}
 	}
 	
@@ -76,7 +80,7 @@ public class InputHandler {
 		ArrayList<Shipment> l = handle.getAllWarehouseShipments();
 		if(l != null)
 		{
-			jhandle.shipmentToJson(l);
+			jhandle.shipmentToJson(l, "outputFile");
 		}
 	}
 	
@@ -167,10 +171,12 @@ public class InputHandler {
 	 */
 	public void getInput() throws IOException
 	{
+		reData.oldData(handle, jhandle);
 	    Scanner scan = new Scanner(System.in);  // Create a Scanner object
 	    boolean exit = false;
 	    // help menu   
 	    showHelp();
+	    
 	    while(!exit)
 	    {
 			//System.out.print("input the command you would like the program to run\n");
@@ -303,7 +309,10 @@ public class InputHandler {
 				System.out.print("Sorry, that command doesn't exist, type help for a list of commands.\n");
 			}
 	    }
+	    
 	    scan.close(); //Close the scanner
+		ArrayList<Shipment> l = handle.getAllWarehouseShipments();
+	    reData.saveData(l);
 	    System.out.print("Program end.");
 	}
 }
