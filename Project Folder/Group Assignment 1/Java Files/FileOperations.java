@@ -1,21 +1,14 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.List;
-import java.util.Scanner;
+import java.io.*;
+import javax.swing.*;
 import com.google.gson.*;
-
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 //handles basic file operations
 public class FileOperations
 {
-	//opens a JFileChooser GUI so the user can select a file
+	/**
+	 * opens a JFileChooser GUI so the user can select a file
+	 * @return the selected file
+	 */
 	public File fileInput()
     {	
     	JFileChooser fileChooser = new JFileChooser(); //open the file chooser
@@ -35,6 +28,10 @@ public class FileOperations
 	    }
     }
 	
+	/**
+	 * opens a JFileChooser GUI so the user can select a directory
+	 * @return the selected directory
+	 */
 	public File fileDirectory()
 	{
 		JFileChooser fileChooser = new JFileChooser(); //open the file chooser
@@ -53,7 +50,13 @@ public class FileOperations
 	    }
 	}
 	
-	//creates a new file from an inputed file
+	/**
+	 * creates a new file from an inputed file
+	 * @param directory the directory of a file
+	 * @param fileName the name of a file
+	 * @return the file
+	 * @throws IOException
+	 */
 	public File createFile(String directory, String fileName) throws IOException //creates a file in the file directory
     {
     	File f = new File(directory + "\\"+fileName+".json"); //needed to add double slashes to the directory for it to work correctly
@@ -65,16 +68,23 @@ public class FileOperations
     	return f;
     }
 	
-	//takes a file and translates that to a json object
+	/**
+	 * takes a file and translates that to a json object
+	 * @param fileName a file to convert
+	 * @return JsonObject
+	 */
 	public static JsonObject convertFileToJSON (File fileName)
 	{
         JsonObject jsonObject = new JsonObject();
         
-        try {
+        try
+        {
             JsonParser parser = new JsonParser();
             JsonElement jsonElement = parser.parse(new FileReader(fileName));
             jsonObject = jsonElement.getAsJsonObject();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
            return null;
         }
         

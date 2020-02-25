@@ -1,32 +1,37 @@
 public class Shipment
 {
-	String warehouseID;
-	String shipmentID;
-	String shipmentMethod;
+	String warehouse_id;
+	String warehouse_name;
+	String shipment_id;
+	String shipment_method;
 	float weight;
-	long receiptDate;
+	long receipt_date;
 	
 	//creates a shipment object
-	public Shipment(String warehouseID, String shipmentID, String shipmentMethod, float weight, long receiptDate)
+	public Shipment(String warehouseID, String warehouseName, String shipmentID, String shipmentMethod, float weight, long receiptDate)
 	{
-		this.warehouseID = warehouseID;
-		this.shipmentID = shipmentID;
-		this.shipmentMethod = shipmentMethod;
+		this.warehouse_id = warehouseID;
+		this.warehouse_name = warehouseName;
+		this.shipment_id = shipmentID;
+		this.shipment_method = shipmentMethod;
 		this.weight = weight;
-		this.receiptDate = receiptDate;
+		this.receipt_date = receiptDate;
 	}
 	
 	public String getWarehouseID()
 	{
-		return this.warehouseID;
+		return this.warehouse_id;
+	}
+	public String getWarehouseName() {
+		return this.warehouse_name;
 	}
 	public String getShipmentID()
 	{
-		return this.shipmentID;
+		return this.shipment_id;
 	}
 	public String getShipmentMethod()
 	{
-		return this.shipmentMethod;
+		return this.shipment_method;
 	}
 	public float getWeight()
 	{
@@ -34,11 +39,12 @@ public class Shipment
 	}
 	public long getReceiptDate()
 	{
-		return this.receiptDate;
+		return this.receipt_date;
 	}
 	@Override
 	public String toString() {
 	        return ("\n\twarehouse ID: "+this.getWarehouseID()+
+	        			", Warehouse Name: "+this.getWarehouseName()+
 	                    ", Shipment ID: "+ this.getShipmentID() +
 	                    ", Shipment Method: "+ this.getShipmentMethod() +
 	                    ", Weight : " + this.getWeight() +
