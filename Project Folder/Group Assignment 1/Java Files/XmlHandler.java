@@ -14,7 +14,7 @@ import org.xml.sax.SAXException;
 
 public class XmlHandler
 {
-	private static Double kgToLb = 2.20462;
+	private static final Double kgToLb = 2.20462;
 
 	/**
 	 * Creates a list of shipments given a filepath
@@ -65,7 +65,7 @@ public class XmlHandler
 				if (warehouseId != null && warehouseName != null && shipmentId != null && shipmentMethod != null && shipmentUnit != null && shipmentWeight != null && shipmentReceiptDate != null)
 				{
 					// Add the previous shipment
-					shipments.add(new Shipment(warehouseId, shipmentId, shipmentMethod, shipmentWeight, shipmentReceiptDate));
+					shipments.add(new Shipment(warehouseId, warehouseName, shipmentId, shipmentMethod, shipmentWeight, shipmentReceiptDate));
 				}
 				else // If the file was incorrectly formatted
 				{
