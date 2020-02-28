@@ -1,0 +1,132 @@
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JLabel;
+import javax.swing.JButton;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import java.awt.event.ActionListener;
+import java.util.List;
+import java.awt.event.ActionEvent;
+import javax.swing.JToggleButton;
+
+
+public class WarehouseUI extends JFrame {
+
+	private JPanel contentPane;
+	/**
+	 * @wbp.nonvisual location=63,14
+	 */
+	/**
+	 * Launch the application.
+	 */
+	
+	WarehouseHandler handle = new WarehouseHandler();
+	CompleteUI text = new CompleteUI();
+	String S = "12513";
+	Warehouse UIwarehouse =  handle.getWarehouse(S);
+
+	public static void main(String[] args) {
+
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					WarehouseUI frame = new WarehouseUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public WarehouseUI() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JLabel lblToggleReciept = new JLabel("Toggle Reciept");
+		
+		JLabel lblAddShipment = new JLabel("Add Shipment");
+		
+		JLabel lblPrintShipments = new JLabel("Print Shipments");
+		
+		JButton btnPrint = new JButton("Print");
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			List<Shipment> UIlist = handle.getWarehouse(S).getShipmentList();
+			for(Shipment s : UIlist)
+			System.out.println(s+ "\n");
+			}
+		});
+		
+		JButton btnAdd = new JButton("Add");
+		
+		JToggleButton tglbtnOnoff = new JToggleButton("On/Off");
+		tglbtnOnoff.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UIwarehouse.enableFreightReceipt();
+			}
+		});
+		
+		JLabel lblGetWarehouseName = new JLabel("get Warehouse name ");
+		
+		JButton btnNewButton = new JButton("Get Name");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblGetWarehouseName)
+						.addComponent(lblToggleReciept)
+						.addComponent(lblPrintShipments)
+						.addComponent(lblAddShipment))
+					.addPreferredGap(ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnNewButton)
+						.addComponent(tglbtnOnoff)
+						.addComponent(btnPrint)
+						.addComponent(btnAdd))
+					.addContainerGap(32, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(26)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblGetWarehouseName)
+						.addComponent(btnNewButton))
+					.addGap(29)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPrintShipments)
+						.addComponent(btnPrint))
+					.addGap(23)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblAddShipment)
+						.addComponent(btnAdd))
+					.addGap(28)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblToggleReciept)
+						.addComponent(tglbtnOnoff))
+					.addGap(37))
+		);
+		contentPane.setLayout(gl_contentPane);
+	}
+}
+
+
+
