@@ -6,7 +6,9 @@ public class Driver
 	{
 
 		InputHandler iHandler = new InputHandler();
-		iHandler.getInput();
+		CompleteUI UI = new CompleteUI();
+		UI.launchUI();
  
 	}
 }
+

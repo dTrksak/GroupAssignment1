@@ -32,7 +32,7 @@ public class CompleteUI extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main() {
+	public void launchUI() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -80,11 +80,10 @@ public class CompleteUI extends JFrame {
 		JLabel lblWarehouseInfo = new JLabel("Warehouse info");
 		
 		textField = new JTextField();
-		textField.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					String input = textField.getText();
-			}
-		});
+		
+					
+					
+			
 		textField.setColumns(10);
 		
 		
@@ -95,11 +94,11 @@ public class CompleteUI extends JFrame {
 		JButton btnExportJson = new JButton("Export");
 		btnExportJson.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					Ihandle.exportAllWarehouse();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				
+					try {Ihandle.exportAllWarehouse();
+				}catch(IOException p){
+					System.out.println("Export Failed");
+					
 				}
 			}
 		});
@@ -107,9 +106,13 @@ public class CompleteUI extends JFrame {
 		JButton btnGo = new JButton("Go");
 		btnGo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				String w = textField.getText();
+				Ihandle.createWarehouseProcess(w, "");
 				WarehouseUI wareUI = new WarehouseUI();
+				
 				wareUI.setVisible(true);
 			}
+			
 		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -167,3 +170,4 @@ public class CompleteUI extends JFrame {
 		contentPane.setLayout(gl_contentPane);
 	}
 }
+
