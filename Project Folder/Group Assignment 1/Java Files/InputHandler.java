@@ -137,7 +137,7 @@ public class InputHandler {
 		{
 			for(int i = 0;i < list.size(); i++)
 			{
-				System.out.println("Warehouse "+list.get(i).getWarehouseID()+ ", " + list.get(1).getWarehouseName()+ " - "+list.get(i).getShipmentList().toString());
+				System.out.println("Warehouse "+list.get(i).getWarehouseID()+ ", " + list.get(i).getWarehouseName()+ " - "+list.get(i).getShipmentList().toString());
 			}
 		}
 		else
