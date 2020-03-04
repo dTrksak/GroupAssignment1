@@ -171,8 +171,6 @@ public class InputHandler {
 	 */
 	public void getInput() throws IOException
 	{
-		try {
-
 		reData.oldData(handle, jhandle);
 	    Scanner scan = new Scanner(System.in);  // Create a Scanner object
 	    boolean exit = false;
@@ -314,16 +312,8 @@ public class InputHandler {
 	    }
 	    
 	    scan.close(); //Close the scanner
+		ArrayList<Shipment> l = handle.getAllWarehouseShipments();
+	    reData.saveData(l);
 	    System.out.print("Program end.");
-		//ArrayList<Shipment> l = handle.getAllWarehouseShipments();
-	    //reData.saveData(l);
-	    
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} finally{
-			ArrayList<Shipment> l = handle.getAllWarehouseShipments();
-		    reData.saveData(l);
-		}
 	}
 }

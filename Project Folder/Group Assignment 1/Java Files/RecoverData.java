@@ -23,6 +23,7 @@ public class RecoverData {
 		data = fileIO.convertFileToJSON(file);
 		System.out.println(data);
 		if(data != null) {
+			System.out.println("in if statement");
 			jhandle.jsonToShipment(data);
 			
 		}
