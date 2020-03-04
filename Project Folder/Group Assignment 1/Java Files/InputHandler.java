@@ -169,7 +169,7 @@ public class InputHandler {
 	 * Gets input from the user on how they wish to proceed.
 	 * @throws IOException
 	 */
-	public void getInput() throws IOException //throws IOException
+	public void getInput() throws IOException
 	{
 		try {
 
