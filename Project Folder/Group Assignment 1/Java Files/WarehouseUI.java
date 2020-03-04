@@ -73,7 +73,7 @@ public class WarehouseUI extends JFrame {
 		JButton btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ihandle.showData();
+				Ihandle.showData1();
 				}
 			
 			});
@@ -130,7 +130,7 @@ public class WarehouseUI extends JFrame {
 						String shipmentDateInit = field6.getText();
 						shipInfo[5] = shipmentDateInit;
 						
-						Ihandle.createShipmentProcess(shipInfo);
+						Ihandle.createShipmentProcess1(shipInfo);
 					}
 				});
 				
@@ -150,9 +150,8 @@ public class WarehouseUI extends JFrame {
 		btnExport.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				try {
-					Ihandle.exportAllWarehouse();
+					Ihandle.exportAllWarehouse1();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}

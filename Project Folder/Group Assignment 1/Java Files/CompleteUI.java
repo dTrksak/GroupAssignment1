@@ -67,7 +67,7 @@ public class CompleteUI extends JFrame {
 		btnJson.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-				Ihandle.importShipmentProcess();			
+				Ihandle.importShipmentProcess1();			
 				}
 				catch (Exception ew)
 				{
@@ -95,7 +95,7 @@ public class CompleteUI extends JFrame {
 		btnExportJson.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-					try {Ihandle.exportAllWarehouse();
+					try {Ihandle.exportAllWarehouse1();
 				}catch(IOException p){
 					System.out.println("Export Failed");
 					
@@ -107,7 +107,7 @@ public class CompleteUI extends JFrame {
 		btnGo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String w = textField.getText();
-				Ihandle.createWarehouseProcess(w, "");
+				Ihandle.createWarehouseProcess1(w, "");
 				WarehouseUI wareUI = new WarehouseUI();
 				
 				wareUI.setVisible(true);
