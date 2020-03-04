@@ -8,8 +8,25 @@ public class InputHandler {
 	JsonHandler jhandle = new JsonHandler(handle);
 	RecoverData reData = new RecoverData();
 
+	public void createWarehouseProcess1(String w, String string) {
+		createWarehouseProcess(w, string);		
+	}
 	
+	public void createShipmentProcess1(String[] shipInfo) {
+		createShipmentProcess(shipInfo);
+	}
+
+	public void importShipmentProcess1() {
+		importShipmentProcess();		
+	}
 	
+	public void exportAllWarehouse1() throws IOException {
+		exportAllWarehouse();
+	}
+
+	public void showData1() {
+		showData();
+	}
 	
 	/**
 	 * Process to create a warehouse
@@ -145,6 +162,7 @@ public class InputHandler {
 			System.out.println("There are no warehouses to display.");
 		}
 	}
+	
 	
 	/**
 	 * Shows the help menu
@@ -316,4 +334,6 @@ public class InputHandler {
 	    reData.saveData(l);
 	    System.out.print("Program end.");
 	}
+
+
 }
