@@ -137,7 +137,7 @@ public class InputHandler {
 		{
 			for(int i = 0;i < list.size(); i++)
 			{
-				System.out.println("Warehouse "+list.get(i).getWarehouseID()+ ", " + list.get(1).getWarehouseName()+ " - "+list.get(i).getShipmentList().toString());
+				System.out.println("Warehouse "+list.get(i).getWarehouseID()+ ", " + list.get(i).getWarehouseName()+ " - "+list.get(i).getShipmentList().toString());
 			}
 		}
 		else
@@ -169,8 +169,10 @@ public class InputHandler {
 	 * Gets input from the user on how they wish to proceed.
 	 * @throws IOException
 	 */
-	public void getInput() throws IOException
+	public void getInput() throws IOException //throws IOException
 	{
+		try {
+
 		reData.oldData(handle, jhandle);
 	    Scanner scan = new Scanner(System.in);  // Create a Scanner object
 	    boolean exit = false;
@@ -312,8 +314,16 @@ public class InputHandler {
 	    }
 	    
 	    scan.close(); //Close the scanner
-		ArrayList<Shipment> l = handle.getAllWarehouseShipments();
-	    reData.saveData(l);
 	    System.out.print("Program end.");
+		//ArrayList<Shipment> l = handle.getAllWarehouseShipments();
+	    //reData.saveData(l);
+	    
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} finally{
+			ArrayList<Shipment> l = handle.getAllWarehouseShipments();
+		    reData.saveData(l);
+		}
 	}
 }
