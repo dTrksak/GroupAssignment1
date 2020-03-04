@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Driver
 {
-	public static void main(String[] args) throws IOException //throws IOException
+	public static void main(String[] args) throws IOException
 	{
 
 		InputHandler iHandler = new InputHandler();
