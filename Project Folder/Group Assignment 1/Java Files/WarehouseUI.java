@@ -11,6 +11,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import java.awt.event.ActionListener;
@@ -34,7 +35,6 @@ public class WarehouseUI extends JFrame {
 	InputHandler Ihandle = new InputHandler();
 	CompleteUI text = new CompleteUI();
 	String S = "12513";
-	boolean receive = true;
 	//Warehouse UIwarehouse =  handle.addWarehouse(S,"");
 
 	public void setupFrame() {
@@ -159,9 +159,9 @@ public class WarehouseUI extends JFrame {
 				JTextField field = new JTextField(20);
 				frame.add(addWarehouseID);
 				frame.add(field);
-				JLabel addWarehouseName = new JLabel("ON or OFF");
+				JLabel avalibility = new JLabel("ON or OFF");
 				JTextField field2 = new JTextField(20);
-				frame.add(addWarehouseName);
+				frame.add(avalibility);
 				frame.add(field2);
 				
 				frame.setVisible(true);
@@ -169,10 +169,9 @@ public class WarehouseUI extends JFrame {
 				frame.add(doneBtn);
 				doneBtn.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
-						String wareHouseIDInit = field.getText();
-						String warehouseID = wareHouseIDInit;
-						String wareHouseNameInit = field2.getText();
-						String status = wareHouseNameInit;
+						
+						String warehouseID = field.getText();
+						String status = field2.getText();
 						
 						if(status.equals("ON")) {
 							Ihandle.enableFreight(warehouseID);;
@@ -181,30 +180,7 @@ public class WarehouseUI extends JFrame {
 						}
 					}
 				});
-				/*
-				
-				frame.setVisible(true);
-				JButton onBtn = new JButton("ON");
-				frame.add(onBtn);
-				onBtn.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e){
-						String warehouseID = field.getText();
-						handle.setAvalibility(warehouseID, true);
-						System.out.println("Warehouse " + warehouseID + "enabled");
-					}
-				});
-				
-				
-				frame.setVisible(true);
-				JButton offBtn = new JButton("OFF");
-				frame.add(offBtn);
-				offBtn.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e){
-						String warehouseID = field.getText();
-						handle.setAvalibility(warehouseID, false);
-						System.out.println("Warehouse " + warehouseID + "disabled");
-					}
-				});*/
+
 			
 			}
 		});
@@ -222,12 +198,33 @@ public class WarehouseUI extends JFrame {
 		
 		JLabel lblGetWarehouseName = new JLabel("get Warehouse name ");
 		
-		JButton btnNewButton = new JButton("Get Name");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton getName = new JButton("Get Name");
+		getName.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				JFrame frame = new JFrame();
+				frame.setSize(300, 300);
+				frame.setLayout(new FlowLayout());
+				JLabel addWarehouseID = new JLabel("Enter WarehouseID");
+				JTextField field = new JTextField(20);
+				frame.add(addWarehouseID);
+				frame.add(field);
+				
+				frame.setVisible(true);
+				JButton doneBtn = new JButton("Done");
+				frame.add(doneBtn);
+				doneBtn.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+
+						String name = Ihandle.getWarehouseName(field.getText());
+						
+						JOptionPane.showMessageDialog(null, name);
+					}
+				});
+
 			}
 		});
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -241,7 +238,7 @@ public class WarehouseUI extends JFrame {
 						.addComponent(lblExport))
 					.addPreferredGap(ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnNewButton)
+						.addComponent(getName)
 						.addComponent(tglbtnOnoff)
 						.addComponent(btnPrint)
 						.addComponent(btnAdd)
@@ -254,7 +251,7 @@ public class WarehouseUI extends JFrame {
 					.addGap(26)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblGetWarehouseName)
-						.addComponent(btnNewButton))
+						.addComponent(getName))
 					.addGap(29)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblPrintShipments)
