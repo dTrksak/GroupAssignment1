@@ -6,7 +6,7 @@ public class WarehouseContents
 {
 	List<Shipment> warehouse_contents;
 	
-	public WarehouseContents(List<Shipment> list)
+	public WarehouseContents(ArrayList<Shipment> list)
 	{
 		this.warehouse_contents = list;
 	}
