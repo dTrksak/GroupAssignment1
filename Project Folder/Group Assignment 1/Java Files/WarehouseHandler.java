@@ -124,7 +124,6 @@ public class WarehouseHandler
 		}
 	}
 
-
 	/**
 	 * Adds a list of shipments to the warehouse list
 	 * @param l list of shipments
@@ -212,6 +211,7 @@ public class WarehouseHandler
 		{
 			w = addWarehouse(warehouseID, warehouseName);
 		}
+
 		if(w.getAvailability()) {
 
 			Shipment s = new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate); // Switch around the data if needed
@@ -225,6 +225,15 @@ public class WarehouseHandler
 			System.out.println("Warehouse is not receiving shipments at this time");
 			return null;
 		}
+    
+		Shipment s = new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate); // Switch around the data if needed
+		Shipment s2 = w.addShipment(s);
+		if (s2 != null)
+		{
+			return s;
+		}
+		return null;
+
 
 	}
 }
