@@ -1,6 +1,7 @@
+package main;
+
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,37 +11,47 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-public class RecoverData {
-	
-	public void oldData(WarehouseHandler handle, JsonHandler jhandle) throws FileNotFoundException {
-		File file = new File("src\\RecoveredData.json");
-		
-		//String directory = System.getProperty("user.dir");
-		//File file = new File(directory,"\\RecoveredData.json");
-		
-		FileOperations fileIO = new FileOperations();
+public class RecoverData
+{
+	static String filePath = "RecoveredData.json";
+
+	public static List<Shipment> oldData() throws IOException
+	{
+		JsonHandler jhandle = new JsonHandler();
+		WarehouseHandler handle = WarehouseHandler.getInstance();
+		File file = new File(filePath);
+
+		// String directory = System.getProperty("user.dir");
+		// File file = new File(directory,"\\RecoveredData.json");
+
 		JsonObject data = null;
-		data = fileIO.convertFileToJSON(file);
+		data = FileOperations.convertFileToJSON(file);
 		System.out.println(data);
-		if(data != null) {
-			System.out.println("in if statement");
-			jhandle.jsonToShipment(data);
-			
+		if (data != null)
+		{
+			List<Shipment> list = jhandle.jsonToShipment(data);
+			return list;
 		}
-		
+		return null;
 	}
 
-	public void saveData(ArrayList<Shipment> list) throws IOException {
-		WarehouseContents contents = new WarehouseContents(list);
-		Gson gson = new GsonBuilder().setPrettyPrinting().create(); //Output with pretty indentation
-		String json = gson.toJson(contents);
-		
-		
-		 // writes warehouse contents into file
-			BufferedWriter writer = new BufferedWriter(new FileWriter("src\\RecoveredData.json"));
-			writer.write(json);
-		    writer.close();
-		    System.out.println("Shipments successfully exported.");
+	public static void saveData(List<Shipment> list) throws IOException
+	{
+		List<Shipment> oldData = RecoverData.oldData(); // Get the already saved data
+		if (oldData != null)
+		{
+			list.addAll(oldData); // Add the saved data if there is any
 		}
-	
+
+		WarehouseContents contents = new WarehouseContents(new ArrayList<Shipment>(list)); // Does this work??
+		Gson gson = new GsonBuilder().setPrettyPrinting().create(); // Output with pretty indentation
+		String json = gson.toJson(contents);
+
+		// writes warehouse contents into file
+		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+		writer.write(json);
+		writer.close();
+		System.out.println("Shipments successfully exported.");
+	}
+
 }
