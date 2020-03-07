@@ -95,13 +95,13 @@ public class CompleteUI extends JFrame
 
 		JLabel lblImportShipment = new JLabel("Import Shipment");
 
-		JLabel lblWarehouseInfo = new JLabel("Warehouse info");
+		JLabel lblWarehouseInfo = new JLabel("Warehouse information");
 
 		textField = new JTextField();
 
 		textField.setColumns(10);
 
-		JLabel lblEnterWarehouseid = new JLabel("Enter WarehouseID");
+		//JLabel lblEnterWarehouseid = new JLabel("Enter WarehouseID");
 
 		JLabel lblExportAllshipments = new JLabel("Export All Shipments");
 
@@ -123,13 +123,13 @@ public class CompleteUI extends JFrame
 			}
 		});
 
-		JButton btnGo = new JButton("Go");
+		JButton btnGo = new JButton("Warehouse");
 		btnGo.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				String w = textField.getText();
-				Ihandle.createWarehouseProcess(w, "");
+				//String w = textField.getText();
+				//Ihandle.createWarehouseProcess();
 				WarehouseUI wareUI = new WarehouseUI();
 
 				wareUI.setVisible(true);
@@ -137,8 +137,57 @@ public class CompleteUI extends JFrame
 
 		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createSequentialGroup().addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup().addComponent(lblWarehouseInfo).addGap(18).addComponent(lblEnterWarehouseid).addPreferredGap(ComponentPlacement.RELATED, 16, Short.MAX_VALUE).addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addPreferredGap(ComponentPlacement.UNRELATED).addComponent(btnGo)).addGroup(gl_contentPane.createSequentialGroup().addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createSequentialGroup().addGap(12).addComponent(lblImportShipment).addGap(45).addComponent(btnXml)).addComponent(lblExportAllshipments)).addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createSequentialGroup().addGap(32).addComponent(lblOr).addGap(43).addComponent(btnJson)).addGroup(gl_contentPane.createSequentialGroup().addGap(49).addComponent(btnExportJson))))).addContainerGap()));
-		gl_contentPane.setVerticalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addGroup(gl_contentPane.createSequentialGroup().addGap(30).addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(btnXml).addComponent(lblOr).addComponent(btnJson).addComponent(lblImportShipment)).addGap(42).addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING).addComponent(lblExportAllshipments).addComponent(btnExportJson)).addGap(31).addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE).addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE).addComponent(lblWarehouseInfo).addComponent(lblEnterWarehouseid).addComponent(btnGo)).addContainerGap(65, Short.MAX_VALUE)));
+		gl_contentPane.setHorizontalGroup(
+				gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+										.addComponent(lblWarehouseInfo)
+										.addGap(105)
+										//.addComponent(lblEnterWarehouseid)
+										//.addPreferredGap(ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+										//.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										//.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(btnGo))
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPane.createSequentialGroup()
+														.addGap(12)
+														.addComponent(lblImportShipment)
+														.addGap(45)
+														.addComponent(btnXml))
+												.addComponent(lblExportAllshipments))
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPane.createSequentialGroup()
+														.addGap(32)
+														.addComponent(lblOr)
+														.addGap(43)
+														.addComponent(btnJson))
+												.addGroup(gl_contentPane.createSequentialGroup()
+														.addGap(49)
+														.addComponent(btnExportJson)))))
+						.addContainerGap()));
+		gl_contentPane.setVerticalGroup(
+				gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+						.addGap(30)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnXml)
+								.addComponent(lblOr)
+								.addComponent(btnJson)
+								.addComponent(lblImportShipment))
+						.addGap(42)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblExportAllshipments)
+								.addComponent(btnExportJson))
+						.addGap(31)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								//.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblWarehouseInfo)
+								//addComponent(lblEnterWarehouseid)
+								.addComponent(btnGo))
+						.addContainerGap(65, Short.MAX_VALUE)));
+		
 		contentPane.setLayout(gl_contentPane);
 	}
 }
