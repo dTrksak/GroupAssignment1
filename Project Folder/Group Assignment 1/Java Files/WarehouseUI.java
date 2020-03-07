@@ -1,3 +1,4 @@
+package main;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -29,11 +30,11 @@ public class WarehouseUI extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	
 	WarehouseHandler handle = new WarehouseHandler();
 	InputHandler Ihandle = new InputHandler();
 	CompleteUI text = new CompleteUI();
 	String S = "12513";
+	boolean receive = true;
 	//Warehouse UIwarehouse =  handle.addWarehouse(S,"");
 
 	public void setupFrame() {
@@ -60,6 +61,7 @@ public class WarehouseUI extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
+
 		
 		JLabel lblToggleReciept = new JLabel("Toggle Reciept");
 		
@@ -73,7 +75,7 @@ public class WarehouseUI extends JFrame {
 		JButton btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Ihandle.showData1();
+				Ihandle.showData();
 				}
 			
 			});
@@ -82,6 +84,7 @@ public class WarehouseUI extends JFrame {
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
+				
 				String[] shipInfo = new String[6];
 				JFrame frame = new JFrame();
 				frame.setSize(400, 400);
@@ -130,19 +133,79 @@ public class WarehouseUI extends JFrame {
 						String shipmentDateInit = field6.getText();
 						shipInfo[5] = shipmentDateInit;
 						
-						Ihandle.createShipmentProcess1(shipInfo);
+						try {
+							Ihandle.createShipmentProcess(shipInfo);
+						} catch (IOException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
 					}
 				});
 				
 			
 			}
 		});
-					
-			
-		JToggleButton tglbtnOnoff = new JToggleButton("On/Off");
+
+		
+		JButton tglbtnOnoff = new JButton("On/Off");
 		tglbtnOnoff.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				warehouse.disableFreightReceipt();
+				
+				
+				JFrame frame = new JFrame();
+				frame.setSize(300, 300);
+				frame.setLayout(new FlowLayout());
+				JLabel addWarehouseID = new JLabel("Enter WarehouseID");
+				JTextField field = new JTextField(20);
+				frame.add(addWarehouseID);
+				frame.add(field);
+				JLabel addWarehouseName = new JLabel("ON or OFF");
+				JTextField field2 = new JTextField(20);
+				frame.add(addWarehouseName);
+				frame.add(field2);
+				
+				frame.setVisible(true);
+				JButton doneBtn = new JButton("Done");
+				frame.add(doneBtn);
+				doneBtn.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						String wareHouseIDInit = field.getText();
+						String warehouseID = wareHouseIDInit;
+						String wareHouseNameInit = field2.getText();
+						String status = wareHouseNameInit;
+						
+						if(status.equals("ON")) {
+							Ihandle.enableFreight(warehouseID);;
+						}else {
+							Ihandle.endFreight(warehouseID);
+						}
+					}
+				});
+				/*
+				
+				frame.setVisible(true);
+				JButton onBtn = new JButton("ON");
+				frame.add(onBtn);
+				onBtn.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						String warehouseID = field.getText();
+						handle.setAvalibility(warehouseID, true);
+						System.out.println("Warehouse " + warehouseID + "enabled");
+					}
+				});
+				
+				
+				frame.setVisible(true);
+				JButton offBtn = new JButton("OFF");
+				frame.add(offBtn);
+				offBtn.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						String warehouseID = field.getText();
+						handle.setAvalibility(warehouseID, false);
+						System.out.println("Warehouse " + warehouseID + "disabled");
+					}
+				});*/
+			
 			}
 		});
 		
@@ -150,7 +213,7 @@ public class WarehouseUI extends JFrame {
 		btnExport.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				try {
-					Ihandle.exportAllWarehouse1();
+					Ihandle.exportAllWarehouse();
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -162,6 +225,7 @@ public class WarehouseUI extends JFrame {
 		JButton btnNewButton = new JButton("Get Name");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
