@@ -19,6 +19,7 @@ public class InputHandler
 	XmlHandler xhandle = new XmlHandler();
 	JsonHandler jhandle = new JsonHandler();
 	RecoverData reData = new RecoverData();
+	String stringReturn = "No warehouse with that ID exists";
 
 	/**
 	 * Process to create a warehouse
@@ -340,5 +341,29 @@ public class InputHandler
 		ArrayList<Shipment> l = handle.getAllWarehouseShipments();
 		reData.saveData(l);
 		System.out.print("Program end.");
+	}
+
+	public String getWarehouseName(String warehouseID) 
+	{	String result="Warehouse not found";
+		List<Warehouse> listAll = handle.getAllWarehouses();
+		if (listAll != null)
+		{
+			for (int i = 0; i < listAll.size(); i++)
+			{
+				if(listAll.get(i).getWarehouseID().equalsIgnoreCase(warehouseID))
+					
+				{
+					result = listAll.get(i).getWarehouseName();
+					break;
+				}else
+				{
+					continue;
+				}
+				
+			}
+
+				
+		}
+		return result;
 	}
 }
