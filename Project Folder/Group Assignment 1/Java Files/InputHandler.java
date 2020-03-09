@@ -19,7 +19,7 @@ public class InputHandler
 	XmlHandler xhandle = new XmlHandler();
 	JsonHandler jhandle = new JsonHandler();
 	RecoverData reData = new RecoverData();
-	String stringReturn = "No warehouse with that ID exists";
+	
 
 	/**
 	 * Process to create a warehouse
