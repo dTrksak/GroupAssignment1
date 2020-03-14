@@ -26,7 +26,6 @@ public class RecoverData
 
 		JsonObject data = null;
 		data = FileOperations.convertFileToJSON(file);
-		System.out.println(data);
 		if (data != null)
 		{
 			List<Shipment> list = jhandle.jsonToShipment(data);
@@ -37,10 +36,20 @@ public class RecoverData
 
 	public static void saveData(List<Shipment> list) throws IOException
 	{
+		WarehouseHandler handle = WarehouseHandler.getInstance();
+		for(Shipment s : list)
+		{
+			// shipment warehouseName != the real warehouse's name
+			if(!handle.getWarehouse(s.getWarehouseID()).getWarehouseName().equals(s.getWarehouseName()))
+			{
+				list.remove(s); //Get rid of the shipment
+			}
+		}
+		
 		List<Shipment> oldData = RecoverData.oldData(); // Get the already saved data
 		if (oldData != null)
 		{
-			list.addAll(oldData); // Add the saved data if there is any
+			list.addAll(list); // Add the saved data if there is any
 		}
 
 		WarehouseContents contents = new WarehouseContents(new ArrayList<Shipment>(list)); // Does this work??
@@ -51,7 +60,6 @@ public class RecoverData
 		BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 		writer.write(json);
 		writer.close();
-		System.out.println("Shipments successfully exported.");
 	}
 
 }
