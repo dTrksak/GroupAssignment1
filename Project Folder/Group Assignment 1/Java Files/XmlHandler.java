@@ -33,7 +33,12 @@ public class XmlHandler
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = factory.newDocumentBuilder();
 		File file = new File(str);
-		Document doc = docBuilder.parse(file);
+		Document doc;
+		try {
+			doc = docBuilder.parse(file);
+		} catch(Exception e) {
+			return null;
+		}
 
 		// Set up the warehouse list and variables
 		String warehouseId = null;
