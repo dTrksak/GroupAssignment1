@@ -44,11 +44,20 @@ public class JsonHandler
 		{
 			for (JsonElement i : shipArray)
 			{
-				JsonObject shipmentObj = i.getAsJsonObject();
-				String warehouseID = shipmentObj.get("warehouse_id").getAsString();
-				String warehouseName = shipmentObj.get("warehouse_name").getAsString();
-				String shipmentMethod = shipmentObj.get("shipment_method").getAsString();
-				String shipmentID = shipmentObj.get("shipment_id").getAsString();
+				JsonObject shipmentObj;
+				String warehouseID;
+				String warehouseName;
+				String shipmentMethod;
+				String shipmentID;
+				try {
+					shipmentObj = i.getAsJsonObject();
+					warehouseID = shipmentObj.get("warehouse_id").getAsString();
+					warehouseName = shipmentObj.get("warehouse_name").getAsString();
+					shipmentMethod = shipmentObj.get("shipment_method").getAsString();
+					shipmentID = shipmentObj.get("shipment_id").getAsString();
+				} catch(Exception e) {
+					return null; //Format error
+				}
 				// Check that weight and receipt date are correctly formatted
 				try
 				{
@@ -73,6 +82,7 @@ public class JsonHandler
 				// Add the shipment to shiplist
 				shipList.add(new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate));
 			}
+			
 			// Once all of the shipments have been added to shiplist without errors, add
 			// them to warehouseHandler
 			for (Shipment s : shipList)
