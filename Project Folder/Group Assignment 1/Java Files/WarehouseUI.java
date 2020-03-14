@@ -92,7 +92,7 @@ public class WarehouseUI extends JFrame {
 				}
 			
 			});
-		
+
 		JButton btnAddWarehouse = new JButton("Add Warehouse"); // Creates a new warehouse
 		btnAddWarehouse.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -133,7 +133,7 @@ public class WarehouseUI extends JFrame {
 				});
 			}
 		});
-		
+
 		JButton btnAdd = new JButton("Add Shipment"); // Creates a new shipment
 		btnAdd.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -195,7 +195,7 @@ public class WarehouseUI extends JFrame {
 							try {
 								Shipment s = Ihandle.createShipmentProcess(shipInfo);
 								if(s != null)
-								{
+                {
 									//List<Shipment> saveList = new ArrayList<>();
 									//saveList.add(s);
 									//RecoverData.saveData(saveList);
@@ -343,7 +343,7 @@ public class WarehouseUI extends JFrame {
 		});
 		
 		// Creates layout for all buttons
-		
+
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
