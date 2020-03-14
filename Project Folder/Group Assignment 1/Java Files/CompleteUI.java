@@ -1,136 +1,209 @@
 package main;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
+import javax.xml.parsers.ParserConfigurationException;
 
-public class JsonHandler
+import org.xml.sax.SAXException;
+
+public class CompleteUI extends JFrame
 {
-	private WarehouseHandler h = WarehouseHandler.getInstance();
+	public JPanel contentPane;
+	JTextField textField;
+	FileOperations input = new FileOperations();
+	JsonHandler jhandle = new JsonHandler();
+	InputHandler Ihandle = new InputHandler();
+	WarehouseHandler handle = WarehouseHandler.getInstance();
 
 	/**
-	 * Takes a jsonObject of shipments and creates those shipments and warehouses
-	 * @param jo
-	 * @return the list of created shipments
-	 * @throws IOException
+	 * Launch the application.
 	 */
-	public List<Shipment> jsonToShipment(JsonObject jo) throws IOException
+	public void launchUI()
 	{
-		List<Shipment> shipList = new ArrayList<>();
-
-		JsonArray shipArray = new JsonArray();
-		try
+		EventQueue.invokeLater(new Runnable()
 		{
-			JsonObject shipObject = jo;
-			shipArray = shipObject.getAsJsonArray("warehouse_contents");
-		}
-		catch (JsonSyntaxException e)
-		{
-			System.out.println("Json syntax exception in file, cannot add shipments.");
-			return null; // break out of the function
-		}
-
-		try
-		{
-			for (JsonElement i : shipArray)
+			public void run()
 			{
-				JsonObject shipmentObj;
-				String warehouseID;
-				String warehouseName;
-				String shipmentMethod;
-				String shipmentID;
-				try {
-					shipmentObj = i.getAsJsonObject();
-					warehouseID = shipmentObj.get("warehouse_id").getAsString();
-					warehouseName = shipmentObj.get("warehouse_name").getAsString();
-					shipmentMethod = shipmentObj.get("shipment_method").getAsString();
-					shipmentID = shipmentObj.get("shipment_id").getAsString();
-				} catch(Exception e) {
-					return null; //Format error
-				}
-				// Check that weight and receipt date are correctly formatted
 				try
 				{
-					Float.parseFloat(shipmentObj.get("weight").getAsString());
-					Long.parseLong(shipmentObj.get("receipt_date").getAsString());
+					CompleteUI frame = new CompleteUI();
+					frame.setVisible(true);
 				}
-				catch (NumberFormatException e)
+				catch (Exception e)
 				{
-					System.out.println("Number format exception, unable to add shipment " + shipmentID + ". A float and/or a long are not correctly formatted.");
-					continue; // continue the for loop
+					e.printStackTrace();
 				}
-				float weight = shipmentObj.get("weight").getAsFloat();
-				long receiptDate = shipmentObj.get("receipt_date").getAsLong();
-
-				// If an id contains a comma, do not add that shipment
-				if (warehouseID.contains(",") || shipmentID.contains(","))
-				{
-					System.out.println("Value error, unable to add shipment " + shipmentID + ". An ID contained a comma.");
-					continue;
-				}
-
-				// Add the shipment to shiplist
-				shipList.add(new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate));
 			}
-			
-			// Once all of the shipments have been added to shiplist without errors, add
-			// them to warehouseHandler
-			for (Shipment s : shipList)
-			{
-				h.addShipment(s.getWarehouseID(), s.getWarehouseName(), s.getShipmentID(), s.getShipmentMethod(), s.getWeight(), s.getReceiptDate());
-			}
-			System.out.println("Shipments successfully imported.");
-		}
-		catch (NullPointerException e)
-		{
-			System.out.println("Shipment element mislabled, please check the file for typos.");
-			System.out.println("Could not import the shipment file.");
-			e.printStackTrace();
-			return null;
-		}
-
-		return shipList;
+		});
 	}
 
 	/**
-	 * Exports a list of shipments to a json file
-	 * @param list the shipments
-	 * @throws IOException
+	 * Create the frame.
 	 */
-	public void shipmentToJson(ArrayList<Shipment> list, String fileName) throws IOException
-	{ // takes a list of shipments and writes them to a Json file
+	public CompleteUI()
+	{
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
 
-		FileOperations fo = new FileOperations();
-		File directory = fo.fileDirectory();
-
-		if (directory == null)
+		JButton btnXml = new JButton("XML");
+		btnXml.addActionListener(new ActionListener()
 		{
-			System.out.println("Export cancelled.");
-			return; // If the user cancelled the export, return
-		}
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					Boolean b = Ihandle.importXmlProcess();
+					if(b != null)
+					{
+						JOptionPane.showMessageDialog(null, "Shipments imported.");	
+					} else {
+						JOptionPane.showMessageDialog(null, "No shipments imported.");
+					}
+				}
+				catch (Exception ew)
+				{
+					//ew.printStackTrace();
+					JOptionPane.showMessageDialog(null, "No shipments imported.");
+				}
+			}
+		});
 
-		WarehouseContents contents = new WarehouseContents(list);
-		Gson gson = new GsonBuilder().setPrettyPrinting().create(); // Output with pretty indentation
-		String json = gson.toJson(contents);
+		JLabel lblOr = new JLabel("Or");
 
-		File outFile = fo.createFile(directory.getPath(), fileName);
+		JButton btnJson = new JButton("Json");
+		btnJson.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					Boolean b = Ihandle.importShipmentProcess();
+					if(b != null)
+					{
+						JOptionPane.showMessageDialog(null, "Shipments imported.");	
+					} else {
+						JOptionPane.showMessageDialog(null, "No shipments imported.");
+					}
+				}
+				catch (Exception ew)
+				{
+					ew.printStackTrace();
+				}
+			}
+		});
 
-		if (outFile != null)
-		{ // writes warehouse contents into file
-			BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
-			writer.write(json);
-			writer.close();
-			System.out.println("Shipments successfully exported.");
-		}
+		JLabel lblImportShipment = new JLabel("Import Shipment");
+
+		JLabel lblWarehouseInfo = new JLabel("Warehouse information");
+
+		textField = new JTextField();
+
+		textField.setColumns(10);
+
+		//JLabel lblEnterWarehouseid = new JLabel("Enter WarehouseID");
+
+		JLabel lblExportAllshipments = new JLabel("Export All Shipments");
+
+		JButton btnExportJson = new JButton("Export");
+		btnExportJson.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				try
+				{
+					if(handle.getAllWarehouses() != null) {
+						Ihandle.exportAllWarehouse();
+						JOptionPane.showMessageDialog(null, "Shipments successfully exported.");
+					} else {
+						JOptionPane.showMessageDialog(null, "No warehouses exist to export.");
+					}
+				}
+				catch (IOException p)
+				{
+					p.printStackTrace();
+				}
+			}
+		});
+
+		JButton btnGo = new JButton("Warehouse");
+		btnGo.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent arg0)
+			{
+				WarehouseUI wareUI = new WarehouseUI();
+
+				wareUI.setVisible(true);
+			}
+		});
+		
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+				gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+										.addComponent(lblWarehouseInfo)
+										.addGap(105)
+										//.addComponent(lblEnterWarehouseid)
+										//.addPreferredGap(ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+										//.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										//.addPreferredGap(ComponentPlacement.UNRELATED)
+										.addComponent(btnGo))
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPane.createSequentialGroup()
+														.addGap(12)
+														.addComponent(lblImportShipment)
+														.addGap(45)
+														.addComponent(btnXml))
+												.addComponent(lblExportAllshipments))
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPane.createSequentialGroup()
+														.addGap(32)
+														.addComponent(lblOr)
+														.addGap(43)
+														.addComponent(btnJson))
+												.addGroup(gl_contentPane.createSequentialGroup()
+														.addGap(49)
+														.addComponent(btnExportJson)))))
+						.addContainerGap()));
+		gl_contentPane.setVerticalGroup(
+				gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+						.addGap(30)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(btnXml)
+								.addComponent(lblOr)
+								.addComponent(btnJson)
+								.addComponent(lblImportShipment))
+						.addGap(42)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblExportAllshipments)
+								.addComponent(btnExportJson))
+						.addGap(31)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								//.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblWarehouseInfo)
+								//addComponent(lblEnterWarehouseid)
+								.addComponent(btnGo))
+						.addContainerGap(65, Short.MAX_VALUE)));
+		
+		contentPane.setLayout(gl_contentPane);
 	}
 }
