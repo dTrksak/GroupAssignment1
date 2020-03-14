@@ -15,28 +15,28 @@ public class RecoverData
 {
 	static String filePath = "RecoveredData.json";
 
-	public static List<Shipment> oldData() throws IOException
+	public static void oldData() throws IOException
 	{
 		JsonHandler jhandle = new JsonHandler();
 		WarehouseHandler handle = WarehouseHandler.getInstance();
-		File file = new File(filePath);
 
-		// String directory = System.getProperty("user.dir");
-		// File file = new File(directory,"\\RecoveredData.json");
+		File file = new File(filePath);
 
 		JsonObject data = null;
 		data = FileOperations.convertFileToJSON(file);
 		if (data != null)
 		{
 			List<Shipment> list = jhandle.jsonToShipment(data);
-			return list;
+			handle.addShipmentList(list);
 		}
-		return null;
 	}
 
-	public static void saveData(List<Shipment> list) throws IOException
+	public static void saveData() throws IOException
 	{
 		WarehouseHandler handle = WarehouseHandler.getInstance();
+		
+		List<Shipment> list = handle.getAllWarehouseShipments(); //get all current data
+
 		for(Shipment s : list)
 		{
 			// shipment warehouseName != the real warehouse's name
@@ -44,15 +44,11 @@ public class RecoverData
 			{
 				list.remove(s); //Get rid of the shipment
 			}
+
 		}
 		
-		List<Shipment> oldData = RecoverData.oldData(); // Get the already saved data
-		if (oldData != null)
-		{
-			list.addAll(list); // Add the saved data if there is any
-		}
 
-		WarehouseContents contents = new WarehouseContents(new ArrayList<Shipment>(list)); // Does this work??
+		WarehouseContents contents = new WarehouseContents(new ArrayList<Shipment>(list)); 
 		Gson gson = new GsonBuilder().setPrettyPrinting().create(); // Output with pretty indentation
 		String json = gson.toJson(contents);
 

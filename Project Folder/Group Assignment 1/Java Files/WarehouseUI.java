@@ -5,12 +5,14 @@ import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentListener;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -74,15 +76,24 @@ public class WarehouseUI extends JFrame {
 		JLabel lblExport = new JLabel("Export Warehouse Shipments");
 		
 		
-		JButton btnPrint = new JButton("Print");
+		JButton btnPrint = new JButton("Print"); // Prints all current data to Console
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				List<Warehouse> wlist = handle.getAllWarehouses();
+			    Warehouse [] array = new Warehouse[wlist.size()];
+				wlist.toArray(array);
+				JList<Warehouse> list = new JList<Warehouse> (array);
+			    JPanel panel = new JPanel();
+			    panel.add(new JScrollPane(list));
+			    JOptionPane.showMessageDialog(null, panel);
+			    
+				//JOptionPane.showMessageDialog(null, list);
 				Ihandle.showData();
 				}
 			
 			});
-		
-		JButton btnAddWarehouse = new JButton("Add Warehouse");
+
+		JButton btnAddWarehouse = new JButton("Add Warehouse"); // Creates a new warehouse
 		btnAddWarehouse.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				
@@ -122,8 +133,8 @@ public class WarehouseUI extends JFrame {
 				});
 			}
 		});
-		
-		JButton btnAdd = new JButton("Add Shipment");
+
+		JButton btnAdd = new JButton("Add Shipment"); // Creates a new shipment
 		btnAdd.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				
@@ -184,10 +195,10 @@ public class WarehouseUI extends JFrame {
 							try {
 								Shipment s = Ihandle.createShipmentProcess(shipInfo);
 								if(s != null)
-								{
-									List<Shipment> saveList = new ArrayList<>();
-									saveList.add(s);
-									RecoverData.saveData(saveList);
+                {
+									//List<Shipment> saveList = new ArrayList<>();
+									//saveList.add(s);
+									//RecoverData.saveData(saveList);
 									JOptionPane.showMessageDialog(null, "Shipment added to warehouse "+handle.getWarehouse(wareHouseIDInit).getWarehouseID()+".");
 									frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //Close the warehouse window
 								}
@@ -214,7 +225,7 @@ public class WarehouseUI extends JFrame {
 		});
 
 		
-		JButton tglbtnOnoff = new JButton("On/Off");
+		JButton tglbtnOnoff = new JButton("On/Off"); // Turns warehouse on or off
 		tglbtnOnoff.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -263,7 +274,7 @@ public class WarehouseUI extends JFrame {
 			}
 		});
 		
-		JButton btnExport = new JButton("Export");
+		JButton btnExport = new JButton("Export"); // Exports all current data to a Json file 
 		btnExport.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				JFrame frame = new JFrame();
@@ -299,7 +310,7 @@ public class WarehouseUI extends JFrame {
 		
 		JLabel lblGetWarehouseName = new JLabel("get Warehouse name ");
 		
-		JButton getName = new JButton("Get Name");
+		JButton getName = new JButton("Get Name"); // Given a warehouse ID displays the warehouse Name
 		getName.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -331,6 +342,8 @@ public class WarehouseUI extends JFrame {
 			}
 		});
 		
+		// Creates layout for all buttons
+
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)

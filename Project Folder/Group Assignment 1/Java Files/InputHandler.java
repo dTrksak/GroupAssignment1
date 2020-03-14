@@ -45,7 +45,9 @@ public class InputHandler
 	 * @param split
 	 * @throws IOException
 	 */
-	public Shipment createShipmentProcess(String[] split) throws IOException
+
+	public Shipment createShipmentProcess(String[] split) throws IOException // adds a shipments given by user to data
+
 	{
 		Shipment s;
 		try {
@@ -56,9 +58,7 @@ public class InputHandler
 		
 		if (s != null)
 		{
-			List<Shipment> list = new ArrayList<>();
-			list.add(s);
-			RecoverData.saveData(list); // Save the newly created warehouse
+			RecoverData.saveData(); // Saves changes
 			System.out.println("Shipment successfully added to warehouse " + split[0] + ".");
 			return s;
 		}
@@ -69,8 +69,10 @@ public class InputHandler
 	 * Process to import a Json file with an array of Json objects
 	 * @throws IOException
 	 */
-	public Boolean importShipmentProcess() throws IOException
+
+	public Boolean importShipmentProcess() throws IOException // imports shipments from json file given by user
 	{
+
 		File f = FileOperations.fileInput();
 		JsonObject jo = null;
 		jo = FileOperations.convertFileToJSON(f);
@@ -79,7 +81,9 @@ public class InputHandler
 			List<Shipment> list = jhandle.jsonToShipment(jo);
 			if(list != null)
 			{
-				RecoverData.saveData(list);
+				handle.addShipmentList(list); // add all shipments to data
+				RecoverData.saveData(); // saves all data
+
 				return true;
 			} else {
 				return null;
@@ -94,8 +98,9 @@ public class InputHandler
 		if (f != null)
 		{
 			List<Shipment> xmlList = xhandle.parseXml(f.getAbsolutePath());
-			handle.addShipmentList(xmlList);
-			RecoverData.saveData(xmlList);
+			handle.addShipmentList(xmlList); // add all shipments to data
+			RecoverData.saveData(); // saves all data
+
 			return true;
 		} else {
 			return null;
@@ -138,7 +143,7 @@ public class InputHandler
 	 * 
 	 * @param w
 	 */
-	public void enableFreight(String w)
+	public void enableFreight(String w) //allows warehouse to receive shipments
 	{
 		if (handle.getWarehouse(w) != null)
 		{
@@ -164,7 +169,7 @@ public class InputHandler
 	 * 
 	 * @param w
 	 */
-	public void endFreight(String w)
+	public void endFreight(String w) // closes warehouse
 	{
 		if (handle.getWarehouse(w) != null)
 		{
@@ -188,7 +193,7 @@ public class InputHandler
 	/**
 	 * Shows the data entered in the current session
 	 */
-	public void showData()
+	public void showData() //prints all data onto console
 	{
 		List<Warehouse> list = handle.getAllWarehouses();
 		if (list != null)
@@ -361,8 +366,7 @@ public class InputHandler
 		}
 
 		scan.close(); // Close the scanner
-		ArrayList<Shipment> l = handle.getAllWarehouseShipments();
-		reData.saveData(l);
+		reData.saveData();
 		System.out.print("Program end.");
 	}
 

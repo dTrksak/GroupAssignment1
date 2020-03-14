@@ -85,10 +85,6 @@ public class JsonHandler
 			
 			// Once all of the shipments have been added to shiplist without errors, add
 			// them to warehouseHandler
-			for (Shipment s : shipList)
-			{
-				h.addShipment(s.getWarehouseID(), s.getWarehouseName(), s.getShipmentID(), s.getShipmentMethod(), s.getWeight(), s.getReceiptDate());
-			}
 			System.out.println("Shipments successfully imported.");
 		}
 		catch (NullPointerException e)
