@@ -7,10 +7,9 @@ public class Driver
 	public static void main(String[] args) throws IOException
 	{
 		RecoverData.oldData();
-		InputHandler iHandler = new InputHandler();
+		//InputHandler IP	= new InputHandler();
+		//IP.getInput();
 		CompleteUI UI = new CompleteUI();
-
-		// iHandler.getInput();
 		UI.launchUI();
 	}
 }

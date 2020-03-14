@@ -10,7 +10,7 @@ public class FileOperations
 	 * opens a JFileChooser GUI so the user can select a file
 	 * @return the selected file
 	 */
-	public File fileInput()
+	public static File fileInput()
     {	
     	JFileChooser fileChooser = new JFileChooser(); //open the file chooser
     	JDialog dialog = new JDialog();

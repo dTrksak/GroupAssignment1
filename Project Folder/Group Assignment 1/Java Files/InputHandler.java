@@ -19,6 +19,7 @@ public class InputHandler
 	XmlHandler xhandle = new XmlHandler();
 	JsonHandler jhandle = new JsonHandler();
 	RecoverData reData = new RecoverData();
+	
 
 	/**
 	 * Process to create a warehouse
@@ -44,46 +45,60 @@ public class InputHandler
 	 * @param split
 	 * @throws IOException
 	 */
-	public void createShipmentProcess(String[] split) throws IOException
+	public Shipment createShipmentProcess(String[] split) throws IOException // adds a shipments given by user to data
 	{
-		Shipment s = handle.addShipment(split[0], split[1], split[2], split[3], Float.parseFloat(split[4]), Long.parseLong(split[5]));
+		Shipment s;
+		try {
+			s = handle.addShipment(split[0], split[1], split[2], split[3], Float.parseFloat(split[4]), Long.parseLong(split[5]));
+		} catch(Exception e) {
+			return null;
+		}
+		
 		if (s != null)
 		{
-			List<Shipment> list = new ArrayList<>();
-			list.add(s);
-			RecoverData.saveData(list); // Save the newly created warehouse
+			RecoverData.saveData(); // Saves changes
 			System.out.println("Shipment successfully added to warehouse " + split[0] + ".");
+			return s;
 		}
-
+		return null;
 	}
 
 	/**
 	 * Process to import a Json file with an array of Json objects
 	 * @throws IOException
 	 */
-	public void importShipmentProcess() throws IOException
+	public Boolean importShipmentProcess() throws IOException // imports shipments from json file given by user
 	{
-		FileOperations newship = new FileOperations();
-		File f = newship.fileInput();
+		
+		File f = FileOperations.fileInput();
 		JsonObject jo = null;
-		jo = newship.convertFileToJSON(f);
+		jo = FileOperations.convertFileToJSON(f);
 		if (jo != null)
 		{
 			List<Shipment> list = jhandle.jsonToShipment(jo);
-			RecoverData.saveData(list);
+			if(list != null)
+			{
+				handle.addShipmentList(list); // add all shipments to data
+				RecoverData.saveData(); // saves all data
+				return true;
+			} else {
+				return null;
+			}
 		}
+		return null;
 	}
 
-	public void importXmlProcess() throws ParserConfigurationException, SAXException, IOException
+	public Boolean importXmlProcess() throws ParserConfigurationException, SAXException, IOException
 	{
-		FileOperations newship = new FileOperations();
-		File f = newship.fileInput();
-		String str = f.getAbsolutePath();
-		if (str != null)
+		File f = FileOperations.fileInput();
+		if (f != null)
 		{
-			List<Shipment> xmlList = xhandle.parseXml(str);
-			handle.addShipmentList(xmlList);
-			RecoverData.saveData(xmlList);
+			List<Shipment> xmlList = xhandle.parseXml(f.getAbsolutePath());
+			handle.addShipmentList(xmlList); // add all shipments to data
+			RecoverData.saveData(); // saves all data
+			return true;
+		} else {
+			return null;
 		}
 	}
 
@@ -107,13 +122,15 @@ public class InputHandler
 	 * 
 	 * @throws IOException
 	 */
-	public void exportAllWarehouse() throws IOException
+	public Boolean exportAllWarehouse() throws IOException
 	{
 		ArrayList<Shipment> l = handle.getAllWarehouseShipments();
 		if (l != null)
 		{
 			jhandle.shipmentToJson(l, "outputFile");
+			return true;
 		}
+		return null;
 	}
 
 	/**
@@ -121,7 +138,7 @@ public class InputHandler
 	 * 
 	 * @param w
 	 */
-	public void enableFreight(String w)
+	public void enableFreight(String w) //allows warehouse to receive shipments
 	{
 		if (handle.getWarehouse(w) != null)
 		{
@@ -138,7 +155,7 @@ public class InputHandler
 		else
 		{
 			// If the warehouse doesn't exist, tell the user
-			System.out.print("Sorry, warehouse " + handle.getWarehouse(w).getWarehouseID() + " doesn't exist. Type help for a list of commands.\n");
+			System.out.print("Sorry, warehouse " + w + " doesn't exist.\n");
 		}
 	}
 
@@ -147,24 +164,31 @@ public class InputHandler
 	 * 
 	 * @param w
 	 */
-	public void endFreight(String w)
+	public void endFreight(String w) // closes warehouse
 	{
-		if (handle.getWarehouseReceipt(w) == true)
+		if (handle.getWarehouse(w) != null)
 		{
-			handle.getWarehouse(w).disableFreightReceipt();
-			System.out.println("The freight receipt of warehouse " + handle.getWarehouse(w).getWarehouseID() + " is now disabled.");
+			if (handle.getWarehouseReceipt(w) == true)
+			{
+				handle.getWarehouse(w).disableFreightReceipt();
+				System.out.println("The freight receipt of warehouse " + handle.getWarehouse(w).getWarehouseID() + " is now disabled.");
+			}
+			else
+			{
+				System.out.println("The freight receipt of warehouse " + handle.getWarehouse(w).getWarehouseID() + " is already disabled.");
+			}
 		}
 		else
 		{
-			System.out.println("The freight receipt of warehouse " + handle.getWarehouse(w).getWarehouseID() + " is already disabled.");
+			// If the warehouse doesn't exist, tell the user
+			System.out.print("Sorry, warehouse " + w + " doesn't exist.\n");
 		}
-
 	}
 
 	/**
 	 * Shows the data entered in the current session
 	 */
-	public void showData()
+	public void showData() //prints all data onto console
 	{
 		List<Warehouse> list = handle.getAllWarehouses();
 		if (list != null)
@@ -337,8 +361,28 @@ public class InputHandler
 		}
 
 		scan.close(); // Close the scanner
-		ArrayList<Shipment> l = handle.getAllWarehouseShipments();
-		reData.saveData(l);
+		reData.saveData();
 		System.out.print("Program end.");
+	}
+
+	public String getWarehouseName(String warehouseID) 
+	{	
+		String result = "";
+		List<Warehouse> listAll = handle.getAllWarehouses();
+		if (listAll != null)
+		{
+			for (int i = 0; i < listAll.size(); i++)
+			{
+				if(listAll.get(i).getWarehouseID().equalsIgnoreCase(warehouseID))
+				{
+					result = listAll.get(i).getWarehouseName();
+					break;
+				}else
+				{
+					continue;
+				}
+			}	
+		}
+		return null;
 	}
 }

@@ -40,7 +40,7 @@ public class WarehouseHandler
 		else
 		{
 			// If the warehouse doesn't exist, tell the user
-			System.out.print("Sorry, warehouse " + warehouseID + " doesn't exist. Type help for a list of commands.\n");
+			System.out.print("Sorry, warehouse " + warehouseID + " doesn't exist.\n");
 			return null;
 		}
 	}
@@ -56,7 +56,7 @@ public class WarehouseHandler
 		if (warehouseList.isEmpty())
 		{
 			// If the warehouse doesn't exist, tell the user
-			System.out.print("Sorry, no warehouses exist. Type help for a list of commands.\n"); // \n is return?
+			System.out.print("Sorry, no warehouses exist.\n"); // \n is return?
 			return null;
 		}
 		else
@@ -153,7 +153,7 @@ public class WarehouseHandler
 		}
 		else
 		{
-			System.out.print("Sorry, warehouse " + warehouseID + " doesn't exist. Type help for a list of commands.\n");
+			System.out.print("Sorry, warehouse " + warehouseID + " doesn't exist.\n");
 			return null;
 		}
 	}
@@ -190,7 +190,7 @@ public class WarehouseHandler
 		}
 		else
 		{
-			System.out.print("Sorry, warehouse " + warehouseID + " doesn't exist. Type help for a list of commands.\n");
+			System.out.print("Sorry, warehouse " + warehouseID + " doesn't exist.\n");
 		}
 	}
 
@@ -207,33 +207,28 @@ public class WarehouseHandler
 	{
 		Warehouse w = getWarehouse(warehouseID);
 
-		if (w == null) // if warehouse doesnt exist create it
+		if (w == null) // if warehouse doesn't exist create it
 		{
 			w = addWarehouse(warehouseID, warehouseName);
 		}
-
-		if(w.getAvailability()) {
-
+		
+		if(w.getAvailability() && w.getWarehouseName().equals(warehouseName)) { //Prevents warehouses with identical ids but different names
+			
 			Shipment s = new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate); // Switch around the data if needed
 			Shipment s2 = w.addShipment(s);
-			if (s2 != null)
-			{
+			if (s2 != null) {
 				return s;
 			}
 			return null;
 		}else{
-			System.out.println("Warehouse is not receiving shipments at this time");
-			return null;
+			
+			if(!w.getWarehouseName().equals(warehouseName)) {
+				System.out.println("Warehouse "+w.getWarehouseID()+"'s name is not correct, it should be '"+w.getWarehouseName()+"'.");
+				return null;
+			} else {
+				System.out.println("Warehouse is not receiving shipments at this time");
+				return null;
+			}
 		}
-    
-		Shipment s = new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate); // Switch around the data if needed
-		Shipment s2 = w.addShipment(s);
-		if (s2 != null)
-		{
-			return s;
-		}
-		return null;
-
-
 	}
 }
