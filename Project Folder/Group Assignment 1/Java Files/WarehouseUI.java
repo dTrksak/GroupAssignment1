@@ -76,23 +76,35 @@ public class WarehouseUI extends JFrame {
 		JLabel lblExport = new JLabel("Export Warehouse Shipments");
 		
 		
-		JButton btnPrint = new JButton("Print"); // Prints all current data to Console
+		
+		JButton btnPrint = new JButton("Print"); // Prints all current data onto a message panel
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				List<Warehouse> wlist = handle.getAllWarehouses();
-			    Warehouse [] array = new Warehouse[wlist.size()];
-				wlist.toArray(array);
-				JList<Warehouse> list = new JList<Warehouse> (array);
-			    JPanel panel = new JPanel();
-			    panel.add(new JScrollPane(list));
-			    JOptionPane.showMessageDialog(null, panel);
+				List<Warehouse> list = handle.getAllWarehouses();
+
+				// converts warehouse list to a string so that its able to print out in JPanel
+			    StringBuffer sb = new StringBuffer();
+			    if (list != null)
+				{
+					for (int i = 0; i < list.size(); i++)
+					{
+						sb.append("Warehouse " + list.get(i).getWarehouseID() + ", " + list.get(i).getWarehouseName() + " - ");
+						sb.append(list.get(i).getShipmentList().toString());
+						sb.append("\n\n");
+					}
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(null, "There are not warehouses to display");
+				}
 			    
-				//JOptionPane.showMessageDialog(null, list);
-				Ihandle.showData();
+			    String str = sb.toString();
+				JOptionPane.showMessageDialog(null, str);
+				
 				}
 			
 			});
-
+		
 		JButton btnAddWarehouse = new JButton("Add Warehouse"); // Creates a new warehouse
 		btnAddWarehouse.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -133,7 +145,7 @@ public class WarehouseUI extends JFrame {
 				});
 			}
 		});
-
+		
 		JButton btnAdd = new JButton("Add Shipment"); // Creates a new shipment
 		btnAdd.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -195,7 +207,7 @@ public class WarehouseUI extends JFrame {
 							try {
 								Shipment s = Ihandle.createShipmentProcess(shipInfo);
 								if(s != null)
-                {
+								{
 									//List<Shipment> saveList = new ArrayList<>();
 									//saveList.add(s);
 									//RecoverData.saveData(saveList);
@@ -343,7 +355,7 @@ public class WarehouseUI extends JFrame {
 		});
 		
 		// Creates layout for all buttons
-
+		
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)

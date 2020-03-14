@@ -1,4 +1,6 @@
 package main;
+import java.util.Collections;
+
 public class Shipment
 {
 	String warehouse_id;
@@ -44,11 +46,11 @@ public class Shipment
 	}
 	@Override
 	public String toString() {
-	        return ("\n\twarehouse ID: "+this.getWarehouseID()+
-	        			", Warehouse Name: "+this.getWarehouseName()+
-	                    ", Shipment ID: "+ this.getShipmentID() +
-	                    ", Shipment Method: "+ this.getShipmentMethod() +
-	                    ", Weight : " + this.getWeight() +
-	                    ", ReceiptDate : " + this.getReceiptDate());
+		return ("\n\t"+//warehouse ID: "+this.getWarehouseID()+
+    					//", Warehouse Name: "+this.getWarehouseName()+
+	        		 	"   Shipment ID: "+ this.getShipmentID() + 
+	                    ",  Shipment Method:  "+ this.getShipmentMethod() +
+	                    ",  Weight : " + this.getWeight() +
+	                    ",  ReceiptDate : " + this.getReceiptDate());
 	   }
 }

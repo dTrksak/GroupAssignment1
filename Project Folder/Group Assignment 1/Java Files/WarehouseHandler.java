@@ -7,6 +7,8 @@ import java.util.List;
 public class WarehouseHandler
 {
 	List<Warehouse> warehouseList = new ArrayList<>();
+	
+
 
 	// static variable single_instance of type Singleton
 	private static WarehouseHandler warehouse_instance = null;

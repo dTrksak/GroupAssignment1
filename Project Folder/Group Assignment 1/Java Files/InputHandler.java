@@ -45,9 +45,7 @@ public class InputHandler
 	 * @param split
 	 * @throws IOException
 	 */
-
 	public Shipment createShipmentProcess(String[] split) throws IOException // adds a shipments given by user to data
-
 	{
 		Shipment s;
 		try {
@@ -69,10 +67,9 @@ public class InputHandler
 	 * Process to import a Json file with an array of Json objects
 	 * @throws IOException
 	 */
-
 	public Boolean importShipmentProcess() throws IOException // imports shipments from json file given by user
 	{
-
+		
 		File f = FileOperations.fileInput();
 		JsonObject jo = null;
 		jo = FileOperations.convertFileToJSON(f);
@@ -83,7 +80,6 @@ public class InputHandler
 			{
 				handle.addShipmentList(list); // add all shipments to data
 				RecoverData.saveData(); // saves all data
-
 				return true;
 			} else {
 				return null;
@@ -100,7 +96,6 @@ public class InputHandler
 			List<Shipment> xmlList = xhandle.parseXml(f.getAbsolutePath());
 			handle.addShipmentList(xmlList); // add all shipments to data
 			RecoverData.saveData(); // saves all data
-
 			return true;
 		} else {
 			return null;
@@ -200,7 +195,7 @@ public class InputHandler
 		{
 			for (int i = 0; i < list.size(); i++)
 			{
-				System.out.println("Warehouse " + list.get(i).getWarehouseID() + ", " + list.get(i).getWarehouseName() + " - " + list.get(i).getShipmentList().toString());
+				System.out.println("Warehouse " + list.get(i).getWarehouseID() + ", " + list.get(i).getWarehouseName() + " - " + list.get(i).getShipmentList().toString() + "\n");
 			}
 		}
 		else
