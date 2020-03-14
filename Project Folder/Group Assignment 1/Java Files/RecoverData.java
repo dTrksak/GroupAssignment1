@@ -44,7 +44,6 @@ public class RecoverData
 			{
 				list.remove(s); //Get rid of the shipment
 			}
-
 		}
 		
 
