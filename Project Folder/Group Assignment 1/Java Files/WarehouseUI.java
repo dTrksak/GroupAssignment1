@@ -265,11 +265,11 @@ public class WarehouseUI extends JFrame {
 						if(handle.getWarehouse(warehouseID) != null)
 						{
 							if(status.equalsIgnoreCase("ON")) {
-								Ihandle.enableFreight(warehouseID);
+								handle.getWarehouse(warehouseID).enableFreightReceipt();
 								JOptionPane.showMessageDialog(null, "Warehouse "+handle.getWarehouse(warehouseID).getWarehouseID()+" freight receipt is enabled.");
 								frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //Close the on/off window
 							} else if(status.equalsIgnoreCase("OFF")) {
-								Ihandle.endFreight(warehouseID);
+								handle.getWarehouse(warehouseID).disableFreightReceipt();
 								JOptionPane.showMessageDialog(null, "Warehouse "+handle.getWarehouse(warehouseID).getWarehouseID()+" freight receipt is disabled.");
 								frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //Close the on/off window
 							} else {
