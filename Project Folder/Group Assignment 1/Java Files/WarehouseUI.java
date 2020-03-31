@@ -89,8 +89,7 @@ public class WarehouseUI extends JFrame {
 					for (int i = 0; i < list.size(); i++)
 					{
 						sb.append("Warehouse " + list.get(i).getWarehouseID() + ", " + list.get(i).getWarehouseName() + " - ");
-						sb.append(list.get(i).getShipmentList().toString());
-						sb.append("\n\n");
+						sb.append(list.get(i).getShipmentList().toString() + "\n\n");
 					}
 				}
 				else

@@ -9,8 +9,8 @@ public class Driver
 	
 		RecoverData.oldData();
 		InputHandler IP	= new InputHandler();
-		IP.getInput();
+		//IP.getInput();
 		CompleteUI UI = new CompleteUI();
-		//UI.launchUI();
+		UI.launchUI();
 	}
 }
