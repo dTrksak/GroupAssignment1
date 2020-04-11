@@ -1,4 +1,4 @@
-package main;
+
 import java.util.*;
 
 public class Warehouse 
@@ -38,6 +38,20 @@ public class Warehouse
 			return null;
 		}
 	}
+	public Shipment removeShipment(String shipmentID) 
+	{
+		for(int i = 0; i < shipList.size(); i++) {
+			if(shipList.get(i).getShipmentID().equals(shipmentID)) 
+			{
+				Shipment s = shipList.get(i);
+				System.out.println(s);
+				shipList.remove(i);
+				return s;
+			}
+		}
+		return null;
+	}
+	
 	public String getWarehouseID()
 	{
 		return warehouseID;

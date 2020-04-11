@@ -1,4 +1,4 @@
-package main;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -71,6 +71,8 @@ public class WarehouseUI extends JFrame {
 		
 		JLabel lblAddShipment = new JLabel("Add Shipment");
 		
+		JLabel lblRemoveShipment = new JLabel("Remove Shipment");
+		
 		JLabel lblPrintShipments = new JLabel("Print Shipments");
 		
 		JLabel lblExport = new JLabel("Export Warehouse Shipments");
@@ -84,12 +86,19 @@ public class WarehouseUI extends JFrame {
 
 				// converts warehouse list to a string so that its able to print out in JPanel
 			    StringBuffer sb = new StringBuffer();
+			    
+				
+				JFrame frame = new JFrame();
+				frame.setSize(400, 300);
+				frame.setLayout(new FlowLayout());
+				
 			    if (list != null)
 				{
 					for (int i = 0; i < list.size(); i++)
 					{
 						sb.append("Warehouse " + list.get(i).getWarehouseID() + ", " + list.get(i).getWarehouseName() + " - ");
 						sb.append(list.get(i).getShipmentList().toString() + "\n\n");
+										
 					}
 				}
 				else
@@ -111,11 +120,11 @@ public class WarehouseUI extends JFrame {
 				JFrame frame = new JFrame();
 				frame.setSize(400, 300);
 				frame.setLayout(new FlowLayout());
-				JLabel addWarehouseID = new JLabel("Enter WarehouseID");
+				JLabel addWarehouseID = new JLabel("Enter Warehouse ID");
 				JTextField field = new JTextField(20);
 				frame.add(addWarehouseID);
 				frame.add(field);
-				JLabel addWarehouseName = new JLabel("Enter warehouse name");
+				JLabel addWarehouseName = new JLabel("Enter Warehouse name");
 				JTextField field2 = new JTextField(20);
 				frame.add(addWarehouseName);
 				frame.add(field2);
@@ -153,15 +162,11 @@ public class WarehouseUI extends JFrame {
 				JFrame frame = new JFrame();
 				frame.setSize(400, 400);
 				frame.setLayout(new FlowLayout());
-				JLabel addWarehouseID = new JLabel("Enter WarehouseID");
+				JLabel addWarehouseID = new JLabel("Enter Warehouse ID");
 				JTextField field = new JTextField(20);
 				frame.add(addWarehouseID);
 				frame.add(field);
-				JLabel addWarehouseName = new JLabel("Add warehouse name");
-				JTextField field2 = new JTextField(20);
-				frame.add(addWarehouseName);
-				frame.add(field2);
-				JLabel addShipmentID = new JLabel("Add ShipmentID");
+				JLabel addShipmentID = new JLabel("Add Shipment ID");
 				JTextField field3 = new JTextField(20);
 				frame.add(addShipmentID);
 				frame.add(field3);
@@ -173,11 +178,7 @@ public class WarehouseUI extends JFrame {
 				JTextField field5 = new JTextField(20);
 				frame.add(addShipmentWeight);
 				frame.add(field5);
-				JLabel addShipmentDate = new JLabel("Add Shipment Date");
-				JTextField field6 = new JTextField(20);
-				frame.add(addShipmentDate);
-				frame.add(field6);
-				
+
 				
 				frame.setVisible(true);
 				JButton doneBtn = new JButton("Done");
@@ -186,19 +187,17 @@ public class WarehouseUI extends JFrame {
 					public void actionPerformed(ActionEvent e){
 						String wareHouseIDInit = field.getText();
 						shipInfo[0] = wareHouseIDInit;
-						String wareHouseNameInit = field2.getText();
-						shipInfo[1] = wareHouseNameInit;
+						shipInfo[1] = null;
 						String wareHouseShipmentIDInit = field3.getText();
 						shipInfo[2] = wareHouseShipmentIDInit;
 						String shipmentMethodInit = field4.getText();
 						shipInfo[3] = shipmentMethodInit;
 						String wareHouseWeightInit = field5.getText();
 						shipInfo[4] = wareHouseWeightInit;
-						String shipmentDateInit = field6.getText();
-						shipInfo[5] = shipmentDateInit;
+						shipInfo[5] = null;
 						
-						if(wareHouseIDInit.equals("") || wareHouseNameInit.equals("") || wareHouseShipmentIDInit.equals("") ||
-								shipmentMethodInit.equals("") || wareHouseWeightInit.equals("") || shipmentDateInit.equals("")) {
+						if(wareHouseIDInit.equals("") || wareHouseShipmentIDInit.equals("") ||
+								shipmentMethodInit.equals("") || wareHouseWeightInit.equals("")) {
 							JOptionPane.showMessageDialog(null, "All fields should have a value.");
 						}
 						// User cannot create a warehouse here, they must use the create warehouse button.
@@ -207,9 +206,6 @@ public class WarehouseUI extends JFrame {
 								Shipment s = Ihandle.createShipmentProcess(shipInfo);
 								if(s != null)
 								{
-									//List<Shipment> saveList = new ArrayList<>();
-									//saveList.add(s);
-									//RecoverData.saveData(saveList);
 									JOptionPane.showMessageDialog(null, "Shipment added to warehouse "+handle.getWarehouse(wareHouseIDInit).getWarehouseID()+".");
 									frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //Close the warehouse window
 								}
@@ -232,6 +228,49 @@ public class WarehouseUI extends JFrame {
 				});
 				
 			
+			}
+		});
+		
+		JButton btnRemoveShipment = new JButton("Remove Shipment"); // Creates a new warehouse
+		btnRemoveShipment.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				
+				JFrame frame = new JFrame();
+				frame.setSize(400, 300);
+				frame.setLayout(new FlowLayout());
+				JLabel addWarehouseID = new JLabel("Enter Warehouse ID");
+				JTextField field = new JTextField(20);
+				frame.add(addWarehouseID);
+				frame.add(field);
+				JLabel addWarehouseName = new JLabel("Enter Shipment ID");
+				JTextField field2 = new JTextField(20);
+				frame.add(addWarehouseName);
+				frame.add(field2);
+				
+				
+				frame.setVisible(true);
+				JButton doneBtn = new JButton("Done");
+				frame.add(doneBtn);
+				doneBtn.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						String wareHouseIDInit = field.getText();
+						String shipmentID = field2.getText();
+						if(wareHouseIDInit.equals("") || shipmentID.equals("")) {
+							JOptionPane.showMessageDialog(null, "All fields should have a value.");
+						}
+						// If information entered correctly remove shipment
+						else if(handle.getWarehouse(wareHouseIDInit) != null) {
+							try {
+								Ihandle.removeShipmentProcess(wareHouseIDInit, shipmentID);
+							} catch (IOException e1) {
+								e1.printStackTrace();
+							}
+							frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING)); //Close the warehouse window
+						} else {
+							JOptionPane.showMessageDialog(null, "Shipment "+shipmentID+" is not in "+wareHouseIDInit);
+						}
+					}
+				});
 			}
 		});
 
@@ -366,6 +405,7 @@ public class WarehouseUI extends JFrame {
 						.addComponent(lblPrintShipments)
 						.addComponent(lblAddWarehouse)
 						.addComponent(lblAddShipment)
+						.addComponent(lblRemoveShipment)
 						.addComponent(lblExport))
 					.addPreferredGap(ComponentPlacement.RELATED, 162, Short.MAX_VALUE)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -374,6 +414,7 @@ public class WarehouseUI extends JFrame {
 						.addComponent(btnPrint)
 						.addComponent(btnAddWarehouse)
 						.addComponent(btnAdd)
+						.addComponent(btnRemoveShipment)
 						.addComponent(btnExport))
 					.addContainerGap(32, Short.MAX_VALUE))
 		);
@@ -396,11 +437,15 @@ public class WarehouseUI extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 						.addComponent(lblAddShipment)
 						.addComponent(btnAdd))
-					.addGap(23) //22
+					.addGap(23)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblRemoveShipment)
+						.addComponent(btnRemoveShipment))
+					.addGap(23)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblToggleReciept)
 						.addComponent(tglbtnOnoff))
-					.addGap(23) //37
+					.addGap(23)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 							.addComponent(lblExport)
 							.addComponent(btnExport))))

@@ -1,5 +1,9 @@
-package main;
-import java.util.Collections;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.text.DateFormat; 
+import java.text.SimpleDateFormat; 
+import java.util.Date; 
 
 public class Shipment
 {
@@ -9,6 +13,8 @@ public class Shipment
 	String shipment_method;
 	float weight;
 	long receipt_date;
+	long leave_date;
+	private List<String> shipHistory = new ArrayList<String>();
 	
 	//creates a shipment object
 	public Shipment(String warehouseID, String warehouseName, String shipmentID, String shipmentMethod, float weight, long receiptDate)
@@ -44,13 +50,21 @@ public class Shipment
 	{
 		return this.receipt_date;
 	}
+	public long getLeaveDate()
+	{
+		return this.leave_date;
+	}
+	public void setLeaveDate(long leave) 
+	{
+		this.leave_date = leave;
+	}
 	@Override
 	public String toString() {
-		return ("\n\t"+//warehouse ID: "+this.getWarehouseID()+
-    					//", Warehouse Name: "+this.getWarehouseName()+
-	        		 	"   Shipment ID: "+ this.getShipmentID() + 
+		DateFormat simple = new SimpleDateFormat("MMM dd yyy HH:mm:ss");
+		Date result = new Date(this.getReceiptDate());
+		return ("\n\t 	    Shipment ID: "+ this.getShipmentID() + 
 	                    ",  Shipment Method:  "+ this.getShipmentMethod() +
 	                    ",  Weight : " + this.getWeight() +
-	                    ",  ReceiptDate : " + this.getReceiptDate());
+	                    ",  Receipt Date: " + simple.format(result));
 	   }
 }
