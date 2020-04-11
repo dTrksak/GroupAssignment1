@@ -1,5 +1,5 @@
-package main;
 
+import java.time.ZonedDateTime;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,8 +19,6 @@ public class InputHandler
 	XmlHandler xhandle = new XmlHandler();
 	JsonHandler jhandle = new JsonHandler();
 	RecoverData reData = new RecoverData();
-	
-
 	/**
 	 * Process to create a warehouse
 	 * 
@@ -47,9 +45,19 @@ public class InputHandler
 	 */
 	public Shipment createShipmentProcess(String[] split) throws IOException // adds a shipments given by user to data
 	{
+		if(split[1] == null) {
+			Warehouse w = handle.getWarehouse(split[0]);
+			split[1] = w.getWarehouseName();
+		}
 		Shipment s;
 		try {
-			s = handle.addShipment(split[0], split[1], split[2], split[3], Float.parseFloat(split[4]), Long.parseLong(split[5]));
+			if(split[5] == null) {
+				long time = ZonedDateTime.now().toInstant().toEpochMilli();
+				s = handle.addShipment(split[0], split[1], split[2], split[3], Float.parseFloat(split[4]), time);
+			}
+			else {
+				s = handle.addShipment(split[0], split[1], split[2], split[3], Float.parseFloat(split[4]), Long.parseLong(split[5]));
+			}
 		} catch(Exception e) {
 			return null;
 		}
@@ -62,6 +70,30 @@ public class InputHandler
 		}
 		return null;
 	}
+	
+	/**
+	 * Process to remove a shipment for a warehouse
+	 * Places removed shipment into a In Transit category
+	 * @throws IOException
+	 */
+	public Shipment removeShipmentProcess(String warehouseID, String shipID) throws IOException {
+		Shipment s;
+		try {
+			Warehouse w = handle.getWarehouse(warehouseID);
+			s = w.removeShipment(shipID);
+		} catch (Exception e) {
+			return null;
+		}
+		
+		if (s != null) {
+			System.out.println("Shipment successfully removed");
+			handle.addShipment("000", "In Transit", s.getShipmentID(), s.getShipmentMethod(), s.getWeight(), ZonedDateTime.now().toInstant().toEpochMilli());
+			RecoverData.saveData();
+			return s;
+		}
+		return null; 
+	}
+	
 
 	/**
 	 * Process to import a Json file with an array of Json objects
