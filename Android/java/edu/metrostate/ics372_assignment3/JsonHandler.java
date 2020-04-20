@@ -1,5 +1,6 @@
 package edu.metrostate.ics372_assignment3;
 
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.BufferedWriter;
@@ -97,7 +98,7 @@ public class JsonHandler
 
 				// Add the shipment to shiplist
 				shipList.add(new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate));
-				Log.d("Tag", "hi");
+
 			}
 			
 			// Once all of the shipments have been added to shiplist without errors, add
@@ -128,8 +129,8 @@ public class JsonHandler
 	{ // takes a list of shipments and writes them to a Json file
 
 		FileOperations fo = new FileOperations();
-		String directory = "";
-		fo.createFile(directory, "fileOutput");
+		String directory = Environment.getExternalStorageDirectory().getPath();
+		//fo.createFile(directory, fileName);
 
 		if (directory == null)
 		{
