@@ -68,12 +68,28 @@ public class MainActivity extends AppCompatActivity {
         scroller = findViewById(R.id.scroll);
 
 
+
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             startInfo();
             }
         });
+
+        xmlButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        exportButton.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                exportJson();
+            }
+                                        });
+
 
         jsonButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +116,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void exportJson() {
+        JsonHandler jsonOut = new JsonHandler();
+        WarehouseHandler wareOut = new WarehouseHandler();
+        try {
+            ArrayList <Shipment> outList = new ArrayList<>();
+            outList.addAll(dataList);
+            wareOut.addShipmentList(dataList);
+            outList = wareOut.getAllWarehouseShipments();
+
+            Log.d("OUT", outList.toString());
+            jsonOut.shipmentToJson(outList, "testFile");
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
     private void getJson() throws IOException {
         JsonHandler jsonIn = new JsonHandler();
         WarehouseHandler wareIn =WarehouseHandler.getInstance();
@@ -120,15 +152,6 @@ public class MainActivity extends AppCompatActivity {
                wareIn.addShipmentList(dataList);
                // JsonArray jsonArray = new JsonArray(json);
                 dataList = wareIn.getAllWarehouseShipments();
-               /* for(int i =0; i < jsonArray.size(); i++){
-                    JSONObject obj = jsonArray.getAsJsonObject(i);
-                    if(obj.getString("shipment_method").equals("air")){
-                        dataList.add(obj.getString("shipment_id"));
-                        jsonIn.shipmentToJson(dataList);
-                    }
-
-
-                }*/
 
 
         }catch(JsonIOException e){
@@ -136,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         scroller.setText(dataList.toString());
+        scroller.setMovementMethod(new ScrollingMovementMethod());
     }
 
 
