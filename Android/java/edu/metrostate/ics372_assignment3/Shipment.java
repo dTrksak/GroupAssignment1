@@ -1,5 +1,8 @@
 package edu.metrostate.ics372_assignment3;
 import java.util.Collections;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Shipment
 {
@@ -46,11 +49,13 @@ public class Shipment
 	}
 	@Override
 	public String toString() {
+		DateFormat simple = new SimpleDateFormat("MMM dd yyy HH:mm:ss");
+		Date result = new Date(this.getReceiptDate());
 		return ("\n\t"+//warehouse ID: "+this.getWarehouseID()+
     					//", Warehouse Name: "+this.getWarehouseName()+
 	        		 	"   Shipment ID: "+ this.getShipmentID() + 
 	                    ",  Shipment Method:  "+ this.getShipmentMethod() +
 	                    ",  Weight : " + this.getWeight() +
-	                    ",  ReceiptDate : " + this.getReceiptDate());
+	                    ",  ReceiptDate : " + simple.format(result));
 	   }
 }
