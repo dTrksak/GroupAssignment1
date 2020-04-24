@@ -68,6 +68,28 @@ public class InputHandler
 		}
 		return null;
 	}
+	
+	/**
+	 * Process to remove a shipment for a warehouse
+	 * Places removed shipment into a In Transit category
+	 * @throws IOException
+	 */
+	public Shipment removeShipmentProcess(String warehouseID, String shipID) throws IOException {
+		Shipment s;
+		try {
+			Warehouse w = handle.getWarehouse(warehouseID);
+			s = w.removeShipment(shipID);
+		} catch (Exception e) {
+			return null;
+		}
+
+		if (s != null) {
+			System.out.println("Shipment successfully removed");
+			RecoverData.saveData();
+			return s;
+		}
+		return null;
+	}
 
 	/**
 	 * Process to import a Json file with an array of Json objects
