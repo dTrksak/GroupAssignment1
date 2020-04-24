@@ -1,6 +1,5 @@
-package edu.metrostate.ics372_assignment3;
-
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -9,10 +8,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.XmlResourceParser;
 import android.net.Uri;
 import android.nfc.Tag;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.FileUtils;
+import android.text.method.MovementMethod;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -28,37 +31,66 @@ import com.google.gson.JsonParser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.StringReader;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Stream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int WRITE_STORAGE_PERMISSION_REQUEST = 5;
-    private List<Shipment> dataList = new ArrayList<Shipment>();
+    private static final int READ_REQUEST_CODE = 42;
+    private  List<Shipment> dataList = new ArrayList<>();
+    private InputHandler inputs = new InputHandler();
     private WarehouseApplication application;
     private TextView scroller;
     private Button jsonButton;
     private Button exportButton;
     private Button xmlButton;
     private Button infoButton;
+    private Object IOException;
 
     /**
      * Creates the view for the application
+     *
      * @param savedInstanceState saved state information for the activity
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        application = (WarehouseApplication)getApplication();
+        application = (WarehouseApplication) getApplication();
 
 
         jsonButton = findViewById(R.id.jsonButton);
@@ -68,37 +100,38 @@ public class MainActivity extends AppCompatActivity {
         scroller = findViewById(R.id.scroll);
 
 
-
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            startInfo();
+                startInfo();
             }
         });
 
         xmlButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                try {
+                    importXML();
+                } catch (IOException | ParserConfigurationException | SAXException e) {
+                    e.printStackTrace();
+                }
             }
         });
-        exportButton.setOnClickListener(new View.OnClickListener(){
+        exportButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 exportJson();
             }
-                                        });
+        });
 
 
         jsonButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                try {
-                    getJson();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                fileSearch();
+
 
             }
 
@@ -116,28 +149,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void exportJson() {
-        JsonHandler jsonOut = new JsonHandler();
-        WarehouseHandler wareOut = new WarehouseHandler();
-        try {
-            ArrayList <Shipment> outList = new ArrayList<>();
-            outList.addAll(dataList);
-            wareOut.addShipmentList(dataList);
-            outList = wareOut.getAllWarehouseShipments();
-
-            Log.d("OUT", outList.toString());
-            jsonOut.shipmentToJson(outList, "testFile");
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    private void getJson() throws IOException {
+    private void  getJson(Uri input) throws IOException {
         JsonHandler jsonIn = new JsonHandler();
         WarehouseHandler wareIn =WarehouseHandler.getInstance();
         String str;
+
         try {
-            InputStream is = getAssets().open("example.json");
+            InputStream is = getContentResolver().openInputStream(input);
             str = FileOperations.getFileContents(is);
 
 
@@ -148,10 +166,10 @@ public class MainActivity extends AppCompatActivity {
 
 
             //json = new String(buffer, "UTF-8");
-               dataList = jsonIn.jsonToShipment(json);
-               wareIn.addShipmentList(dataList);
-               // JsonArray jsonArray = new JsonArray(json);
-                dataList = wareIn.getAllWarehouseShipments();
+            dataList = jsonIn.jsonToShipment(json);
+            wareIn.addShipmentList(dataList);
+            // JsonArray jsonArray = new JsonArray(json);
+            dataList = wareIn.getAllWarehouseShipments();
 
 
         }catch(JsonIOException e){
@@ -165,6 +183,64 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    private void fileSearch(){
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("*/*");
+        startActivityForResult(intent, READ_REQUEST_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK){
+
+            if(data != null) {
+
+             Uri uri = data.getData();
+
+                try {
+                    getJson(uri);
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                System.out.println("data is null");
+            }
+
+        }
+
+    }
+
+
+
+    private void importXML() throws IOException, ParserConfigurationException, SAXException {
+
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.setType("*/*");
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, READ_REQUEST_CODE );
+
+
+        /*scroller.setText(dataList.toString());
+        scroller.setMovementMethod(new ScrollingMovementMethod());*/
+}
+
+
+    private void exportJson() {
+        JsonHandler jsonOut = new JsonHandler();
+        WarehouseHandler wareOut = new WarehouseHandler();
+
+        try {
+            ArrayList <Shipment> outList = new ArrayList<>();
+            //outList.addAll(dataList);
+            wareOut.addShipmentList(dataList);
+            outList = wareOut.getAllWarehouseShipments();
+
+            jsonOut.shipmentToJson(outList, "testFile");
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
 
 
     private void startInfo() {
