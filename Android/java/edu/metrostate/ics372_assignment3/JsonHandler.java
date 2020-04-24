@@ -63,10 +63,10 @@ public class JsonHandler
 				String shipmentID;
 				try {
 					shipmentObj = i.getAsJsonObject();
-					warehouseID = shipmentObj.get("warehouse_id").toString();
-					warehouseName = shipmentObj.get("warehouse_name").toString();
-					shipmentMethod = shipmentObj.get("shipment_method").toString();
-					shipmentID = shipmentObj.get("shipment_id").toString();
+					warehouseID = shipmentObj.get("warehouse_id").getAsString();
+					warehouseName = shipmentObj.get("warehouse_name").getAsString();
+					shipmentMethod = shipmentObj.get("shipment_method").getAsString();
+					shipmentID = shipmentObj.get("shipment_id").getAsString();
 
 				} catch(Exception e) {
 					return null; //Format error
