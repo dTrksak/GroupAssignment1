@@ -1,84 +1,51 @@
+package edu.metrostate.ics372_androidstart_master;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.res.XmlResourceParser;
-import android.net.Uri;
-import android.nfc.Tag;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.FileUtils;
-import android.text.method.MovementMethod;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.gson.JsonArray;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.StringReader;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Stream;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity {
 
+    public WarehouseHandler wareIn = WarehouseHandler.getInstance();
     private static final int WRITE_STORAGE_PERMISSION_REQUEST = 5;
     private static final int READ_REQUEST_CODE = 42;
     private  List<Shipment> dataList = new ArrayList<>();
     private InputHandler inputs = new InputHandler();
     private WarehouseApplication application;
+    private Button printButton;
     private TextView scroller;
     private Button jsonButton;
     private Button exportButton;
     private Button xmlButton;
     private Button infoButton;
+    private Button shipInfo;
     private Object IOException;
 
     /**
@@ -98,12 +65,27 @@ public class MainActivity extends AppCompatActivity {
         xmlButton = findViewById(R.id.xmlButton);
         infoButton = findViewById(R.id.infoButton);
         scroller = findViewById(R.id.scroll);
-
+        shipInfo = findViewById(R.id.shipmentInfo);
+        printButton = findViewById(R.id.printButton);
 
         infoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startInfo();
+            }
+        });
+
+        printButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                print();
+            }
+        });
+
+        shipInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shipInfo();
             }
         });
 
@@ -147,6 +129,15 @@ public class MainActivity extends AppCompatActivity {
                     WRITE_STORAGE_PERMISSION_REQUEST);
         }
 
+    }
+
+    private void print() {
+        inputs.showAllData(wareIn.getAllWarehouses(), scroller);
+    }
+
+    private void shipInfo() {
+        Intent intent = new Intent(this, AddShipment.class);
+        startActivity(intent);
     }
 
     private void  getJson(Uri input) throws IOException {
@@ -196,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
             if(data != null) {
 
-             Uri uri = data.getData();
+                Uri uri = data.getData();
 
                 try {
                     getJson(uri);
@@ -223,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*scroller.setText(dataList.toString());
         scroller.setMovementMethod(new ScrollingMovementMethod());*/
-}
+    }
 
 
     private void exportJson() {
