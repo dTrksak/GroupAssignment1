@@ -1,13 +1,13 @@
-package edu.metrostate.ics372_assignment3;
+package edu.metrostate.ics372_androidstart_master;
 import java.util.*;
 
-public class Warehouse 
+public class Warehouse
 {
 	private String warehouseID;
 	private String warehouseName;
 	private List<Shipment> shipList = new ArrayList<Shipment>();
 	private boolean availability = true;
-	
+
 	public Warehouse(String warehouseID, String warehouseName)
 	{
 		this.warehouseID = warehouseID;
@@ -26,7 +26,7 @@ public class Warehouse
 		return availability;
 	}
 	public Shipment addShipment(Shipment shipment)
-	{ 
+	{
 		if(availability == true)
 		{ // add shipment to warehouse
 			shipList.add(shipment);
@@ -38,7 +38,6 @@ public class Warehouse
 			return null;
 		}
 	}
-	
 	public Shipment removeShipment(String shipmentID)
 	{
 		for(int i = 0; i < shipList.size(); i++) {

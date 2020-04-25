@@ -30,30 +30,35 @@ public class RemoveShipment extends AppCompatActivity {
         shipmentMethod = findViewById(R.id.shipmentMethod);
         weightIP = findViewById(R.id.weight);
         result = findViewById(R.id.result);
-        done = (Button) findViewById(R.id.doneButton);
+        done = (Button) findViewById(R.id.addButton);
 
         final String wareID = warehouseID.getText().toString();
         final String shipID = shipmentID.getText().toString();
 
+
+        /* TODO if a warehouse receipt is disabled can you still remove a shipment? */
         done.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+
                 WarehouseHandler handle = WarehouseHandler.getInstance();
-                Warehouse w = handle.getWarehouse(wareID);
                 String message;
+
                 if(warehouseID.length() == 0){
                     result.setText("Please enter Warehouse Id");
                 }
-                else if(shipmentID.length() == 0){
+
+                Warehouse w = handle.getWarehouse(wareID);
+
+                if(shipmentID.length() == 0){
                     result.setText("Please enter Shipment Id");
                 }
-                else if(handle.getWarehouse(wareID) == null) {
+
+                if(handle.getWarehouse(wareID) == null) {
                     message = "Warehouse " + wareID + " does not exits, please double check the Warehouse ID";
                     result.setText(message);
-                }
-                else {
-                    Shipment s;
-                    s = w.removeShipment(shipID);
+                } else {
+                    Shipment s = w.removeShipment(shipID);
                     if (s != null) {
                         message = "Shipment " + shipID + " successfully removed!";
                         result.setText(message);

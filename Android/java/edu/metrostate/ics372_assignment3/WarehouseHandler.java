@@ -1,4 +1,4 @@
-package edu.metrostate.ics372_assignment3;
+package edu.metrostate.ics372_androidstart_master;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,7 @@ import java.util.List;
 public class WarehouseHandler
 {
 	List<Warehouse> warehouseList = new ArrayList<>();
-	
+
 
 
 	// static variable single_instance of type Singleton
@@ -140,7 +140,7 @@ public class WarehouseHandler
 
 	/**
 	 * Gets a specified warehouse's receipt
-	 * 
+	 *
 	 * @param warehouseID
 	 * @return the warehouse receipt, null if the warehouse doesn't exist
 	 */
@@ -162,7 +162,7 @@ public class WarehouseHandler
 
 	/**
 	 * Sets a boolean value in a specified warehouse
-	 * 
+	 *
 	 * @param warehouseID
 	 * @param input       what the boolean should be set to
 	 */
@@ -198,7 +198,7 @@ public class WarehouseHandler
 
 	/**
 	 * Adds a shipment to the specified warehouse
-	 * 
+	 *
 	 * @param warehouseID
 	 * @param shipmentID
 	 * @param shipmentMethod
@@ -213,9 +213,9 @@ public class WarehouseHandler
 		{
 			w = addWarehouse(warehouseID, warehouseName);
 		}
-		
+
 		if(w.getAvailability() && w.getWarehouseName().equals(warehouseName)) { //Prevents warehouses with identical ids but different names
-			
+
 			Shipment s = new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate); // Switch around the data if needed
 			Shipment s2 = w.addShipment(s);
 			if (s2 != null) {
@@ -223,7 +223,7 @@ public class WarehouseHandler
 			}
 			return null;
 		}else{
-			
+
 			if(!w.getWarehouseName().equals(warehouseName)) {
 				System.out.println("Warehouse "+w.getWarehouseID()+"'s name is not correct, it should be '"+w.getWarehouseName()+"'.");
 				return null;

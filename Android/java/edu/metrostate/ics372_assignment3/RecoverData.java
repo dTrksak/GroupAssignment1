@@ -1,4 +1,4 @@
-package edu.metrostate.ics372_assignment3;
+package edu.metrostate.ics372_androidstart_master;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,7 +36,7 @@ public class RecoverData
 	public static void saveData() throws IOException
 	{
 		WarehouseHandler handle = WarehouseHandler.getInstance();
-		
+
 		List<Shipment> list = handle.getAllWarehouseShipments(); //get all current data
 
 		for(Shipment s : list)
@@ -47,9 +47,9 @@ public class RecoverData
 				list.remove(s); //Get rid of the shipment
 			}
 		}
-		
 
-		WarehouseContents contents = new WarehouseContents(new ArrayList<Shipment>(list)); 
+
+		WarehouseContents contents = new WarehouseContents(new ArrayList<Shipment>(list));
 		Gson gson = new GsonBuilder().setPrettyPrinting().create(); // Output with pretty indentation
 		String json = gson.toJson(contents);
 
