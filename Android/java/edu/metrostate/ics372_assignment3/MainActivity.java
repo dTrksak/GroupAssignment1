@@ -228,6 +228,13 @@ public class MainActivity extends AppCompatActivity {
             outList = wareOut.getAllWarehouseShipments();
 
             jsonOut.shipmentToJson(outList, "testFile");
+            Toast toast=Toast.makeText(this,"Shipments successfully Imported",Toast.LENGTH_LONG);
+            View view =toast.getView();
+            view.setBackgroundColor(Color.GREEN);
+            TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+            toastMessage.setTextColor(Color.RED);
+            toast.show();
+            scroller.setText("");
         }catch(IOException e){
             e.printStackTrace();
         }
