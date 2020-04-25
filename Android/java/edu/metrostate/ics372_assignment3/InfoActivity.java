@@ -117,10 +117,6 @@ public class InfoActivity extends AppCompatActivity {
         startActivity(intentAdd);
     }
 
-    private void removeShipment() {
-        Intent intentRemove = new Intent(this, RemoveShipment.class);
-        startActivity(intentRemove);
-    }
 
     public Warehouse createWarehouse(String name, String id)
     {

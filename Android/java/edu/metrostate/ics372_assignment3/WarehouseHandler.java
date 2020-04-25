@@ -215,7 +215,6 @@ public class WarehouseHandler
 		}
 
 		if(w.getAvailability() && w.getWarehouseName().equals(warehouseName)) { //Prevents warehouses with identical ids but different names
-
 			Shipment s = new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate); // Switch around the data if needed
 			Shipment s2 = w.addShipment(s);
 			if (s2 != null) {

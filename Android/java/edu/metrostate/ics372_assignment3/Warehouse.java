@@ -1,4 +1,7 @@
 package edu.metrostate.ics372_androidstart_master;
+import android.util.Log;
+import android.widget.TextView;
+
 import java.util.*;
 
 public class Warehouse
@@ -25,11 +28,19 @@ public class Warehouse
 	{
 		return availability;
 	}
+
 	public Shipment addShipment(Shipment shipment)
 	{
 		if(availability == true)
 		{ // add shipment to warehouse
+			for(int i = 0; i < shipList.size(); i++){
+				if(shipList.get(i).shipment_id.equals(shipment.shipment_id)){
+					System.out.println("Sorry shipment with id: " + shipment.shipment_id + " already exists cannot create duplicates");
+					return null;//double shipment
+				}
+			}
 			shipList.add(shipment);
+			System.out.println("Shipment added");
 			return shipment;
 		}
 		else

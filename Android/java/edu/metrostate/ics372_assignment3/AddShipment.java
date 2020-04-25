@@ -73,8 +73,13 @@ public class AddShipment extends AppCompatActivity {
                         String warehouseName = w.getWarehouseName();
                         Long time = System.currentTimeMillis();
                         float weight = Float.valueOf(weightIP.getText().toString());
-                        new MainActivity().wareIn.addShipment(wareID, warehouseName, shipID, shipMethod, weight, time);
-                        result.setText("Shipment added successfully!");
+                        Shipment s = new MainActivity().wareIn.addShipment(wareID, warehouseName, shipID, shipMethod, weight, time);
+                        if(s != null) {
+                            result.setText("Shipment added successfully!");
+                        }else{
+                            message = "Shipment with shipment id " + shipID + " already exists cannot add duplicate shipments";
+                            result.setText(message);
+                        }
                     }
                 }
             }
@@ -123,5 +128,9 @@ public class AddShipment extends AppCompatActivity {
 
         });
 
+
+    }
+    public TextView getTextView(){
+        return result;
     }
 }
