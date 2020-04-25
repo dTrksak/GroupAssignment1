@@ -49,57 +49,32 @@
         tools:layout_editor_absoluteX="251dp"
         tools:layout_editor_absoluteY="154dp" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="422dp"
-        android:layout_marginEnd="131dp"
-        android:text="Export All Option"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        tools:layout_editor_absoluteX="112dp"
-        tools:layout_editor_absoluteY="249dp" />
-
     <Button
         android:id="@+id/exportButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_centerVertical="true"
-        android:layout_marginStart="99dp"
-        android:layout_marginTop="462dp"
+        android:layout_marginStart="-2dp"
+        android:layout_marginTop="635dp"
         android:text="Export All Shipments"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="332dp" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="61dp"
-        android:layout_marginBottom="140dp"
-        android:text="Add Warehouse/Shipment"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp" />
-
     <Button
         android:id="@+id/infoButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="149dp"
-        android:layout_marginBottom="86dp"
-        android:text="Add Info" />
+        android:layout_marginStart="-9dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="216dp"
+        android:text="Add Warehouse Info" />
 
     <TextView
         android:id="@+id/scroll"
@@ -110,6 +85,28 @@
         android:layout_marginStart="2dp"
         android:layout_marginTop="199dp"
         android:scrollbars="vertical"
-        android:text="TextView" />
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="-2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="143dp"
+        android:text="Add Shipment Info" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginBottom="80dp"
+        android:text="Print All Shipments" />
 
 </RelativeLayout>
