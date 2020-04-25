@@ -1,4 +1,5 @@
-package edu.metrostate.ics372_assignment3;
+package edu.metrostate.ics372_androidstart_master;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class XmlHandler
 
 	/**
 	 * Creates a list of shipments given a filepath
-	 * 
+	 *
 	 * @param str a filepath
 	 * @return a list of shipments, OR null if the xml file was incorrectly
 	 *         formatted
@@ -97,6 +98,7 @@ public class XmlHandler
 				{
 					shipmentWeight = (float) (Float.valueOf(element.getChildNodes().item(0).getNodeValue()));
 				}
+
 				else // If the shipment unit is not kg or lb, file is incorrectly formatted
 				{
 					System.out.println("Xml file incorrectly formatted.");
@@ -108,6 +110,8 @@ public class XmlHandler
 				shipmentReceiptDate = Long.valueOf(element.getChildNodes().item(0).getNodeValue());
 				System.out.println("sreceipt date: " + shipmentReceiptDate);
 			}
+
+
 
 			// Once all the shipment variables are found, add the shipment. *Don't reset the
 			// warehouse variables*
@@ -125,6 +129,7 @@ public class XmlHandler
 		}
 
 		// Once all the tags have been checked, return the list of shipments
+
 		return shipments;
 	}
 }

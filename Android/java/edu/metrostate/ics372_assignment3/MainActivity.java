@@ -3,6 +3,7 @@ package edu.metrostate.ics372_androidstart_master;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -228,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
             outList = wareOut.getAllWarehouseShipments();
 
             jsonOut.shipmentToJson(outList, "testFile");
-            Toast toast=Toast.makeText(this,"Shipments successfully exported",Toast.LENGTH_LONG);
+            Toast toast=Toast.makeText(this,"Shipments successfully Imported",Toast.LENGTH_LONG);
             View view =toast.getView();
             view.setBackgroundColor(Color.GREEN);
             TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);

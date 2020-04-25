@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="edu.metrostate.ics372_assignment3">
+    package="edu.metrostate.ics372_androidstart_master">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -13,23 +13,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".RemoveShipment"
-            android:parentActivityName=".InfoActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
-        <activity
-            android:name=".AddShipment"
-            android:parentActivityName=".InfoActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
-        <activity
-            android:name=".InfoActivity"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".MainActivity">
+            android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".InfoActivity"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <activity
+            android:name=".AddShipment"
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
+
     </application>
 
 </manifest>

@@ -1,6 +1,11 @@
-package edu.metrostate.ics372_assignment3;
+package edu.metrostate.ics372_androidstart_master;
+
 
 import android.net.Uri;
+import android.os.Environment;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 
@@ -25,11 +30,11 @@ public class InputHandler
 	XmlHandler xhandle = new XmlHandler();
 	JsonHandler jhandle = new JsonHandler();
 	RecoverData reData = new RecoverData();
-	
+
 
 	/**
 	 * Process to create a warehouse
-	 * 
+	 *
 	 * @param warehouseID
 	 */
 	public void createWarehouseProcess(String warehouseID, String warehouseName)
@@ -47,7 +52,7 @@ public class InputHandler
 
 	/**
 	 * Process to create a shipment
-	 * 
+	 *
 	 * @param split
 	 * @throws IOException
 	 */
@@ -59,7 +64,7 @@ public class InputHandler
 		} catch(Exception e) {
 			return null;
 		}
-		
+
 		if (s != null)
 		{
 			RecoverData.saveData(); // Saves changes
@@ -68,7 +73,7 @@ public class InputHandler
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Process to remove a shipment for a warehouse
 	 * Places removed shipment into a In Transit category
@@ -97,7 +102,7 @@ public class InputHandler
 	 */
 	public Boolean importShipmentProcess(File f) throws IOException // imports shipments from json file given by user
 	{
-		
+
 		//File f = FileOperations.fileInput();
 		JsonObject jo = new JsonObject();
 		jo = FileOperations.convertFileToJSON(f);
@@ -115,27 +120,27 @@ public class InputHandler
 		}
 		return null;
 	}
-	
+
 	/*
 	 * Imports an xml file
 	 */
-	/*public Boolean importXmlProcess() throws ParserConfigurationException, SAXException, IOException
+	public Boolean importXmlProcess() throws ParserConfigurationException, SAXException, IOException
 	{
-		File f = FileOperations.fileInput();
-		if (f != null)
+		File outXML = new File("abc");
+		if (outXML != null)
 		{
-			List<Shipment> xmlList = xhandle.parseXml(f.getAbsolutePath());
+			List<Shipment> xmlList = xhandle.parseXml(outXML.getAbsolutePath());
 			handle.addShipmentList(xmlList); // add all shipments to data
 			RecoverData.saveData(); // saves all data
 			return true;
 		} else {
 			return null;
 		}
-	}*/
+	}
 
 	/**
 	 * Exports warehouse shipment information for a single warehouse ID
-	 * 
+	 *
 	 * @param w
 	 * @throws IOException
 	 */
@@ -150,7 +155,7 @@ public class InputHandler
 
 	/**
 	 * Exports all warehouses and their data to Json file
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	public Boolean exportAllWarehouse() throws IOException
@@ -166,7 +171,7 @@ public class InputHandler
 
 	/**
 	 * Enables a warehouse to accept shipments
-	 * 
+	 *
 	 * @param w
 	 */
 	public void enableFreight(String w) //allows warehouse to receive shipments
@@ -192,7 +197,7 @@ public class InputHandler
 
 	/**
 	 * Stops a warehouse from accepting shipments
-	 * 
+	 *
 	 * @param w
 	 */
 	public void endFreight(String w) // closes warehouse
@@ -218,20 +223,41 @@ public class InputHandler
 
 	/**
 	 * Shows the data entered in the current session
+	 * @param list
+	 * @param textView
 	 */
-	public void showData() //prints all data onto console
+	public void showAllData(List<Warehouse> list, TextView textView) //prints all data onto console
 	{
-		List<Warehouse> list = handle.getAllWarehouses();
-		if (list != null)
-		{
+		textView.setText("");
+		if(list != null) {
 			for (int i = 0; i < list.size(); i++)
 			{
-				System.out.println("Warehouse " + list.get(i).getWarehouseID() + ", " + list.get(i).getWarehouseName() + " - " + list.get(i).getShipmentList().toString() + "\n");
+				textView.append("\nWarehouse " + list.get(i).getWarehouseID() + ", " + list.get(i).getWarehouseName() + " - \t" + list.get(i).getShipmentList().toString() + "\n");
 			}
+			textView.setMovementMethod(new ScrollingMovementMethod());
+		}else{
+			textView.setText("No warehouses to display");
 		}
-		else
-		{
-			System.out.println("There are no warehouses to display.");
+	}
+
+	/**
+	 * Shows the data entered in the current session
+	 * @param list
+	 * @param textView
+	 */
+	public void showData(List<Shipment> list, String warehouseID, TextView textView) //prints all data onto console
+	{
+		Warehouse w = handle.getWarehouse(warehouseID);
+		textView.setText("");
+		list = w.getShipmentList();
+		if(list != null) {
+			for (int i = 0; i < list.size(); i++)
+			{
+				textView.append("\nWarehouse " + warehouseID + ", " + w.getWarehouseName() + " - \t" + list.toString() + "\n");
+			}
+			textView.setMovementMethod(new ScrollingMovementMethod());
+		}else{
+			textView.setText("No shipments to display");
 		}
 	}
 
