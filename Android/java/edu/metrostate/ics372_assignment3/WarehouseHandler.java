@@ -1,5 +1,8 @@
 package edu.metrostate.ics372_androidstart_master;
 
+import android.text.method.ScrollingMovementMethod;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -128,7 +131,7 @@ public class WarehouseHandler
 
 	/**
 	 * Adds a list of shipments to the warehouse list
-	 * @param l list of shipments
+	 * @param list of shipments
 	 */
 	public void addShipmentList(List<Shipment> list)
 	{
@@ -230,6 +233,44 @@ public class WarehouseHandler
 				System.out.println("Warehouse is not receiving shipments at this time");
 				return null;
 			}
+		}
+	}
+	/**
+	 * Shows the data entered in the current session
+	 * @param textView
+	 */
+	public void showAllData(TextView textView) //prints all warehouse and shipments into the view
+	{
+		List<Warehouse> list = getAllWarehouses();
+		textView.setText(""); // clears out any previous text in the view
+		if(list != null) {
+			for (int i = 0; i < list.size(); i++)
+			{
+				textView.append("\nWarehouse " + list.get(i).getWarehouseID() + ", " + list.get(i).getWarehouseName() + " - \t" + list.get(i).getShipmentList().toString() + "\n");
+			}
+			textView.setMovementMethod(new ScrollingMovementMethod());
+		}else{
+			textView.setText("No warehouses to display");
+		}
+	}
+
+	/**
+	 * Shows the data entered in the current session
+	 * @param textView
+	 */
+	public void showData(String warehouseID, TextView textView) //prints one warehouses and its shipments into the view
+	{
+		Warehouse w = getWarehouse(warehouseID);
+		textView.setText(""); // clears out any previous text in the view
+		List<Shipment> list = w.getShipmentList();
+		if(list != null) {
+			for (int i = 0; i < list.size(); i++)
+			{
+				textView.append("\nWarehouse " + warehouseID + ", " + w.getWarehouseName() + " - \t" + list.toString() + "\n");
+			}
+			textView.setMovementMethod(new ScrollingMovementMethod());
+		}else{
+			textView.setText("No shipments to display");
 		}
 	}
 }

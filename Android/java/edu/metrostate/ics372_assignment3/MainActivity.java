@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int WRITE_STORAGE_PERMISSION_REQUEST = 5;
     private static final int READ_REQUEST_CODE = 42;
     private  List<Shipment> dataList = new ArrayList<>();
-    private InputHandler inputs = new InputHandler();
     private WarehouseApplication application;
     private Button printButton;
     private TextView scroller;
@@ -48,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private Button infoButton;
     private Button shipInfo;
     private Object IOException;
+
 
     /**
      * Creates the view for the application
@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         application = (WarehouseApplication) getApplication();
-
 
         jsonButton = findViewById(R.id.jsonButton);
         exportButton = findViewById(R.id.exportButton);
@@ -133,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void print() {
-        inputs.showAllData(wareIn.getAllWarehouses(), scroller);
+        wareIn.showAllData(scroller);
     }
 
     private void shipInfo() {
@@ -196,7 +195,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }else{
-                System.out.println("data is null");
+                scroller.setText("data is null");
             }
 
         }
@@ -274,5 +273,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 
 }

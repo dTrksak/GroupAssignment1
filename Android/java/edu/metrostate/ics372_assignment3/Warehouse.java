@@ -29,25 +29,18 @@ public class Warehouse
 		return availability;
 	}
 
-	public Shipment addShipment(Shipment shipment)
+	public Shipment addShipment(Shipment shipment) //
 	{
-		if(availability == true)
-		{ // add shipment to warehouse
-			for(int i = 0; i < shipList.size(); i++){
+			for(int i = 0; i < shipList.size(); i++){ // check to see if shipment ID is unique
 				if(shipList.get(i).shipment_id.equals(shipment.shipment_id)){
+					Log.i("IM HERE", "duplicate Warehouse class");
 					System.out.println("Sorry shipment with id: " + shipment.shipment_id + " already exists cannot create duplicates");
 					return null;//double shipment
 				}
 			}
 			shipList.add(shipment);
-			System.out.println("Shipment added");
+			System.out.println("Shipment successfully added");
 			return shipment;
-		}
-		else
-		{ // warehouse is closed
-			System.out.println("Sorry that warehouse is not accepting shipments");
-			return null;
-		}
 	}
 	public Shipment removeShipment(String shipmentID)
 	{
@@ -57,9 +50,11 @@ public class Warehouse
 				Shipment s = shipList.get(i);
 				System.out.println(s);
 				shipList.remove(i);
+				System.out.println("Shipment " + shipmentID + " successfully removed");
 				return s;
 			}
 		}
+		System.out.println("Shipment " + shipmentID + " not found in warehouse " + warehouseID);
 		return null;
 	}
 

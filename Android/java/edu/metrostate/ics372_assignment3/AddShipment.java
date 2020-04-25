@@ -1,6 +1,7 @@
 package edu.metrostate.ics372_androidstart_master;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +20,7 @@ public class AddShipment extends AppCompatActivity {
     private TextView result;
     private Button add;
     private Button remove;
-    private WarehouseHandler handle = WarehouseHandler.getInstance();
+    private String message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class AddShipment extends AppCompatActivity {
             @Override
             public void onClick(View v){
 
-                String message;
+
                 if(warehouseID.length() == 0 || shipmentID.length() == 0 || shipmentMethod.length() == 0 || weightIP.length() == 0) {
                     result.setText("Incomplete Information please enter:\n");
                     if (warehouseID.length() == 0) {
@@ -64,18 +65,17 @@ public class AddShipment extends AppCompatActivity {
 
 
                     if (new MainActivity().wareIn.getWarehouse(wareID) == null) {
-                        message = "Warehouse " + wareID + " does not exits, please create warehouse before adding shipments.";
-                        result.setText(message);
+                        result.setText("Warehouse " + wareID + " does not exits, please create warehouse before adding shipments.");
                     } else if (w.getAvailability() == false) {
-                        message = "Warehouse " + wareID + " is not receiving freights at this time.";
-                        result.setText(message);
+                        result.setText("Warehouse " + wareID + " is not receiving freights at this time.");
                     } else {
                         String warehouseName = w.getWarehouseName();
                         Long time = System.currentTimeMillis();
                         float weight = Float.valueOf(weightIP.getText().toString());
                         Shipment s = new MainActivity().wareIn.addShipment(wareID, warehouseName, shipID, shipMethod, weight, time);
                         if(s != null) {
-                            result.setText("Shipment added successfully!");
+                            message = "Shipment " + shipID + " successfully added";
+                            result.setText(message);
                         }else{
                             message = "Shipment with shipment id " + shipID + " already exists cannot add duplicate shipments";
                             result.setText(message);
@@ -119,7 +119,7 @@ public class AddShipment extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         } else {
-                            message = "Shipment " + shipID + " not found in Warehouse " + wareID + " please double check your input";
+                            message = "Shipment " + shipID + " not found in Warehouse " + wareID;
                             result.setText(message);
                         }
                     }
@@ -130,7 +130,5 @@ public class AddShipment extends AppCompatActivity {
 
 
     }
-    public TextView getTextView(){
-        return result;
-    }
+
 }

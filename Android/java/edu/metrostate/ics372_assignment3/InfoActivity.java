@@ -23,7 +23,6 @@ public class InfoActivity extends AppCompatActivity {
     private Button printOne;
     private Button wareName;
     private WarehouseHandler handle = WarehouseHandler.getInstance();
-    private InputHandler ihandle = new InputHandler();
 
 
     @Override
@@ -93,7 +92,7 @@ public class InfoActivity extends AppCompatActivity {
             if (printData.size() == 0) {
                 data.setText("Warehouse does not contain any shipments at this time");
             } else {
-                ihandle.showData(printData, warehouseId, data);
+                new MainActivity().wareIn.showData(warehouseId, data);
             }
         }else{
             data.setText("Warehouse does not exist please double check warehouse Id");
@@ -106,7 +105,7 @@ public class InfoActivity extends AppCompatActivity {
         List<Warehouse> printData = new ArrayList<>();
         printData = new MainActivity().wareIn.getAllWarehouses();
         data.setText("");
-        ihandle.showAllData(printData, data);
+        new MainActivity().wareIn.showAllData(data);
 
     }
 
