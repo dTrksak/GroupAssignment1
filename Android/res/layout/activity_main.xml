@@ -97,7 +97,7 @@
         android:layout_marginStart="-2dp"
         android:layout_marginEnd="2dp"
         android:layout_marginBottom="143dp"
-        android:text="Add Shipment Info" />
+        android:text="Shipment Info" />
 
     <Button
         android:id="@+id/button2"
