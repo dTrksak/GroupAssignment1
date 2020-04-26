@@ -1,4 +1,4 @@
-package edu.metrostate.ics372_androidstart_master;
+package edu.metrostate.ics372_assignment3;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -29,7 +29,7 @@ public class Warehouse
 		return availability;
 	}
 
-	public Shipment addShipment(Shipment shipment) //
+	public Shipment addShipment(Shipment shipment)
 	{
 		for(int i = 0; i < shipList.size(); i++){ // check to see if shipment ID is unique
 			if(shipList.get(i).shipment_id.equals(shipment.shipment_id)){
@@ -43,10 +43,11 @@ public class Warehouse
 			shipList.add(shipment);
 			System.out.println("Shipment successfully added");
 			return shipment;
-		} else {
-			Log.i("IM HERE", "Sorry this warehouse is not accepting shipments");
 		}
+		Log.i("IM HERE", "Sorry this warehouse is not accepting shipments");
+		return null;
 	}
+
 	public Shipment removeShipment(String shipmentID)
 	{
 		for(int i = 0; i < shipList.size(); i++) {
