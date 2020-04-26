@@ -1,4 +1,4 @@
-package edu.metrostate.ics372_androidstart_master;
+package edu.metrostate.ics372_assignment3;
 
 import android.os.Environment;
 import android.util.Log;
@@ -30,22 +30,21 @@ public class JsonHandler
 
 	/**
 	 * Takes a jsonObject of shipments and creates those shipments and warehouses
-	 * @param jo
+	 * @param data
 	 * @return the list of created shipments
 	 * @throws IOException
 	 */
-	public List<Shipment> jsonToShipment(JsonObject jo) throws IOException
+	public List<Shipment> jsonToShipment(String data) throws IOException
 	{
 		List<Shipment> shipList = new ArrayList<>();
 
 		JsonArray shipArray = new JsonArray();
 
+		JsonParser parser = new JsonParser();
+		JsonObject jo = (JsonObject) parser.parse(data);
 		try
 		{
-
-			JsonObject shipObject = jo;
-			shipArray = shipObject.getAsJsonArray("warehouse_contents");
-
+			shipArray = jo.getAsJsonArray("warehouse_contents");
 		}
 		catch (JsonIOException e)
 		{
@@ -100,7 +99,7 @@ public class JsonHandler
 				shipList.add(new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate));
 
 			}
-
+			
 			// Once all of the shipments have been added to shiplist without errors, add
 			// them to warehouseHandler
 			System.out.println("Shipments successfully imported.");
@@ -125,7 +124,7 @@ public class JsonHandler
 	 * @param list the shipments
 	 * @throws IOException
 	 */
-	public void shipmentToJson(ArrayList<Shipment> list, String fileName) throws IOException
+	public void shipmentToJson(List<Shipment> list, String fileName) throws IOException
 	{ // takes a list of shipments and writes them to a Json file
 
 		FileOperations fo = new FileOperations();
@@ -134,7 +133,7 @@ public class JsonHandler
 
 		if (directory == null)
 		{
-			System.out.println("Export cancelled.");
+			Log.d("jsonhandler","Export cancelled.");
 			return; // If the user cancelled the export, return
 		}
 
@@ -149,7 +148,7 @@ public class JsonHandler
 			BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
 			writer.write(json);
 			writer.close();
-			System.out.println("Shipments successfully exported.");
+			Log.d("jsonhandler","Shipments successfully exported.");
 		}
 	}
 }
