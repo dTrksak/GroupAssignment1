@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private Button infoButton;
     private Button shipInfo;
     private Object IOException;
+    public WarehouseHandler wareIn = WarehouseHandler.getInstance();
 
 
     /**
@@ -60,9 +61,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         application = (WarehouseApplication) getApplication();
 
-        jsonButton = findViewById(R.id.jsonButton);
+        importButton = findViewById(R.id.importButton);
         exportButton = findViewById(R.id.exportButton);
-        xmlButton = findViewById(R.id.xmlButton);
         infoButton = findViewById(R.id.infoButton);
         scroller = findViewById(R.id.scroll);
         shipInfo = findViewById(R.id.shipmentInfo);
@@ -128,7 +128,16 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     WRITE_STORAGE_PERMISSION_REQUEST);
         }
-
+        
+        //Recover the old data
+        try {
+            RecoverData.oldData();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+        if(wareIn.getAllWarehouseShipments() != null) {
+            Log.d("stuff", wareIn.getAllWarehouseShipments().toString());
+        }
     }
 
     private void print() {
@@ -140,40 +149,29 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void  getJson(Uri input) throws IOException {
+    private void  getJson(String data) throws IOException {
         JsonHandler jsonIn = new JsonHandler();
-        WarehouseHandler wareIn =WarehouseHandler.getInstance();
-        String str;
-
-        try {
-            InputStream is = getContentResolver().openInputStream(input);
-            str = FileOperations.getFileContents(is);
-
-
-            JsonParser parser = new JsonParser();
-            JsonObject json = (JsonObject) parser.parse(str);
-
-
-
-
-            //json = new String(buffer, "UTF-8");
-            dataList = jsonIn.jsonToShipment(json);
+        List<Shipment> dataList = jsonIn.jsonToShipment(data);
+        if(dataList != null) {
             wareIn.addShipmentList(dataList);
-            // JsonArray jsonArray = new JsonArray(json);
-            dataList = wareIn.getAllWarehouseShipments();
-
-
-        }catch(JsonIOException e){
-            e.printStackTrace();
+            RecoverData.saveData();
+            scroller.setText(wareIn.getAllWarehouseShipments().toString()); //could be dataList.toString() if you only wanted the new shipments to display, and not all of them
+            scroller.setMovementMethod(new ScrollingMovementMethod());
         }
-
-        scroller.setText(dataList.toString());
-        scroller.setMovementMethod(new ScrollingMovementMethod());
     }
 
-
-
-
+    private void getXml(String data) throws IOException, ParserConfigurationException, SAXException {
+        XmlHandler xmlIn = new XmlHandler();
+        Log.d("stuff", data);
+        List<Shipment> dataList = xmlIn.parseXml(data);
+        if(dataList != null) {
+            wareIn.addShipmentList(dataList);
+            RecoverData.saveData();
+            scroller.setText(wareIn.getAllWarehouseShipments().toString()); //could be dataList.toString() as well
+            scroller.setMovementMethod(new ScrollingMovementMethod());
+        }
+    }
+   
     private void fileSearch(){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -186,55 +184,47 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK){
 
             if(data != null) {
-
-                Uri uri = data.getData();
-
                 try {
-                    getJson(uri);
-                } catch (java.io.IOException e) {
+                    Uri input = data.getData();
+                    InputStream is = getContentResolver().openInputStream(input);
+                    String dataStr = FileOperations.getFileContents(is);
+
+                    if(dataStr.startsWith("<")){
+                        getXml(dataStr);
+                    } else {
+                        getJson(dataStr);
+                    }
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }else{
-                scroller.setText("data is null");
+                System.out.println("data is null");
             }
 
         }
 
     }
 
-
-
-    private void importXML() throws IOException, ParserConfigurationException, SAXException {
-
-        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-        intent.setType("*/*");
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        startActivityForResult(intent, READ_REQUEST_CODE );
-
-
-        /*scroller.setText(dataList.toString());
-        scroller.setMovementMethod(new ScrollingMovementMethod());*/
-    }
-
-
     private void exportJson() {
         JsonHandler jsonOut = new JsonHandler();
         WarehouseHandler wareOut = new WarehouseHandler();
+        String fileName = "testFile";
+        FileOperations fo = new FileOperations();
 
         try {
-            ArrayList <Shipment> outList = new ArrayList<>();
-            //outList.addAll(dataList);
-            wareOut.addShipmentList(dataList);
-            outList = wareOut.getAllWarehouseShipments();
-
-            jsonOut.shipmentToJson(outList, "testFile");
-            Toast toast=Toast.makeText(this,"Shipments successfully Imported",Toast.LENGTH_LONG);
-            View view =toast.getView();
-            view.setBackgroundColor(Color.GREEN);
-            TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-            toastMessage.setTextColor(Color.RED);
-            toast.show();
-            scroller.setText("");
+            if(!fo.fileExists(fileName) && wareIn.getAllWarehouseShipments() != null) {
+                List<Shipment> outList = wareIn.getAllWarehouseShipments();
+                jsonOut.shipmentToJson(outList, fileName);
+            
+                Toast toast=Toast.makeText(this,"Shipments successfully Imported",Toast.LENGTH_LONG);
+                View view =toast.getView();
+                view.setBackgroundColor(Color.GREEN);
+                TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                toastMessage.setTextColor(Color.RED);
+                toast.show();
+                scroller.setText("");
+            }
         }catch(IOException e){
             e.printStackTrace();
         }
