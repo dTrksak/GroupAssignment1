@@ -129,7 +129,6 @@ public class JsonHandler
 
 		FileOperations fo = new FileOperations();
 		String directory = Environment.getExternalStorageDirectory().getPath();
-		//fo.createFile(directory, fileName);
 
 		if (directory == null)
 		{
@@ -141,14 +140,13 @@ public class JsonHandler
 		Gson gson = new GsonBuilder().setPrettyPrinting().create(); // Output with pretty indentation
 		String json = gson.toJson(contents);
 
-		File outFile = fo.createFile(directory, fileName);
+		File outFile = new File(directory+"/"+fileName+".json");
 
 		if (outFile != null)
 		{ // writes warehouse contents into file
 			BufferedWriter writer = new BufferedWriter(new FileWriter(outFile));
 			writer.write(json);
 			writer.close();
-			Log.d("jsonhandler","Shipments successfully exported.");
 		}
 	}
 }
