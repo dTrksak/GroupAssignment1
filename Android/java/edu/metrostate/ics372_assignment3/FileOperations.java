@@ -1,4 +1,4 @@
-package edu.metrostate.ics372_assignment3;
+package edu.metrostate.ics372_androidstart_master;
 import android.os.Environment;
 
 import java.io.*;
@@ -17,15 +17,15 @@ public class FileOperations
 	 * @throws IOException
 	 */
 	public File createFile(String directory, String fileName) throws IOException //creates a file in the file directory
-    {
-    	File f = new File(directory + "/"+fileName+".json"); //needed to add double slashes to the directory for it to work correctly
+	{
+		File f = new File(directory + "/"+fileName+".json"); //needed to add double slashes to the directory for it to work correctly
 		if (!f.createNewFile())
 		{
-		    System.out.println("Export unsuccessful. outputFile already in folder "+directory+", cannot create duplicate. Delete "+fileName+"."); //smaller file error handling block
-		    return null;
+			System.out.println("Export unsuccessful. outputFile already in folder "+directory+", cannot create duplicate. Delete "+fileName+"."); //smaller file error handling block
+			return null;
 		}
-    	return f;
-    }
+		return f;
+	}
 
 	/**
 	 * checks if a file exists in the external storage directory based on a fileName

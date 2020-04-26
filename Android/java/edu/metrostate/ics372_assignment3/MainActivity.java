@@ -1,4 +1,4 @@
-package edu.metrostate.ics372_assignment3;
+package edu.metrostate.ics372_androidstart_master;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     WRITE_STORAGE_PERMISSION_REQUEST);
         }
-        
+
         //Recover the old data
         try {
             RecoverData.oldData();
@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             toastMe("Unable to import xml file, it is incorrectly formatted");
         }
     }
-   
+
     private void fileSearch(){
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);

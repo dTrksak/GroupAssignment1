@@ -1,4 +1,4 @@
-package edu.metrostate.ics372_assignment3;
+package edu.metrostate.ics372_androidstart_master;
 
 import android.os.Environment;
 import android.util.Log;
@@ -99,7 +99,7 @@ public class JsonHandler
 				shipList.add(new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate));
 
 			}
-			
+
 			// Once all of the shipments have been added to shiplist without errors, add
 			// them to warehouseHandler
 			System.out.println("Shipments successfully imported.");

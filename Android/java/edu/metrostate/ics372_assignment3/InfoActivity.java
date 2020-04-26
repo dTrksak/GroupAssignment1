@@ -37,16 +37,16 @@ public class InfoActivity extends AppCompatActivity {
         printAll = (Button) findViewById(R.id.printAll);
         printOne = (Button) findViewById(R.id.printOne);
         warehouseID = (EditText) findViewById(R.id.printOneWarehouse);
-
-        wareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String ware_house = ((TextView)InfoActivity.this.findViewById(R.id.Warehouse_name)).getText().toString();
-                String ware_name = ((TextView)InfoActivity.this.findViewById(R.id.Warehouse_nam)).getText().toString();
-
-                Warehouse x = InfoActivity.this.createWarehouse(ware_house,ware_name);
-            }
-        });
+//
+//        wareButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String ware_house = ((TextView)InfoActivity.this.findViewById(R.id.Warehouse_name)).getText().toString();
+//                String ware_name = ((TextView)InfoActivity.this.findViewById(R.id.Warehouse_nam)).getText().toString();
+//
+//                Warehouse x = InfoActivity.this.createWarehouse(ware_house,ware_name);
+//            }
+//        });
 
 
         addRemoveShipment.setOnClickListener(new View.OnClickListener() {

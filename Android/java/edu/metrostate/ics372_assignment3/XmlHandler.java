@@ -1,4 +1,4 @@
-package edu.metrostate.ics372_assignment3;
+package edu.metrostate.ics372_androidstart_master;
 
 import android.util.Log;
 
@@ -24,7 +24,7 @@ public class XmlHandler
 
 	/**
 	 * Creates a list of shipments given a filepath
-	 * 
+	 *
 	 * @param str a filepath
 	 * @return a list of shipments, OR null if the xml file was incorrectly
 	 *         formatted

@@ -1,4 +1,4 @@
-package edu.metrostate.ics372_assignment3;
+package edu.metrostate.ics372_androidstart_master;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -33,19 +33,12 @@ public class Warehouse
 	{
 		for(int i = 0; i < shipList.size(); i++){ // check to see if shipment ID is unique
 			if(shipList.get(i).shipment_id.equals(shipment.shipment_id)){
-				Log.i("IM HERE", "duplicate Warehouse class");
-				System.out.println("Sorry shipment with id: " + shipment.shipment_id + " already exists cannot create duplicates");
 				return null;//double shipment
 			}
 		}
-		if(availability == true)
-		{
-			shipList.add(shipment);
-			System.out.println("Shipment successfully added");
-			return shipment;
-		}
-		Log.i("IM HERE", "Sorry this warehouse is not accepting shipments");
-		return null;
+		shipList.add(shipment);
+		return shipment;
+
 	}
 
 	public Shipment removeShipment(String shipmentID)
@@ -56,11 +49,9 @@ public class Warehouse
 				Shipment s = shipList.get(i);
 				System.out.println(s);
 				shipList.remove(i);
-				System.out.println("Shipment " + shipmentID + " successfully removed");
 				return s;
 			}
 		}
-		System.out.println("Shipment " + shipmentID + " not found in warehouse " + warehouseID);
 		return null;
 	}
 

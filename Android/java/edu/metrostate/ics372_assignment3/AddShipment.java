@@ -21,7 +21,7 @@ public class AddShipment extends AppCompatActivity {
     private Button add;
     private Button remove;
     private String message;
-
+    private MainActivity mainActivity = new MainActivity();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +34,6 @@ public class AddShipment extends AppCompatActivity {
         result = findViewById(R.id.result);
         add = (Button) findViewById(R.id.addButton);
         remove = (Button) findViewById(R.id.removeButton);
-
-
 
         add.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -64,22 +62,24 @@ public class AddShipment extends AppCompatActivity {
                     Warehouse w = new MainActivity().wareIn.getWarehouse(wareID);
 
 
+
                     if (new MainActivity().wareIn.getWarehouse(wareID) == null) {
-                        result.setText("Warehouse " + wareID + " does not exist, please create warehouse before adding shipments.");
-                    } else if (w.getAvailability() == false) {
-                        result.setText("Warehouse " + wareID + " is not receiving freights at this time.");
+                        result.setText("Warehouse " + wareID + " does not exists, please create warehouse before adding shipments.");
                     } else {
                         String warehouseName = w.getWarehouseName();
                         Long time = System.currentTimeMillis();
                         float weight = Float.valueOf(weightIP.getText().toString());
-                        Shipment s = new MainActivity().wareIn.addShipment(wareID, warehouseName, shipID, shipMethod, weight, time);
-                        if(s != null) {
-                            message = "Shipment " + shipID + " successfully added";
-                            result.setText(message);
-                        }else{
-                            message = "Shipment with shipment id " + shipID + " already exists cannot add duplicate shipments";
-                            result.setText(message);
-                        }
+
+                        mainActivity.wareIn.addShipment(wareID, warehouseName, shipID, shipMethod, weight, time);
+                        result.setText(mainActivity.wareIn.getMessage());
+
+//                        Shipment s = new MainActivity().wareIn.addShipment(wareID, null, shipID, shipMethod, weight, time);
+//                        if(s != null) {
+//                            result.setText(mainActivity.wareIn.getMessage());
+//                        }else{
+//                            result.setText(mainActivity.wareIn.getMessage());
+//
+//                        }
                     }
                 }
             }
@@ -103,26 +103,10 @@ public class AddShipment extends AppCompatActivity {
                 }else {
                     String wareID = ((TextView)AddShipment.this.findViewById(R.id.warehouseId)).getText().toString();
                     String shipID = ((TextView)AddShipment.this.findViewById(R.id.shipmentId)).getText().toString();
-                    Warehouse w = new MainActivity().wareIn.getWarehouse(wareID);
 
-                    if (new MainActivity().wareIn.getWarehouse(wareID) == null) {
-                        message = "Warehouse " + wareID + " does not exits, please double check the Warehouse ID";
-                        result.setText(message);
-                    } else {
-                        Shipment s = w.removeShipment(shipID);
-                        if (s != null) {
-                            message = "Shipment " + shipID + " successfully removed!";
-                            result.setText(message);
-                            try {
-                                RecoverData.saveData();
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            message = "Shipment " + shipID + " not found in Warehouse " + wareID;
-                            result.setText(message);
-                        }
-                    }
+                    mainActivity.wareIn.removeShipment(wareID, shipID);
+                    result.setText(mainActivity.wareIn.getMessage());
+
                 }
             }
 

@@ -1,8 +1,12 @@
 package edu.metrostate.ics372_androidstart_master;
 
+import android.graphics.Color;
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +14,7 @@ import java.util.List;
 public class WarehouseHandler
 {
 	List<Warehouse> warehouseList = new ArrayList<>();
-
-
+	private String msg = null;
 
 	// static variable single_instance of type Singleton
 	private static WarehouseHandler warehouse_instance = null;
@@ -218,23 +221,59 @@ public class WarehouseHandler
 		}
 
 		if(w.getAvailability() && w.getWarehouseName().equals(warehouseName)) { //Prevents warehouses with identical ids but different names
-			Shipment s = new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate); // Switch around the data if needed
+			Shipment s = new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate);
 			Shipment s2 = w.addShipment(s);
 			if (s2 != null) {
+				msg = "Shipment " + shipmentID + " successfully added";
+				try {
+					RecoverData.saveData();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				return s;
 			}
+			msg = "Shipment " + shipmentID + " already exists cannot create duplicate shipments";
 			return null;
 		}else{
 
 			if(!w.getWarehouseName().equals(warehouseName)) {
-				System.out.println("Warehouse "+w.getWarehouseID()+"'s name is not correct, it should be '"+w.getWarehouseName()+"'.");
+				msg = "Warehouse "+w.getWarehouseID()+"'s name is not correct, it should be '"+w.getWarehouseName()+"'.";
 				return null;
 			} else {
-				System.out.println("Warehouse is not receiving shipments at this time");
+				msg = "Warehouse is not receiving shipments at this time";
 				return null;
 			}
 		}
 	}
+
+	/**
+	 * Removes a shipment from a specified warehouse
+	 *
+	 * @param warehouseID
+	 * @param shipmentID
+	 */
+	public Shipment removeShipment(String warehouseID, String shipmentID) {
+		Warehouse w = getWarehouse(warehouseID);
+		if (w == null) {
+			msg = "Warehouse " + warehouseID + " does not exist, please double check the Warehouse ID";
+			return null;
+		}
+		Shipment s = w.removeShipment(shipmentID);
+		if (s != null) {
+			msg = "Shipment " + shipmentID + " successfully removed!";
+			try {
+				RecoverData.saveData();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return s;
+		} else {
+			msg = "Shipment " + shipmentID + " not found in Warehouse " + shipmentID;
+			return null;
+		}
+
+	}
+
 	/**
 	 * Shows the data entered in the current session
 	 * @param textView
@@ -273,4 +312,9 @@ public class WarehouseHandler
 			textView.setText("No shipments to display");
 		}
 	}
+
+	public String getMessage(){
+		return msg;
+	}
+
 }
