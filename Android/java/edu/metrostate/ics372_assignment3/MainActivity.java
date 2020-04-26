@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -97,7 +98,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                exportJson();
+                try {
+                    exportJson();
+                } catch (java.io.IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -148,6 +153,10 @@ public class MainActivity extends AppCompatActivity {
             RecoverData.saveData();
             scroller.setText(wareIn.getAllWarehouseShipments().toString()); //could be dataList.toString() if you only wanted the new shipments to display, and not all of them
             scroller.setMovementMethod(new ScrollingMovementMethod());
+
+            toastMe("Successfully imported json file");
+        } else {
+            toastMe("Unable to import json file, it is incorrectly formatted");
         }
     }
 
@@ -160,6 +169,11 @@ public class MainActivity extends AppCompatActivity {
             RecoverData.saveData();
             scroller.setText(wareIn.getAllWarehouseShipments().toString()); //could be dataList.toString() as well
             scroller.setMovementMethod(new ScrollingMovementMethod());
+
+            toastMe("Successfully imported xml file");
+        } else {
+            //xml file unable to be imported
+            toastMe("Unable to import xml file, it is incorrectly formatted");
         }
     }
    
@@ -186,49 +200,53 @@ public class MainActivity extends AppCompatActivity {
                         getJson(dataStr);
                     }
 
-                    Toast toast=Toast.makeText(this,"Shipments successfully Imported",Toast.LENGTH_LONG);
-                    View view =toast.getView();
-                    view.setBackgroundColor(Color.GREEN);
-                    TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-                    toastMessage.setTextColor(Color.RED);
-                    toast.show();
-                    scroller.setText("");
-
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    toastMe("Unable to import file, wrong format");
                 }
             }else{
-                System.out.println("data is null");
+                toastMe("Empty file, unable to import");
             }
 
         }
 
     }
 
-    private void exportJson() {
+    private void exportJson() throws IOException {
         JsonHandler jsonOut = new JsonHandler();
         WarehouseHandler wareOut = new WarehouseHandler();
+        String directory = Environment.getExternalStorageDirectory().getPath();
         String fileName = "exportFile";
         FileOperations fo = new FileOperations();
 
+        if(!fo.fileExists(fileName)){
+            fo.createFile(directory, fileName);
+        }
+
         try {
-            if(!fo.fileExists(fileName) && wareIn.getAllWarehouseShipments() != null) {
-                List<Shipment> outList = wareIn.getAllWarehouseShipments();
-                jsonOut.shipmentToJson(outList, fileName);
-            
-                Toast toast=Toast.makeText(this,"Shipments successfully Exported",Toast.LENGTH_LONG);
-                View view =toast.getView();
-                view.setBackgroundColor(Color.GREEN);
-                TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-                toastMessage.setTextColor(Color.RED);
-                toast.show();
-                scroller.setText("");
+            if(wareIn.getAllWarehouseShipments() == null) {
+                toastMe("No shipments to export");
+                return;
             }
+
+            List<Shipment> outList = wareIn.getAllWarehouseShipments();
+            jsonOut.shipmentToJson(outList, fileName);
+            toastMe("Shipments successfully exported");
+
         }catch(IOException e){
             e.printStackTrace();
         }
     }
 
+    private void toastMe(String text)
+    {
+        Toast toast = Toast.makeText(this, text, Toast.LENGTH_LONG);
+        View view = toast.getView();
+        view.setBackgroundColor(Color.GREEN);
+        TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+        toastMessage.setTextColor(Color.RED);
+        toast.show();
+        scroller.setText("");
+    }
 
     private void startInfo() {
         Intent intent = new Intent(this, InfoActivity.class);
