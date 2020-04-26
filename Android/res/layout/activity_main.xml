@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="57dp"
-        android:text="Import Shipment Options"
+        android:text="Import a shipment file"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,27 +26,15 @@
         app:layout_constraintVertical_bias="0.095" />
 
     <Button
-        android:id="@+id/jsonButton"
+        android:id="@+id/importButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="127dp"
-        android:text="Json"
+        android:layout_marginStart="148dp"
+        android:layout_marginTop="112dp"
+        android:text="Import"
         tools:layout_editor_absoluteX="46dp"
-        tools:layout_editor_absoluteY="154dp" />
-
-    <Button
-        android:id="@+id/xmlButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="127dp"
-        android:layout_marginEnd="68dp"
-        android:text="XML"
-        tools:layout_editor_absoluteX="251dp"
         tools:layout_editor_absoluteY="154dp" />
 
     <Button
