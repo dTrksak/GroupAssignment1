@@ -48,7 +48,7 @@ public class WarehouseHandler
 		else
 		{
 			// If the warehouse doesn't exist, tell the user
-			System.out.print("Sorry, warehouse " + warehouseID + " doesn't exist.\n");
+			msg = "Sorry, warehouse " + warehouseID + " doesn't exist.\n";
 			return null;
 		}
 	}
@@ -64,7 +64,7 @@ public class WarehouseHandler
 		if (warehouseList.isEmpty())
 		{
 			// If the warehouse doesn't exist, tell the user
-			System.out.print("Sorry, no warehouses exist.\n"); // \n is return?
+			msg = "Sorry, no warehouses exist.\n";
 			return null;
 		}
 		else
@@ -124,10 +124,17 @@ public class WarehouseHandler
 		{
 			Warehouse n = new Warehouse(warehouseID, warehouseName); // Replace warehouseID if needed
 			warehouseList.add(n);
+			msg = "Warehouse " + warehouseID + " successsfully added\n";
+			try {
+				RecoverData.saveData();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 			return n;
 		}
 		else
 		{
+			msg = "Warehouse with ID: " + warehouseID + " already exists\n";
 			return null;
 		}
 	}
@@ -161,7 +168,7 @@ public class WarehouseHandler
 		}
 		else
 		{
-			System.out.print("Sorry, warehouse " + warehouseID + " doesn't exist.\n");
+			msg = "Sorry, warehouse " + warehouseID + " doesn't exist.\n";
 			return null;
 		}
 	}
@@ -182,7 +189,7 @@ public class WarehouseHandler
 			// Check that the user input will change the receipt
 			if (input == w.getAvailability())
 			{
-				System.out.print("Warehouse " + warehouseID + "'s receipt is already set to " + input + ".\n");
+				msg = "Warehouse " + warehouseID + "'s receipt is already set to " + input + ".\n";
 			}
 			else
 			{
@@ -198,7 +205,7 @@ public class WarehouseHandler
 		}
 		else
 		{
-			System.out.print("Sorry, warehouse " + warehouseID + " doesn't exist.\n");
+			msg = "Sorry, warehouse " + warehouseID + " doesn't exist.\n";
 		}
 	}
 
@@ -224,7 +231,7 @@ public class WarehouseHandler
 			Shipment s = new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate);
 			Shipment s2 = w.addShipment(s);
 			if (s2 != null) {
-				msg = "Shipment " + shipmentID + " successfully added";
+				msg = "Shipment " + shipmentID + " successfully added\n";
 				try {
 					RecoverData.saveData();
 				} catch (IOException e) {
@@ -232,15 +239,15 @@ public class WarehouseHandler
 				}
 				return s;
 			}
-			msg = "Shipment " + shipmentID + " already exists cannot create duplicate shipments";
+			msg = "Shipment " + shipmentID + " already exists cannot create duplicate shipments\n";
 			return null;
 		}else{
 
 			if(!w.getWarehouseName().equals(warehouseName)) {
-				msg = "Warehouse "+w.getWarehouseID()+"'s name is not correct, it should be '"+w.getWarehouseName()+"'.";
+				msg = "Warehouse "+w.getWarehouseID()+"'s name is not correct, it should be '"+w.getWarehouseName()+"'.\n";
 				return null;
 			} else {
-				msg = "Warehouse is not receiving shipments at this time";
+				msg = "Warehouse is not receiving shipments at this time\n";
 				return null;
 			}
 		}
@@ -255,12 +262,12 @@ public class WarehouseHandler
 	public Shipment removeShipment(String warehouseID, String shipmentID) {
 		Warehouse w = getWarehouse(warehouseID);
 		if (w == null) {
-			msg = "Warehouse " + warehouseID + " does not exist, please double check the Warehouse ID";
+			msg = "Warehouse " + warehouseID + " does not exist, please double check the Warehouse ID\n";
 			return null;
 		}
 		Shipment s = w.removeShipment(shipmentID);
 		if (s != null) {
-			msg = "Shipment " + shipmentID + " successfully removed!";
+			msg = "Shipment " + shipmentID + " successfully removed!\n";
 			try {
 				RecoverData.saveData();
 			} catch (IOException e) {
@@ -268,7 +275,7 @@ public class WarehouseHandler
 			}
 			return s;
 		} else {
-			msg = "Shipment " + shipmentID + " not found in Warehouse " + shipmentID;
+			msg = "Shipment " + shipmentID + " not found in Warehouse " + shipmentID + "\n";
 			return null;
 		}
 
