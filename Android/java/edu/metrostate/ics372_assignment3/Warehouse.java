@@ -31,16 +31,21 @@ public class Warehouse
 
 	public Shipment addShipment(Shipment shipment) //
 	{
-			for(int i = 0; i < shipList.size(); i++){ // check to see if shipment ID is unique
-				if(shipList.get(i).shipment_id.equals(shipment.shipment_id)){
-					Log.i("IM HERE", "duplicate Warehouse class");
-					System.out.println("Sorry shipment with id: " + shipment.shipment_id + " already exists cannot create duplicates");
-					return null;//double shipment
-				}
+		for(int i = 0; i < shipList.size(); i++){ // check to see if shipment ID is unique
+			if(shipList.get(i).shipment_id.equals(shipment.shipment_id)){
+				Log.i("IM HERE", "duplicate Warehouse class");
+				System.out.println("Sorry shipment with id: " + shipment.shipment_id + " already exists cannot create duplicates");
+				return null;//double shipment
 			}
+		}
+		if(availability == true)
+		{
 			shipList.add(shipment);
 			System.out.println("Shipment successfully added");
 			return shipment;
+		} else {
+			Log.i("IM HERE", "Sorry this warehouse is not accepting shipments");
+		}
 	}
 	public Shipment removeShipment(String shipmentID)
 	{
