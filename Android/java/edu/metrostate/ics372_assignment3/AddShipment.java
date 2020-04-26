@@ -65,7 +65,7 @@ public class AddShipment extends AppCompatActivity {
 
 
                     if (new MainActivity().wareIn.getWarehouse(wareID) == null) {
-                        result.setText("Warehouse " + wareID + " does not exits, please create warehouse before adding shipments.");
+                        result.setText("Warehouse " + wareID + " does not exist, please create warehouse before adding shipments.");
                     } else if (w.getAvailability() == false) {
                         result.setText("Warehouse " + wareID + " is not receiving freights at this time.");
                     } else {
