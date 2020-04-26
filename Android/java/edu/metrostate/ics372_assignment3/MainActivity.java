@@ -1,6 +1,7 @@
-package edu.metrostate.ics372_androidstart_master;
+package edu.metrostate.ics372_assignment3;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -46,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private Button xmlButton;
     private Button infoButton;
     private Button shipInfo;
+    private Button importButton;
     private Object IOException;
-    public WarehouseHandler wareIn = WarehouseHandler.getInstance();
 
 
     /**
@@ -55,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param savedInstanceState saved state information for the activity
      */
+    @SuppressLint("NewApi")
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,16 +93,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        xmlButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    importXML();
-                } catch (IOException | ParserConfigurationException | SAXException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
         exportButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -108,15 +102,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        jsonButton.setOnClickListener(new View.OnClickListener() {
+        importButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
                 fileSearch();
-
-
             }
-
         });
 
 
@@ -195,6 +186,14 @@ public class MainActivity extends AppCompatActivity {
                         getJson(dataStr);
                     }
 
+                    Toast toast=Toast.makeText(this,"Shipments successfully Imported",Toast.LENGTH_LONG);
+                    View view =toast.getView();
+                    view.setBackgroundColor(Color.GREEN);
+                    TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                    toastMessage.setTextColor(Color.RED);
+                    toast.show();
+                    scroller.setText("");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -209,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     private void exportJson() {
         JsonHandler jsonOut = new JsonHandler();
         WarehouseHandler wareOut = new WarehouseHandler();
-        String fileName = "testFile";
+        String fileName = "exportFile";
         FileOperations fo = new FileOperations();
 
         try {
@@ -217,7 +216,7 @@ public class MainActivity extends AppCompatActivity {
                 List<Shipment> outList = wareIn.getAllWarehouseShipments();
                 jsonOut.shipmentToJson(outList, fileName);
             
-                Toast toast=Toast.makeText(this,"Shipments successfully Imported",Toast.LENGTH_LONG);
+                Toast toast=Toast.makeText(this,"Shipments successfully Exported",Toast.LENGTH_LONG);
                 View view =toast.getView();
                 view.setBackgroundColor(Color.GREEN);
                 TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
@@ -263,6 +262,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-
 }
