@@ -140,6 +140,33 @@ public class WarehouseHandler
 	}
 
 	/**
+	 * Removes a warehouse given a warehouse ID
+	 * @param warehouseID
+	 */
+	public Warehouse removeWarehouse(String warehouseID)
+	{
+		Warehouse w = getWarehouse(warehouseID);
+
+		if (w != null)
+		{
+			if(w.getShipmentList().size() != 0){
+				msg = "Warehouse " + warehouseID + " still contains shipments cannot remove a warehouse unless it is empty\n";
+				return null;
+			}else{
+				warehouseList.remove(w);
+				msg = "Warehouse " + warehouseID + " successfully removed";
+				return w;
+				}
+
+			}
+		else
+		{
+			msg = "Warehouse with ID: " + warehouseID + " does not exist\n";
+			return null;
+		}
+	}
+
+	/**
 	 * Adds a list of shipments to the warehouse list
 	 * @param list of shipments
 	 */
@@ -189,23 +216,34 @@ public class WarehouseHandler
 			// Check that the user input will change the receipt
 			if (input == w.getAvailability())
 			{
-				msg = "Warehouse " + warehouseID + "'s receipt is already set to " + input + ".\n";
+				if(input == true) {
+					msg = "Warehouse " + warehouseID + "'s receipt is already enabled.\n";
+				}else{
+					msg = "Warehouse " + warehouseID + "'s receipt is already disabled.\n";
+				}
 			}
 			else
 			{
 				if (input == false)
 				{
 					w.disableFreightReceipt();
+					msg = "Warehouse " + warehouseID + " receipt is now disabled.";
 				}
 				else
 				{
 					w.enableFreightReceipt();
+					msg = "Warehouse " + warehouseID + " receipt is now enabled.";
 				}
 			}
 		}
 		else
 		{
 			msg = "Sorry, warehouse " + warehouseID + " doesn't exist.\n";
+		}
+		try {
+			RecoverData.saveData();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -228,6 +266,15 @@ public class WarehouseHandler
 		}
 
 		if(w.getAvailability() && w.getWarehouseName().equals(warehouseName)) { //Prevents warehouses with identical ids but different names
+
+			List<Shipment> shipList = getAllWarehouseShipments();
+			for(int i = 0; i < shipList.size(); i++){ // check to see if shipment ID is unique
+				if(shipList.get(i).shipment_id.equals(shipmentID)){
+					msg = "Shipment " + shipmentID + " already exists, cannot create duplicate shipments";
+					return null;//double shipment
+				}
+			}
+			
 			Shipment s = new Shipment(warehouseID, warehouseName, shipmentID, shipmentMethod, weight, receiptDate);
 			Shipment s2 = w.addShipment(s);
 			if (s2 != null) {
