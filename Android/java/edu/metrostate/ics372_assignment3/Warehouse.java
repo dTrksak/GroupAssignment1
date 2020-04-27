@@ -31,11 +31,6 @@ public class Warehouse
 
 	public Shipment addShipment(Shipment shipment)
 	{
-		for(int i = 0; i < shipList.size(); i++){ // check to see if shipment ID is unique
-			if(shipList.get(i).shipment_id.equals(shipment.shipment_id)){
-				return null;//double shipment
-			}
-		}
 		shipList.add(shipment);
 		return shipment;
 
