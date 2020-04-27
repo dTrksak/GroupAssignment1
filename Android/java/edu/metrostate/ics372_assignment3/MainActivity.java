@@ -2,13 +2,13 @@ package edu.metrostate.ics372_androidstart_master;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +35,7 @@ import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MainActivityView {
 
     public WarehouseHandler wareIn = WarehouseHandler.getInstance();
     private static final int WRITE_STORAGE_PERMISSION_REQUEST = 5;
@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private Button importButton;
     private Object IOException;
 
+    private MainActivityPresenter presenter;
+
 
     /**
      * Creates the view for the application
@@ -65,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         application = (WarehouseApplication) getApplication();
+
+        presenter = new MainActivityPresenter(this);
 
         importButton = findViewById(R.id.importButton);
         exportButton = findViewById(R.id.exportButton);
@@ -98,11 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                try {
-                    exportJson();
-                } catch (java.io.IOException e) {
-                    e.printStackTrace();
-                }
+                exportJson();
             }
         });
 
@@ -137,12 +137,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void print() {
-        wareIn.showAllData(scroller);
+       wareIn.showAllData(scroller);
+
     }
 
     private void shipInfo() {
-        Intent intent = new Intent(this, AddShipment.class);
-        startActivity(intent);
+        presenter.launchOtherActivityClicked(AddShipment.class);
     }
 
     private void  getJson(String data) throws IOException {
@@ -151,12 +151,8 @@ public class MainActivity extends AppCompatActivity {
         if(dataList != null) {
             wareIn.addShipmentList(dataList);
             RecoverData.saveData();
-            scroller.setText(wareIn.getAllWarehouseShipments().toString()); //could be dataList.toString() if you only wanted the new shipments to display, and not all of them
+            presenter.textUpdated(wareIn.getAllWarehouseShipments().toString()); //could be dataList.toString() if you only wanted the new shipments to display, and not all of them
             scroller.setMovementMethod(new ScrollingMovementMethod());
-
-            toastMe("Successfully imported json file");
-        } else {
-            toastMe("Unable to import json file, it is incorrectly formatted");
         }
     }
 
@@ -167,13 +163,8 @@ public class MainActivity extends AppCompatActivity {
         if(dataList != null) {
             wareIn.addShipmentList(dataList);
             RecoverData.saveData();
-            scroller.setText(wareIn.getAllWarehouseShipments().toString()); //could be dataList.toString() as well
+            presenter.textUpdated(wareIn.getAllWarehouseShipments().toString()); //could be dataList.toString() as well
             scroller.setMovementMethod(new ScrollingMovementMethod());
-
-            toastMe("Successfully imported xml file");
-        } else {
-            //xml file unable to be imported
-            toastMe("Unable to import xml file, it is incorrectly formatted");
         }
     }
 
@@ -186,71 +177,68 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == READ_REQUEST_CODE && resultCode == RESULT_OK) {
 
-            if(data != null) {
+            if (data != null) {
                 try {
+                    presenter.fileChooserOpened(data);
                     Uri input = data.getData();
                     InputStream is = getContentResolver().openInputStream(input);
                     String dataStr = FileOperations.getFileContents(is);
 
-                    if(dataStr.startsWith("<")){
+                    if (dataStr.startsWith("<")) {
                         getXml(dataStr);
                     } else {
                         getJson(dataStr);
                     }
 
+                    Toast toast = Toast.makeText(this, "Shipments successfully Imported", Toast.LENGTH_LONG);
+                    View view = toast.getView();
+                    view.setBackgroundColor(Color.GREEN);
+                    TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                    toastMessage.setTextColor(Color.RED);
+                    toast.show();
+                    presenter.textUpdated("");
+
                 } catch (Exception e) {
-                    toastMe("Unable to import file, wrong format");
+                    e.printStackTrace();
                 }
-            }else{
-                toastMe("Empty file, unable to import");
+            } else {
+                System.out.println("data is null");
             }
 
         }
 
     }
 
-    private void exportJson() throws IOException {
+    private void exportJson() {
         JsonHandler jsonOut = new JsonHandler();
         WarehouseHandler wareOut = new WarehouseHandler();
-        String directory = Environment.getExternalStorageDirectory().getPath();
         String fileName = "exportFile";
         FileOperations fo = new FileOperations();
 
-        if(!fo.fileExists(fileName)){
-            fo.createFile(directory, fileName);
-        }
-
         try {
-            if(wareIn.getAllWarehouseShipments() == null) {
-                toastMe("No shipments to export");
-                return;
+            if(!fo.fileExists(fileName) && wareIn.getAllWarehouseShipments() != null) {
+                List<Shipment> outList = wareIn.getAllWarehouseShipments();
+                jsonOut.shipmentToJson(outList, fileName);
+
+                Toast toast=Toast.makeText(this,"Shipments successfully Exported",Toast.LENGTH_LONG);
+                View view =toast.getView();
+                view.setBackgroundColor(Color.GREEN);
+                TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
+                toastMessage.setTextColor(Color.RED);
+                toast.show();
+                presenter.textUpdated("");
             }
-
-            List<Shipment> outList = wareIn.getAllWarehouseShipments();
-            jsonOut.shipmentToJson(outList, fileName);
-            toastMe("Shipments successfully exported");
-
         }catch(IOException e){
             e.printStackTrace();
         }
     }
 
-    private void toastMe(String text)
-    {
-        Toast toast = Toast.makeText(this, text, Toast.LENGTH_LONG);
-        View view = toast.getView();
-        view.setBackgroundColor(Color.GREEN);
-        TextView toastMessage = (TextView) toast.getView().findViewById(android.R.id.message);
-        toastMessage.setTextColor(Color.RED);
-        toast.show();
-        scroller.setText("");
-    }
 
     private void startInfo() {
-        Intent intent = new Intent(this, InfoActivity.class);
-        startActivity(intent);
+        presenter.launchOtherActivityClicked(InfoActivity.class);
     }
 
 
@@ -279,5 +267,28 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+
+
+    @Override
+    public void launchOtherActivity(Class activity) {
+        Intent intent = new Intent(this, activity);
+        startActivity(intent);
+    }
+
+    @Override
+    public void checkText(String string) {
+        scroller.setText(string);
+    }
+
+    @Override
+    public void fileOpener(Intent intent) {
+        intent.getData();
+    }
+
+    @Override
+    public void printAll(TextView text) {
+        wareIn.showAllData(text);
     }
 }
