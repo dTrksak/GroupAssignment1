@@ -270,7 +270,7 @@ public class WarehouseHandler
 			List<Shipment> shipList = getAllWarehouseShipments();
 			for(int i = 0; i < shipList.size(); i++){ // check to see if shipment ID is unique
 				if(shipList.get(i).shipment_id.equals(shipmentID)){
-					msg = "Shipment " + shipmentID + " already exists, cannot create duplicate shipments";
+					msg = "Shipment " + shipmentID + " already exists, in Warehouse " + shipList.get(i).getWarehouseID() + " cannot create duplicate shipments";
 					return null;//double shipment
 				}
 			}
